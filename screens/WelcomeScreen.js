@@ -15,8 +15,25 @@ export default function WelcomeScreen() {
                 borderRadius: 240/2,
                 backgroundColor: Colors.yellow,
                 position: 'absolute',
-                left: -100,
-                top: -60,
+                left: -80,
+                top: -48,
+            }}/>
+            <View style={{
+                width: 160,
+                height: 160,
+                borderRadius: 160/2,
+                backgroundColor: Colors.yellow,
+                position: 'absolute',
+                right: -80,
+                top: 80,
+            }}/>
+            <View style={{
+                width: 680,
+                height: 800,
+                borderRadius: 680/2,
+                backgroundColor: Colors.yellow,
+                position: 'absolute',
+                bottom: -300,
             }}/>
             <Image style={styles.quokkaImage} source={require('../assets/Quokkas/yes-quokka.png')}/>
             <Text style={styles.welcomeText}>Welcome to QuokkaTips!</Text>
@@ -28,7 +45,7 @@ export default function WelcomeScreen() {
 
             <TouchableOpacity 
                 style={styles.getStartedButton} 
-                onPress={() => navigation.navigate('SignIn')}>
+                onPress={() => navigation.navigate('LogIn')}>
                 <Text style={styles.getStartedText}>Get Started</Text>
             </TouchableOpacity>
         </SafeAreaView>
@@ -46,6 +63,7 @@ const styles = StyleSheet.create({
     quokkaImage: {
         width: 280,
         height: 280,
+        marginRight: 10,
     },
 
     welcomeText: {
@@ -56,7 +74,7 @@ const styles = StyleSheet.create({
     taglineText: {
         fontSize: 18,
         fontStyle: 'italic',
-        color: Colors.darkgray,
+        color: Colors.black,
         textAlign: 'center',
     },
     taglineView: {
@@ -82,9 +100,9 @@ const styles = StyleSheet.create({
         marginTop: 32,
         borderRadius: 14,
         // marginTop: 40,
-        shadowColor: Colors.gray,
+        shadowColor: Colors.black,
         shadowOffset: { width: -1, height: 5 },
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.2,
         shadowRadius: 2,
     },
     getStartedText: {

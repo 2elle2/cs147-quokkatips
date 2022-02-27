@@ -11,7 +11,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
-export default function SignInScreen() {
+export default function SignUpScreen() {
     const [email, onChangeEmail] = useState("");
     const [password, onChangePassword] = useState("");
     const navigation = useNavigation();
@@ -19,7 +19,16 @@ export default function SignInScreen() {
     const signUpUser = async () => {
         const auth = getAuth();
 
-        if (email.length === 0 || password.length === 0) {
+        if (email.length === 0 && password.length === 0) {
+            alert('Please enter your email address and password');
+            return;
+        }
+        if (email.length === 0) {
+            alert('Please enter your email address');
+            return;
+        }
+        if (password.length === 0) {
+            alert('Please enter your password');
             return;
         }
 
@@ -35,29 +44,7 @@ export default function SignInScreen() {
                 email: email,
             });
 
-            navigation.navigate('Home');
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const logInUser = async () => {
-        const auth = getAuth();
-
-        if (email.length === 0 || password.length === 0) {
-            return;
-        }
-
-        //changed the promising chaining to async/await
-        try {
-            let userCredential = await signInWithEmailAndPassword(auth, email, password)
-            // console.log(userCredential);
-
-            // let uid = userCredential.user.uid;
-            // console.log(uid);
-
-            navigation.navigate('Home');
+            navigation.navigate('SignUpTwo');
 
         } catch (error) {
             console.log(error);
@@ -67,14 +54,20 @@ export default function SignInScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity style={styles.backIcon} onPress={() => navigation.navigate('Welcome')}>
+            <TouchableOpacity style={styles.backIcon} onPress={() => navigation.goBack()}>
                 <Ionicons name="chevron-back-circle-outline" size={48} color={Colors.black} />
             </TouchableOpacity>
-            <Image
-                style={styles.quokkaImage}
-                source={require('../assets/Quokkas/dance2.png')}
-            />
-            <Text style={styles.logInHeaderText}>Log In</Text>
+
+            <Text style={styles.logInHeaderText}>Sign Up</Text>
+            <View style={styles.inputView}>
+                <Feather name="user" size={24} color="black" />
+                <TextInput
+                    style={styles.inputText}
+                    // onChangeText={onChangeName}
+                    // value={name}
+                    placeholder="Name"
+                />
+            </View>
             <View style={styles.inputView}>
                 <Feather name="user" size={24} color="black" />
                 <TextInput
@@ -95,17 +88,14 @@ export default function SignInScreen() {
                 />
             </View>
 
-            <TouchableOpacity style={styles.logInButton} onPress={logInUser}>
-                <Text style={styles.logInText}>Log In </Text>
+            <TouchableOpacity 
+                style={styles.nextButton} 
+                onPress={navigation.navigate('SignUpTwo')}
+            >
+                <Text style={styles.nextText}>Next </Text>
                 <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
             </TouchableOpacity>
             
-            <View style={styles.signUpRow}>
-                <Text style={styles.newUserText}>New user?</Text>
-                <TouchableOpacity onPress={signUpUser}>
-                    <Text style={styles.createAnAccount}> Create an account</Text>
-                </TouchableOpacity>
-            </View>
         </SafeAreaView>
     )
 }
@@ -114,7 +104,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#fff',
+        backgroundColor: Colors.lightgray,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -139,6 +129,7 @@ const styles = StyleSheet.create({
     },
 
     inputView: {
+        backgroundColor: Colors.white,
         flexDirection: 'row',
         width: '80%',
         height: 50,
@@ -154,7 +145,7 @@ const styles = StyleSheet.create({
         paddingLeft: 4,
     },
 
-    logInButton: {
+    nextButton: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -170,7 +161,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
     },
 
-    logInText: {
+    nextText: {
         fontSize: 20,
         fontWeight: 'bold',
         color: Colors.white,
