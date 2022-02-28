@@ -5,7 +5,6 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import SignInScreen from "./screens/SignInScreen";
 import HomeScreen from "./screens/HomeScreen";
 import AppDetails from "./screens/AppDetails";
 import WelcomeScreen from "./screens/WelcomeScreen";
@@ -24,17 +23,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="AppDetails"
-          component={AppDetails}
-          options={{ headerShown: false }}
-        />
-
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -72,6 +60,17 @@ export default function App() {
             ),
           }}
         />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AppDetails"
+          component={AppDetails}
+          options={{ headerShown: false }}
+        />
+
         <Stack.Screen name="Explore" component={ExploreScreen} options={{}} />
       </Stack.Navigator>
     </NavigationContainer>
