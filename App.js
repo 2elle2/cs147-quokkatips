@@ -44,7 +44,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name="MyGuides"
           component={MyGuidesScreen}
           options={{
@@ -59,7 +59,7 @@ export default function App() {
               />
             ),
           }}
-        />
+        /> */}
         <Stack.Screen
           name="Home"
           component={HomeScreen}
