@@ -1,12 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 
-import SignInScreen from './screens/SignInScreen';
-import HomeScreen from './screens/HomeScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
+import LogInScreen from './screens/LogInScreen';
+import SignUpScreen from './screens/SignUpScreen';
+import SignUpScreenTwo from './screens/SignUpScreenTwo';
+
+import MyGuidesScreen from './screens/MyGuidesScreen';
+import ExploreScreen from './screens/ExploreScreen';
+
+import Colors from './Themes/colors';
 
 const Stack = createStackNavigator();
 
@@ -14,8 +21,56 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="SignIn" component={SignInScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}} />
+
+        <Stack.Screen 
+          name="Welcome" 
+          component={WelcomeScreen} 
+          options={{headerShown: false}}
+        />
+        <Stack.Screen 
+          name="LogIn" 
+          component={LogInScreen}
+          options={{headerShown: false}} 
+        />
+        <Stack.Screen 
+          name="SignUp" 
+          component={SignUpScreen}
+          options={{headerShown: false}} 
+        />
+        <Stack.Screen 
+          name="SignUpTwo" 
+          component={SignUpScreenTwo}
+          options={{headerShown: false}} 
+        />
+
+
+        <Stack.Screen 
+          name="MyGuides" 
+          component={MyGuidesScreen}
+          options={{
+            headerRight: () => (
+              <Button
+                onPress={() => {
+                  // auth().signOut()
+                  alert('TODO: implement log out')}
+                }
+                title="Log Out"
+                color={Colors.yellow}
+              />
+            ),
+          }} 
+        />
+        <Stack.Screen 
+          name="Explore" 
+          component={ExploreScreen}
+          options={{
+            
+          }} 
+        />
+
+        
+
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
