@@ -1,7 +1,12 @@
 import React from "react";
 
 import RNPickerSelect from "react-native-picker-select";
-import { useNavigation } from "@react-navigation/native";
+import ExploreScreen from "./ExploreScreen";
+import ViewAll from "./ViewAll";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+const Stack = createStackNavigator();
 
 import {
   SafeAreaView,
@@ -10,11 +15,7 @@ import {
   StyleSheet,
   Text,
   StatusBar,
-  ScrollView,
-  Pressable,
 } from "react-native";
-
-import { FontAwesome } from "@expo/vector-icons";
 
 const DATA = [
   { id: "1", title: "Desmos" },
@@ -36,65 +37,25 @@ const Item = ({ title }) => (
     <View style={styles.itemInfo}>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.itemRatings}>
-        <FontAwesome name="star" size={10} color="black" />
         <Text style={styles.itemRating}>4.3</Text>
-        <Text style={styles.itemRatingTotal}>/ 5</Text>
-
         <Text style={styles.itemDifficulty}>Easy</Text>
       </View>
     </View>
   </View>
 );
 
-const renderItem = ({ item }) => <Item title={item.title} />;
-
-const CategoryCarrousel = ({ category, navigation }) => (
-  <View style={styles.categoryContainer}>
-    <View style={styles.categoryHeaders}>
-      <Text style={styles.categoryName}>{category}</Text>
-      <Pressable
-        onPress={() => {
-          navigation.navigate("ViewAll", { category: category });
-        }}
-      >
-        <Text style={styles.viewAllButton}>View All</Text>
-      </Pressable>
-    </View>
-
-    <FlatList
-      horizontal
-      data={DATA}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      showsHorizontalScrollIndicator={false}
-    />
-  </View>
-);
-
-export default function ExploreScreen() {
-  const navigation = useNavigation();
+export default function ExploreStack() {
+  const renderItem = ({ item }) => <Item title={item.title} />;
 
   return (
-    // "Sort by..." picker
-    // List of the user's guides
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <RNPickerSelect
-          style={{ padding: 10 }}
-          onValueChange={(value) => console.log(value)}
-          placeholder={{ label: "Sort by...", value: null, color: "gray" }}
-          items={[
-            { label: "Recenty Added", value: "Recently Added" },
-            { label: "Most Used", value: "Most Used" },
-            { label: "Alphabetical", value: "Alphabetical" },
-          ]}
-          style={pickerSelectStyles}
-        />
-        <CategoryCarrousel category="Recommended" navigation={navigation} />
-        <CategoryCarrousel category="Mathematics" navigation={navigation} />
-        <CategoryCarrousel category="Trending" navigation={navigation} />
-      </ScrollView>
-    </SafeAreaView>
+    <Stack.Navigator
+      screenOptions={() => ({
+        headerShown: false,
+      })}
+    >
+      <Stack.Screen name="ExploreScreen" component={ExploreScreen} />
+      <Stack.Screen name="ViewAll" component={ViewAll} />
+    </Stack.Navigator>
   );
 }
 
@@ -144,7 +105,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "15%",
     alignItems: "center",
-    justifyContent: "space-between",
   },
   categoryName: {
     fontSize: 20,
@@ -165,22 +125,12 @@ const styles = StyleSheet.create({
   itemRatings: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
   },
   itemRating: {
     fontSize: 12,
   },
-  itemRatingTotal: {
-    fontSize: 10,
-    color: "grey",
-  },
   itemDifficulty: {
     fontSize: 12,
-  },
-  viewAllButton: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#E3A444",
   },
 });
 
