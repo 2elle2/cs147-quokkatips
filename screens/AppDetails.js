@@ -12,6 +12,10 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native"
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import AppDetailsInfo from "./AppDetailsInfo";
+import AppDetailsFeatures from "./AppDetailsFeatures";
 
 const DATA = [
   { id: "1", title: "Desmos" },
@@ -27,16 +31,11 @@ const DATA = [
   { id: "11", title: "Microsoft Teams" },
 ];
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
 
 export default function AppDetails({ route }) {
-  const renderItem = ({ item }) => <Item title={item.title} />;
   const { appName } = route.params;
   const navigation = useNavigation();
+  const Tab = createMaterialTopTabNavigator();
 
   return (
     // "Sort by..." picker
@@ -52,7 +51,34 @@ export default function AppDetails({ route }) {
         </Pressable>
         <Text style={styles.categoryText}>{appName}</Text>
       </View>
-      <Text>APP DETAILS</Text>
+      <Tab.Navigator
+        initialRouteName="Feed"
+        screenOptions={{
+          tabBarActiveTintColor: '#E3A444',
+          tabBarLabelStyle: { fontSize: 14 },
+          tabBarStyle: { backgroundColor: '#F2F2F2' },
+          indicatorStyle: { backgroundColor: 'red' }
+        }}
+      >
+        <Tab.Screen
+          name="INFO"
+          component={AppDetailsInfo}
+          options={{
+            tabBarLabel: 'INFO',
+            tabBarIcon: ({ focused, color }) =>
+              <Ionicons name={focused? "information-circle" : "information-circle-outline"} size={25} color={color} />
+          }}
+        />
+        <Tab.Screen
+          name="FEATURES"
+          component={AppDetailsFeatures}
+          options={{
+            tabBarLabel: 'FEATURES',
+            tabBarIcon: ({ focused, color }) =>
+              <Ionicons name={focused? "list" : "list-outline"} size={25} color={color} />
+          }}
+        />
+      </Tab.Navigator>
     </SafeAreaView>
   );
 }
@@ -89,9 +115,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
   },
-  gridContainer: {
+  container: {
     flex: 1,
-    width: "95%",
+    width: "100%",
   },
   item: {
     flex: 1 / 2,
