@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,8 +11,9 @@ import SignUpScreen from './screens/SignUpScreen';
 import SignUpScreenTwo from './screens/SignUpScreenTwo';
 
 import MyGuidesScreen from './screens/MyGuidesScreen';
+import ExploreScreen from './screens/ExploreScreen';
 
-
+import Colors from './Themes/colors';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,31 @@ export default function App() {
           name="SignUpTwo" 
           component={SignUpScreenTwo}
           options={{headerShown: false}} 
+        />
+
+
+        <Stack.Screen 
+          name="MyGuides" 
+          component={MyGuidesScreen}
+          options={{
+            headerRight: () => (
+              <Button
+                onPress={() => {
+                  // auth().signOut()
+                  alert('TODO: implement log out')}
+                }
+                title="Log Out"
+                color={Colors.yellow}
+              />
+            ),
+          }} 
+        />
+        <Stack.Screen 
+          name="Explore" 
+          component={ExploreScreen}
+          options={{
+            
+          }} 
         />
 
         

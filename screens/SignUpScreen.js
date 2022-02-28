@@ -19,35 +19,45 @@ export default function SignUpScreen() {
     const signUpUser = async () => {
         const auth = getAuth();
 
-        if (email.length === 0 && password.length === 0) {
-            alert('Please enter your email address and password');
-            return;
-        }
-        if (email.length === 0) {
-            alert('Please enter your email address');
-            return;
-        }
-        if (password.length === 0) {
-            alert('Please enter your password');
-            return;
-        }
-
         //changed the promising chaining to async/await
         try {
             let userCredential = await createUserWithEmailAndPassword(auth, email, password)
-            // console.log(userCredential);
+            console.log(userCredential);
 
             let uid = userCredential.user.uid;
-            // console.log(uid);
+            console.log(uid);
 
             await setDoc(doc(db, "users", uid), {
                 email: email,
             });
 
-            navigation.navigate('SignUpTwo');
+            console.log('New user account created!');
 
         } catch (error) {
-            console.log(error);
+            if (email.length === 0 && password.length === 0) {
+                alert('Please enter your email address and password');
+                return;
+            }
+            if (email.length === 0) {
+                alert('Please enter your email address');
+                return;
+            }
+            if (password.length === 0) {
+                alert('Please enter your password');
+                return;
+            }
+            if (password.length < 6) {
+                alert('Password should be at least 6 characters');
+                return;
+            }
+            if (error.code === 'auth/email-already-in-use') {
+                alert('That email address is already in use');
+                return;
+              }
+            if (error.code === 'auth/invalid-email') {
+                alert('That email address is invalid');
+                return;
+            }
         }
     }
 
@@ -65,7 +75,7 @@ export default function SignUpScreen() {
                     style={styles.inputText}
                     // onChangeText={onChangeName}
                     // value={name}
-                    placeholder="Name"
+                    placeholder="Full Name"
                 />
             </View>
             <View style={styles.inputView}>
@@ -90,7 +100,7 @@ export default function SignUpScreen() {
 
             <TouchableOpacity 
                 style={styles.nextButton} 
-                onPress={navigation.navigate('SignUpTwo')}
+                onPress={signUpUser}
             >
                 <Text style={styles.nextText}>Next </Text>
                 <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
