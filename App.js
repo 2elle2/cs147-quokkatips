@@ -1,20 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View, Button } from "react-native";
 
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useState } from 'react';
 
-import WelcomeScreen from './screens/WelcomeScreen';
-import LogInScreen from './screens/LogInScreen';
-import SignUpScreen from './screens/SignUpScreen';
-import SignUpScreenTwo from './screens/SignUpScreenTwo';
+import HomeScreen from "./screens/HomeScreen";
+import AppDetails from "./screens/AppDetails";
+import WelcomeScreen from "./screens/WelcomeScreen";
+import LogInScreen from "./screens/LogInScreen";
+import SignUpScreen from "./screens/SignUpScreen";
+import SignUpScreenTwo from "./screens/SignUpScreenTwo";
 
-import MyGuidesScreen from './screens/MyGuidesScreen';
-import ExploreScreen from './screens/ExploreScreen';
+import MyGuidesScreen from "./screens/MyGuidesScreen";
+import ExploreScreen from "./screens/ExploreScreen";
 
-import Colors from './Themes/colors';
+import Colors from "./Themes/colors";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -49,55 +51,53 @@ export default function App() {
         </Stack.Screen>
 
         <Stack.Screen 
-          name="Welcome" 
-          component={WelcomeScreen} 
-          options={{headerShown: false}}
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="LogIn" 
+        <Stack.Screen
+          name="LogIn"
           component={LogInScreen}
-          options={{headerShown: false}} 
+          options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="SignUp" 
+        <Stack.Screen
+          name="SignUp"
           component={SignUpScreen}
-          options={{headerShown: false}} 
+          options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="SignUpTwo" 
+        <Stack.Screen
+          name="SignUpTwo"
           component={SignUpScreenTwo}
-          options={{headerShown: false}} 
+          options={{ headerShown: false }}
         />
 
-
-        <Stack.Screen 
-          name="MyGuides" 
+        {/* <Stack.Screen
+          name="MyGuides"
           component={MyGuidesScreen}
           options={{
             headerRight: () => (
               <Button
                 onPress={() => {
                   // auth().signOut()
-                  alert('TODO: implement log out')}
-                }
+                  alert("TODO: implement log out");
+                }}
                 title="Log Out"
                 color={Colors.yellow}
               />
             ),
-          }} 
+          }}
+        /> */}
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name="Explore" 
-          component={ExploreScreen}
-          options={{
-            
-          }} 
+        <Stack.Screen
+          name="AppDetails"
+          component={AppDetails}
+          options={{ headerShown: false }}
         />
-
-        
-
-        
->>>>>>> draft
+        <Stack.Screen name="Explore" component={ExploreScreen} options={{}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -106,8 +106,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
