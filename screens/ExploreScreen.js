@@ -30,21 +30,31 @@ const DATA = [
   { id: "11", title: "Microsoft Teams" },
 ];
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <View style={styles.itemImage}></View>
-    <View style={styles.itemInfo}>
-      <Text style={styles.title}>{title}</Text>
-      <View style={styles.itemRatings}>
-        <FontAwesome name="star" size={10} color="black" />
-        <Text style={styles.itemRating}>4.3</Text>
-        <Text style={styles.itemRatingTotal}>/ 5</Text>
+const Item = (props) => {
+  const navigation = useNavigation();
 
-        <Text style={styles.itemDifficulty}>Easy</Text>
+  return (
+    <Pressable
+      onPress={() => {
+        navigation.navigate("AppDetails", { appName: props.title });
+      }}
+    >
+      <View style={styles.item}>
+        <View style={styles.itemImage}></View>
+        <View style={styles.itemInfo}>
+          <Text style={styles.title}>{props.title}</Text>
+          <View style={styles.itemRatings}>
+            <FontAwesome name="star" size={10} color="black" />
+            <Text style={styles.itemRating}>4.3</Text>
+            <Text style={styles.itemRatingTotal}>/ 5</Text>
+
+            <Text style={styles.itemDifficulty}>Easy</Text>
+          </View>
+        </View>
       </View>
-    </View>
-  </View>
-);
+    </Pressable>
+  );
+};
 
 const renderItem = ({ item }) => <Item title={item.title} />;
 
