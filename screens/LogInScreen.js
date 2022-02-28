@@ -42,7 +42,7 @@ export default function LogInScreen() {
             // let uid = userCredential.user.uid;
             // console.log(uid);
 
-            navigation.navigate('MyGuides');
+            navigation.navigate('Home');
 
         } catch (error) {
             console.log(error);
