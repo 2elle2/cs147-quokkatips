@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import SignInScreen from './screens/SignInScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -34,19 +34,12 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {uid === null ? (
-          <>
-            <Stack.Screen name="Home" options={{ headerShown: false }}>
-              {props => <SignInScreen {...props} user={user} />}
-            </Stack.Screen>
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="SignIn">
-              {props => <SignInScreen {...props} setUser={setUser} />}
-            </ Stack.Screen>
-          </>
-        )}
+        <Stack.Screen name="SignIn">
+          {props => <SignInScreen {...props} setUser={setUser} />}
+        </ Stack.Screen>
+        <Stack.Screen name="Home" options={{ headerShown: false }}>
+          {props => <HomeScreen {...props} user={user} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
