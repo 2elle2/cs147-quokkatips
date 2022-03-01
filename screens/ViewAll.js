@@ -6,10 +6,18 @@ import {
   FlatList,
   SafeAreaView,
   Pressable,
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from "react-native";
+
+import { useEffect, useState } from "react";
+import { db } from "../firebase";
+import { collection, doc, getDocs } from "firebase/firestore";
 
 const DATA = [
   { id: "1", title: "Desmos" },
@@ -27,21 +35,63 @@ const DATA = [
 
 const { width } = Dimensions.get("window");
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <View style={styles.itemImage}></View>
-    <View style={styles.itemInfo}>
-      <Text style={styles.title}>{title}</Text>
-      <View style={styles.itemRatings}>
-        <Text style={styles.itemRating}>4.3</Text>
-        <Text style={styles.itemDifficulty}>Easy</Text>
+const Item = (props) => {
+  const navigation = useNavigation();
+
+  return (
+    <Pressable
+      onPress={() => {
+        navigation.navigate("AppDetails", { appName: props.app.name });
+      }}
+      style={styles.item}
+    >
+      <View style={styles.itemImageContainer}>
+        <Image style={styles.itemImage} source={{ uri: props.app.logo }} />
       </View>
-    </View>
-  </View>
-);
+      <View style={styles.itemInfo}>
+        <Text style={styles.title}>{props.app.name}</Text>
+        <View style={styles.itemRatings}>
+          <FontAwesome name="star" size={12} color="black" />
+          <Text style={styles.itemRating}>{props.app.rating}</Text>
+          <Text style={styles.itemRatingTotal}>/ 5 </Text>
+          <Octicons name="primitive-dot" size={8} color="gray" />
+          <Text> </Text>
+
+          <MaterialCommunityIcons
+            name="speedometer-slow"
+            size={12}
+            color="black"
+          />
+          <Text style={styles.itemDifficulty}> Easy</Text>
+        </View>
+      </View>
+    </Pressable>
+  );
+};
 
 export default function ViewAll({ route }) {
-  const renderItem = ({ item }) => <Item title={item.title} />;
+  const renderItem = ({ item }) => <Item app={item} />;
+  const [firestore_data, setData] = useState([]); // Save list of guides from firestore
+  // in local state
+
+  useEffect(() => getGuides(), []); // Pass in empty array so it will only run once on component mount
+
+  /**
+   * Helper Function: getGuides
+   *
+   * Callback function for useEffect. Retrieves all documents in the "guides" collection.
+   * The array of guides is saved to the state variable "firestore_data";
+   */
+  const getGuides = async () => {
+    const querySnapshot = await getDocs(collection(db, "guides"));
+    const guides = querySnapshot.docs.map((doc) => {
+      let guide = doc.data();
+      guide.id = doc.id; // Set the id prop on the guide object
+      return guide;
+    });
+    console.log(guides);
+    setData(guides);
+  };
 
   const navigation = useNavigation();
   const { category } = route.params;
@@ -62,7 +112,7 @@ export default function ViewAll({ route }) {
       <View style={styles.gridContainer}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={DATA}
+          data={firestore_data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           numColumns={2}
@@ -129,10 +179,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
-  itemImage: {
-    backgroundColor: "#E3A444",
+  itemImageContainer: {
     width: "100%",
     height: "80%",
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
+  },
+  itemImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
     borderTopRightRadius: 5,
     borderTopLeftRadius: 5,
   },
@@ -144,16 +200,24 @@ const styles = StyleSheet.create({
   itemRatings: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
   },
   itemRating: {
     fontSize: 12,
+    fontWeight: "500",
+    marginLeft: 4,
+  },
+  itemRatingTotal: {
+    fontSize: 10,
+    color: "grey",
   },
   itemDifficulty: {
     fontSize: 12,
+    fontWeight: "300",
   },
   backButtonText: {
     color: "#E3A444",
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "500",
   },
 });
