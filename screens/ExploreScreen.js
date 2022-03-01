@@ -46,7 +46,7 @@ const Item = (props) => {
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate("AppDetails", { appName: props.app.name });
+        navigation.navigate("AppDetails", { app: props.app });
       }}
     >
       <View style={styles.item}>
