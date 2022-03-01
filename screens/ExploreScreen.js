@@ -1,5 +1,8 @@
 import React from "react";
 
+import { useEffect, useState } from "react";
+import { db } from "../firebase";
+import { collection, doc, getDocs } from "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
 import { useNavigation } from "@react-navigation/native";
 
@@ -15,6 +18,7 @@ import {
 } from "react-native";
 
 import { FontAwesome } from "@expo/vector-icons";
+import { FirebaseError } from "firebase/app";
 
 const DATA = [
   { id: "1", title: "Desmos" },
@@ -83,6 +87,27 @@ const CategoryCarrousel = ({ category, navigation }) => (
 
 export default function ExploreScreen() {
   const navigation = useNavigation();
+  const [firestore_data, setData] = useState([]); // Save list of guides from firestore
+  // in local state
+
+  useEffect(() => getGuides(), []); // Pass in empty array so it will only run once on component mount
+
+  /**
+   * Helper Function: getGuides
+   * 
+   * Callback function for useEffect. Retrieves all documents in the "guides" collection.
+   * The array of guides is saved to the state variable "firestore_data";
+   */
+  const getGuides = async () => {
+    const querySnapshot = await getDocs(collection(db, "guides"));
+    const guides = querySnapshot.docs.map(doc => {
+      let guide = doc.data();
+      guide.id = doc.id; // Set the id prop on the guide object
+      return guide;
+    });
+    console.log(guides);
+    setData(guides);
+  };
 
   return (
     // "Sort by..." picker

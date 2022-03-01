@@ -15,8 +15,10 @@ export default function HomeScreen(props) {
     const docRef = doc(db, "users", user.uid);
     let docSnap = await getDoc(docRef);
     if (docSnap.exists) {
-      console.log(docSnap.data(), "HomeScreen.js"); //can get user data and set in state
-      props.setUser(docSnap.data()); // Saves user object in parent state
+      let user = docSnap.data();
+      user.id = docSnap.id; // Add the id prop to the user object
+      console.log(user, "HomeScreen.js"); // Can get user data and set in state
+      props.setUser(user); // Saves user object in parent state
     }
   };
 
