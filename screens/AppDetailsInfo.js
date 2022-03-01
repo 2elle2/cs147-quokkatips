@@ -87,7 +87,6 @@ const writeReviewClicked = () => {console.log("Write a review!")}; // TODO: repl
 
 // PREVIEW SECTION: Rendering a preview image
 const PreviewImageItem = (props) => {
-  console.log(props.imageLink);
   return (
     <Image 
       style={styles.itemImage}
@@ -138,7 +137,7 @@ const ReviewItem = (props) => {
       />
       <View style={styles.reviewUser}>
         <Image style={styles.userPicture} source={{uri: "https://picsum.photos/50/50"}}/>
-        <View style={styles.userNameTags}>
+        <View style={styles.userNameBio}>
           <Text style={{fontSize: 16, fontWeight: 'bold', marginLeft: 10}}>{props.user.name}</Text>
           <Text style={{fontSize: 16, color: '#888888', marginLeft: 10}}>{props.user.gradeLevels[0]} {props.user.subjects[0]} teacher</Text>
         </View>
@@ -146,7 +145,7 @@ const ReviewItem = (props) => {
       <Text ellipsizeMode='tail' numberOfLines={3} style={{fontSize: 16}}>{props.myTake}</Text>
       <Pressable
         onPress={() => {
-          navigation.navigate("Home", { review: props }); // Todo: change this to navigate to review details screen
+          navigation.navigate("ReviewDetails", { review: props }); // Todo: change this to navigate to review details screen
         }}
       >
         <Text style={{fontSize: 16, color: "#E3A444", textAlign: 'right', marginVertical: 5}}>View More</Text>
@@ -218,9 +217,9 @@ class AppDetailsInfo extends React.Component {
             <Text style={styles.buttonText}>WRITE A REVIEW</Text>
           </Pressable>
         </View>
-        <RatingCategory category="Overall rating" value="4.6" />
-        <RatingCategory category="Student engagement" value="5.0" />
-        <RatingCategory category="Ease of use" value="4.0" />
+        <RatingCategory category="Overall rating" value={APP_DATA.ratingOverall.toFixed(1)} />
+        <RatingCategory category="Student engagement" value={APP_DATA.ratingEngagement.toFixed(1)} />
+        <RatingCategory category="Ease of use" value={APP_DATA.ratingEase.toFixed(1)} />
         <FlatList
           style={{marginLeft: 15}}
           horizontal
@@ -321,9 +320,11 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     width: 50,
     height: 50,
+    borderColor: "#C4C4C4",
+    borderWidth: 1,
     backgroundColor: "#E3A444"
   },
-  userNameTags: {
+  userNameBio: {
     flex: 1
   },
   logo: {
@@ -331,6 +332,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 20,
+    borderColor: "#C4C4C4",
+    borderWidth: 1,
   },
   itemImage: {
     marginRight: 10,
