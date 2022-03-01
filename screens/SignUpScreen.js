@@ -11,9 +11,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
-export default function SignUpScreen() {
+export default function SignUpScreen(props) {
     const [email, onChangeEmail] = useState("");
     const [password, onChangePassword] = useState("");
+    // const [name, onChangeName] = useState("");
     const navigation = useNavigation();
 
     const signUpUser = async () => {
@@ -29,6 +30,7 @@ export default function SignUpScreen() {
 
             await setDoc(doc(db, "users", uid), {
                 email: email,
+                // name: name,
             });
 
             console.log('New user account created!');
