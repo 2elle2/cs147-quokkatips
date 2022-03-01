@@ -9,6 +9,7 @@ import ExploreStack from "./ExploreStack";
 import AskQuokkaScreen from "./AskQuokkaScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Colors from '../Themes/colors';
 
 export default function HomeScreen() {
   const getUserInfo = async (user) => {
@@ -41,6 +42,7 @@ export default function HomeScreen() {
       initialRouteName="My Guides"
       // Customize icons and appearance
       screenOptions={({ route }) => ({
+        tabBarStyle: {height: 84},
         tabBarIcon: ({ focused, color, size }) => {
           let icon;
           switch (route.name) {
@@ -56,10 +58,10 @@ export default function HomeScreen() {
                 : "chatbubble-ellipses-outline";
               break;
           }
-          return <Ionicons name={icon} size={size} color={color} />;
+          return <Ionicons name={icon} size={28} color={color} />;
         },
-        tabBarActiveTintColor: "#E3A444", // App theme color
-        tabBarInactiveTintColor: "gray",
+        tabBarActiveTintColor: Colors.yellow, // App theme color
+        tabBarInactiveTintColor: Colors.darkgray,
       })}
     >
       <Tab.Screen
@@ -67,7 +69,21 @@ export default function HomeScreen() {
         component={ExploreStack}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name="My Guides" component={MyGuidesScreen} />
+      <Tab.Screen 
+        name="My Guides" 
+        component={MyGuidesScreen} 
+        options={{
+          title: 'My Guides',
+          headerStyle: {
+            backgroundColor: Colors.darkpurple,
+          },
+          headerTintColor: Colors.white,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+        }}
+      />
       <Tab.Screen name="Ask Quokka" component={AskQuokkaScreen} />
     </Tab.Navigator>
   );
