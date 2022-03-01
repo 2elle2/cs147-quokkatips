@@ -15,6 +15,7 @@ import SignUpScreenTwo from "./screens/SignUpScreenTwo";
 
 import MyGuidesScreen from "./screens/MyGuidesScreen";
 import ExploreScreen from "./screens/ExploreScreen";
+import ReviewDetails from "./screens/ReviewDetails";
 
 import Colors from "./Themes/colors";
 
@@ -25,7 +26,7 @@ export default function App() {
   console.log(user, "App.js");
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -69,6 +70,11 @@ export default function App() {
         >
           {props => <HomeScreen {...props} setUser={setUser} />}
         </ Stack.Screen>
+        <Stack.Screen
+          name="ReviewDetails"
+          component={ReviewDetails}
+          option={{ headerShown: false }}
+        />
         <Stack.Screen
           name="AppDetails"
           component={AppDetails}
