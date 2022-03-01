@@ -1,25 +1,23 @@
-import React, { Component } from 'react';
-import { ThemeProvider } from '@react-navigation/native';
+import React from "react";
 import {
   SafeAreaView,
   FlatList,
   View,
   StyleSheet,
   Text,
-  StatusBar,
   Pressable,
-  Button,
   ScrollView,
+  Image,
 } from "react-native";
-import App from '../App';
 import { Chip } from 'react-native-paper';
 import { Rating } from 'react-native-elements';
-import AskQuokkaScreen from './AskQuokkaScreen';
 import { useNavigation } from "@react-navigation/native";
 
+/* -------- Begin dummy data. TODO: replace with firestore data. -------- */
 const APP_DATA = {
   name: "Desmos",
   slogan: "Meet Happy",
+  logo: "https://picsum.photos/100/100",
   tags: ["Communication", "Meetings", "Video"],
   previewImages: [
     { id: "1", link: "https://picsum.photos/300/200" },
@@ -27,12 +25,6 @@ const APP_DATA = {
     { id: "3", link: "https://picsum.photos/300/200" },
     { id: "4", link: "https://picsum.photos/300/200" },
     { id: "5", link: "https://picsum.photos/300/200" },
-    { id: "6", link: "https://picsum.photos/300/200" },
-    { id: "7", link: "https://picsum.photos/300/200" },
-    { id: "8", link: "https://picsum.photos/300/200" },
-    { id: "9", link: "https://picsum.photos/300/200" },
-    { id: "10", link: "https://picsum.photos/300/200" },
-    { id: "11", link: "https://picsum.photos/300/200" },
   ],
   summary: "Zoom's secure, reliable video platform powers all your communication needs, " + 
             "including meetings, chat, phone, webinars, and online events.",
@@ -88,25 +80,31 @@ const APP_DATA = {
     },
   ]
 }
+/* -------- End dummy data. TODO: replace with firestore data. -------- */
 
-const addToMyGuides = () => {console.log("Added to my guides!")};
-const writeReviewClicked = () => {console.log("Write a review!")};
+const addToMyGuides = () => {console.log("Added to my guides!")}; // TODO: replace this
+const writeReviewClicked = () => {console.log("Write a review!")}; // TODO: replace this
 
+// PREVIEW SECTION: Rendering a preview image
 const PreviewImageItem = (props) => {
+  console.log(props.imageLink);
   return (
-    <View style={styles.itemImage}></View>
+    <Image 
+      style={styles.itemImage}
+      source={{uri: props.imageLink}}
+    />
   );
 };
-
 const renderPreviewImg = ({ item }) => <PreviewImageItem imageLink={item.link} />;
 
+// RATINGS & REVIEWS SECTION: Rendering a rating category (overall, engagement, or ease of use)
 const RatingCategory = (props) => {
   return (
     <View style={styles.ratingCategory}>
       <Text style={{fontSize: 16}}>{props.category}</Text>
       <View style={styles.ratingValue}>
         <Text style={{fontSize: 16, fontWeight:'bold'}}>{props.value}</Text>
-        <Text style={{fontSize: 12, color: '#888888', marginTop: 3}}>/5</Text>
+        <Text style={{fontSize: 12, color: '#888888', marginTop: 3, marginRight: 5}}>/5</Text>
         <Rating
           type="star"
           fractions={1}
@@ -114,15 +112,15 @@ const RatingCategory = (props) => {
           readonly
           tintColor="#F2F2F2"
           imageSize={20}
-          style={{ alignItems: 'right', textAlign: 'right'}}
         />
       </View>
     </View>
   )
 }
 
+// RATINVS & REVIEWS SECTION: Rendering a review
 const ReviewItem = (props) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // To handle click on "View More"
   return (
     <View style={styles.itemReview}>
       <View style={styles.reviewTitleDate}>
@@ -139,7 +137,7 @@ const ReviewItem = (props) => {
         style={{ alignItems: 'left'}}
       />
       <View style={styles.reviewUser}>
-        <View style={styles.userPicture}></View>
+        <Image style={styles.userPicture} source={{uri: "https://picsum.photos/50/50"}}/>
         <View style={styles.userNameTags}>
           <Text style={{fontSize: 16, fontWeight: 'bold', marginLeft: 10}}>{props.user.name}</Text>
           <Text style={{fontSize: 16, color: '#888888', marginLeft: 10}}>{props.user.gradeLevels[0]} {props.user.subjects[0]} teacher</Text>
@@ -156,18 +154,21 @@ const ReviewItem = (props) => {
     </View>
   );
 };
+const renderReview = ({ item }) => <ReviewItem 
+  title={item.title} 
+  date={item.date} 
+  user={item.user} 
+  myTake={item.myTake} 
+  ratingOverall={item.ratingOverall} 
+/>;
 
-const renderReview = ({ item }) => <ReviewItem title={item.title} date={item.date} user={item.user} myTake={item.myTake} ratingOverall={item.ratingOverall} />;
-
+// FINAL OUTPUT
 class AppDetailsInfo extends React.Component {
   render() {
-    // return <View>
-    //   <Text>This is the AppDetailsInfo of {this.props.appName}</Text>
-    // </View>
     return <SafeAreaView>
       <ScrollView style={styles.scrollView}>
       <View style={styles.basicInfo}>
-        <View style={styles.logo}></View>
+        <Image style={styles.logo} source={{uri: APP_DATA.logo}} />
         <View style={styles.nameSloganButton}>
           <Text style={styles.appName}>{this.props.appName}</Text>
           <Text style={styles.appSlogan}>{APP_DATA.slogan}</Text>
@@ -182,9 +183,9 @@ class AppDetailsInfo extends React.Component {
             <View style={{marginHorizontal: 3, marginTop: 3}}>
               <Chip
                 key={index}
-                height={30} //give desirable height to chip
-                textStyle={{ color:'white',fontSize: 16 }} //label properties
-                style={{ backgroundColor: '#C4C4C4' }} //display diff color BG
+                height={30} // Give desirable height to chip
+                textStyle={{ color:'white', fontSize: 16 }} // Label properties
+                style={{ backgroundColor: '#C4C4C4' }} // Display diff color BG
               >
                 {item}
               </Chip>
@@ -234,6 +235,7 @@ class AppDetailsInfo extends React.Component {
   }
 }
 
+// Style sheet
 const styles = StyleSheet.create({
   basicInfo: {
     display: "flex",
@@ -323,10 +325,6 @@ const styles = StyleSheet.create({
   },
   userNameTags: {
     flex: 1
-  },
-  reviewTitleDate: {
-    display: "flex",
-    flexDirection: "row",
   },
   logo: {
     backgroundColor: "#E3A444",
