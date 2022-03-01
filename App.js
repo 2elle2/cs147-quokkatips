@@ -22,6 +22,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [user, setUser] = useState({}); // Use state to pass user object between components
+  console.log(user, "App.js");
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -62,9 +63,12 @@ export default function App() {
             ),
           }}
         /> */}
-        <Stack.Screen name="Home" options={{ headerShown: false }}>
-          {props => <HomeScreen {...props} user={user} />}
-        </Stack.Screen>
+        <Stack.Screen
+          name="Home"
+          options={{ headerShown: false }}
+        >
+          {props => <HomeScreen {...props} setUser={setUser} />}
+        </ Stack.Screen>
         <Stack.Screen
           name="AppDetails"
           component={AppDetails}

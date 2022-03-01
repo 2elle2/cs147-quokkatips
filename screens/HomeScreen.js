@@ -10,12 +10,13 @@ import AskQuokkaScreen from "./AskQuokkaScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-export default function HomeScreen() {
+export default function HomeScreen(props) {
   const getUserInfo = async (user) => {
     const docRef = doc(db, "users", user.uid);
     let docSnap = await getDoc(docRef);
     if (docSnap.exists) {
-      console.log(docSnap.data()); //can get user data and set in state
+      console.log(docSnap.data(), "HomeScreen.js"); //can get user data and set in state
+      props.setUser(docSnap.data()); // Saves user object in parent state
     }
   };
 
