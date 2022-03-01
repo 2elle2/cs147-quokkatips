@@ -49,20 +49,21 @@ export default function AppDetails({ route }) {
           <Ionicons name="chevron-back" size={28} color="#E3A444" />
           <Text style={styles.backButtonText}> Back</Text>
         </Pressable>
-        <Text style={styles.categoryText}>{appName}</Text>
+        <Text style={styles.categoryText}>App Details</Text>
       </View>
       <Tab.Navigator
         initialRouteName="Feed"
         screenOptions={{
           tabBarActiveTintColor: '#E3A444',
+          tabBarInactiveTintColor: '#E3A444',
           tabBarLabelStyle: { fontSize: 14 },
           tabBarStyle: { backgroundColor: '#F2F2F2' },
-          indicatorStyle: { backgroundColor: 'red' }
+          tabBarIndicatorStyle: { backgroundColor: '#E3A444'}
         }}
       >
         <Tab.Screen
           name="INFO"
-          component={AppDetailsInfo}
+          children={()=><AppDetailsInfo appName={appName}/>}
           options={{
             tabBarLabel: 'INFO',
             tabBarIcon: ({ focused, color }) =>
@@ -71,7 +72,7 @@ export default function AppDetails({ route }) {
         />
         <Tab.Screen
           name="FEATURES"
-          component={AppDetailsFeatures}
+          children={()=><AppDetailsFeatures appName={appName}/>}
           options={{
             tabBarLabel: 'FEATURES',
             tabBarIcon: ({ focused, color }) =>
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "95%",
+    width: "100%",
     height: 30,
     marginBottom: 6,
   },
