@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import Colors from "../../Themes/colors";
+import { serverTimestamp } from "firebase/firestore";
 
 // defining the item that will be rendered in the Flat List
 const Item = ({ title, image }) => (
@@ -24,6 +25,16 @@ const Item = ({ title, image }) => (
 
 // the filter
 const List = ({ searchPhrase, setClicked, data }) => {
+    let newData = data;
+    if(searchPhrase)
+        { 
+            newData = data.filter((item) => 
+            {
+            console.log(item)
+            return item.title.toUpperCase().includes(searchPhrase.toUpperCase());
+            }
+            )
+        }
   const renderItem = ({ item }) => {
     // when no input, show all
     if (searchPhrase === "") {
@@ -42,9 +53,9 @@ const List = ({ searchPhrase, setClicked, data }) => {
       // Flat List Item divider line
       <View
         style={{
-          height: 1,
-          width: '100%',
-          backgroundColor: Colors.gray,
+            padding: 1,
+            marginVertical: 8,
+            backgroundColor: Colors.gray,
         }}
       />
     )
@@ -52,13 +63,14 @@ const List = ({ searchPhrase, setClicked, data }) => {
 
   return (
     <SafeAreaView style={styles.list__container}>
-        <View
+        <View 
+            style={styles.listView}
             onStartShouldSetResponder={() => {
             setClicked(false);
             }}
         >
         <FlatList
-            data={data}
+            data={newData}
             renderItem={renderItem}
             ItemSeparatorComponent={ItemSeparatorView}
             keyExtractor={(item) => item.id}
@@ -72,15 +84,19 @@ export default List;
 
 const styles = StyleSheet.create({
   list__container: {
-    margin: 10,
+    flex: 1,
+    marginTop: 10,
+    marginLeft: 10,
     width: "100%",
-    marginBottom: 60,
+    // marginBottom: 60,
+  },
+  listView:{
+    flex: 1,
   },
   itemStyle: {
     flexDirection: 'row',
     padding: 12,
     alignItems: 'center',
-    height: 80,
   },
   title: {
     fontSize: 20,

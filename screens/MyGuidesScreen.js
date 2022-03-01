@@ -14,6 +14,7 @@ import {
   StatusBar, 
   TextInput 
 } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 import Colors from "../Themes/colors";
 import List from "./Components/List";
 import SearchBar from "./Components/SearchBar";
@@ -36,6 +37,7 @@ const MyGuidesScreen = () => {
 
 // const DATA = ['Desmos', 'Canvas', 'QuokkaTips', 'Google Docs', 'Slack'];
 
+    const navigation = useNavigation();
 
     const [searchPhrase, setSearchPhrase] = useState("");
     const [clicked, setClicked] = useState(false);
@@ -50,11 +52,11 @@ const MyGuidesScreen = () => {
         />
         { (
   
-            <List
-              searchPhrase={searchPhrase}
-              data={DATA}
-              setClicked={setClicked}
-            />
+        <List
+          searchPhrase={searchPhrase}
+          data={DATA}
+          setClicked={setClicked}
+        />
   
         )}
       </SafeAreaView>
@@ -111,9 +113,11 @@ const MyGuidesScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    display: "flex",
+    flexDirection: "column",
     flex: 1,
     backgroundColor: Colors.white,
-    minHeight: 300,
+    // minHeight: 300,
   },
 
 
