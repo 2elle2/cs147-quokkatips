@@ -37,6 +37,18 @@ const { width } = Dimensions.get("window");
 
 const Item = (props) => {
   const navigation = useNavigation();
+  let speedometer;
+  let difficulty;
+  if (props.app.rating > 4) {
+    speedometer = "speedometer-slow";
+    difficulty = "Easy";
+  } else if (props.app.rating > 2) {
+    speedometer = "speedometer-medium";
+    difficulty = "Medium";
+  } else {
+    speedometer = "speedometer";
+    difficulty = "Hard";
+  }
 
   return (
     <Pressable
@@ -57,12 +69,8 @@ const Item = (props) => {
           <Octicons name="primitive-dot" size={8} color="gray" />
           <Text> </Text>
 
-          <MaterialCommunityIcons
-            name="speedometer-slow"
-            size={12}
-            color="black"
-          />
-          <Text style={styles.itemDifficulty}> Easy</Text>
+          <MaterialCommunityIcons name={speedometer} size={12} color="black" />
+          <Text style={styles.itemDifficulty}> {difficulty}</Text>
         </View>
       </View>
     </Pressable>
@@ -74,28 +82,9 @@ export default function ViewAll({ route }) {
   const [firestore_data, setData] = useState([]); // Save list of guides from firestore
   // in local state
 
-  useEffect(() => getGuides(), []); // Pass in empty array so it will only run once on component mount
-
-  /**
-   * Helper Function: getGuides
-   *
-   * Callback function for useEffect. Retrieves all documents in the "guides" collection.
-   * The array of guides is saved to the state variable "firestore_data";
-   */
-  const getGuides = async () => {
-    const querySnapshot = await getDocs(collection(db, "guides"));
-    const guides = querySnapshot.docs.map((doc) => {
-      let guide = doc.data();
-      guide.id = doc.id; // Set the id prop on the guide object
-      return guide;
-    });
-    console.log(guides);
-    setData(guides);
-  };
-
   const navigation = useNavigation();
-  const { category } = route.params;
-
+  const { category, apps } = route.params;
+  console.log(apps);
   return (
     <SafeAreaView style={styles.body}>
       <View style={styles.header}>
@@ -112,7 +101,7 @@ export default function ViewAll({ route }) {
       <View style={styles.gridContainer}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={firestore_data}
+          data={apps}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           numColumns={2}

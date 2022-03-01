@@ -42,7 +42,18 @@ const DATA = [
 
 const Item = (props) => {
   const navigation = useNavigation();
-
+  let speedometer;
+  let difficulty;
+  if (props.app.rating > 4) {
+    speedometer = "speedometer-slow";
+    difficulty = "Easy";
+  } else if (props.app.rating > 2) {
+    speedometer = "speedometer-medium";
+    difficulty = "Medium";
+  } else {
+    speedometer = "speedometer";
+    difficulty = "Hard";
+  }
   return (
     <Pressable
       onPress={() => {
@@ -63,11 +74,12 @@ const Item = (props) => {
             <Text> </Text>
 
             <MaterialCommunityIcons
-              name="speedometer-slow"
+              name={speedometer}
               size={12}
               color="black"
             />
-            <Text style={styles.itemDifficulty}> Easy</Text>
+
+            <Text style={styles.itemDifficulty}> {difficulty}</Text>
           </View>
         </View>
       </View>
@@ -83,7 +95,7 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
       <Text style={styles.categoryName}>{category}</Text>
       <Pressable
         onPress={() => {
-          navigation.navigate("ViewAll", { category: category });
+          navigation.navigate("ViewAll", { category: category, apps: data });
         }}
       >
         <Text style={styles.viewAllButton}>View All</Text>
