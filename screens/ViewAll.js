@@ -6,10 +6,18 @@ import {
   FlatList,
   SafeAreaView,
   Pressable,
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from "react-native";
+
+import { useEffect, useState } from "react";
+import { db } from "../firebase";
+import { collection, doc, getDocs } from "firebase/firestore";
 
 const DATA = [
   { id: "1", title: "Desmos" },
@@ -27,25 +35,56 @@ const DATA = [
 
 const { width } = Dimensions.get("window");
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <View style={styles.itemImage}></View>
-    <View style={styles.itemInfo}>
-      <Text style={styles.title}>{title}</Text>
-      <View style={styles.itemRatings}>
-        <Text style={styles.itemRating}>4.3</Text>
-        <Text style={styles.itemDifficulty}>Easy</Text>
+const Item = (props) => {
+  const navigation = useNavigation();
+  let speedometer;
+  let difficulty;
+  if (props.app.rating > 4) {
+    speedometer = "speedometer-slow";
+    difficulty = "Easy";
+  } else if (props.app.rating > 2) {
+    speedometer = "speedometer-medium";
+    difficulty = "Medium";
+  } else {
+    speedometer = "speedometer";
+    difficulty = "Hard";
+  }
+
+  return (
+    <Pressable
+      onPress={() => {
+        navigation.navigate("AppDetails", { app: props.app });
+      }}
+      style={styles.item}
+    >
+      <View style={styles.itemImageContainer}>
+        <Image style={styles.itemImage} source={{ uri: props.app.logo }} />
       </View>
-    </View>
-  </View>
-);
+      <View style={styles.itemInfo}>
+        <Text style={styles.title}>{props.app.name}</Text>
+        <View style={styles.itemRatings}>
+          <FontAwesome name="star" size={12} color="black" />
+          <Text style={styles.itemRating}>{props.app.rating}</Text>
+          <Text style={styles.itemRatingTotal}>/ 5 </Text>
+          <Octicons name="primitive-dot" size={8} color="gray" />
+          <Text> </Text>
+
+          <MaterialCommunityIcons name={speedometer} size={12} color="black" />
+          <Text style={styles.itemDifficulty}> {difficulty}</Text>
+        </View>
+      </View>
+    </Pressable>
+  );
+};
 
 export default function ViewAll({ route }) {
-  const renderItem = ({ item }) => <Item title={item.title} />;
+  const renderItem = ({ item }) => <Item app={item} />;
+  const [firestore_data, setData] = useState([]); // Save list of guides from firestore
+  // in local state
 
   const navigation = useNavigation();
-  const { category } = route.params;
-
+  const { category, apps } = route.params;
+  console.log(apps);
   return (
     <SafeAreaView style={styles.body}>
       <View style={styles.header}>
@@ -62,7 +101,7 @@ export default function ViewAll({ route }) {
       <View style={styles.gridContainer}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={DATA}
+          data={apps}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           numColumns={2}
@@ -129,10 +168,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
-  itemImage: {
-    backgroundColor: "#E3A444",
+  itemImageContainer: {
     width: "100%",
     height: "80%",
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
+  },
+  itemImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
     borderTopRightRadius: 5,
     borderTopLeftRadius: 5,
   },
@@ -144,16 +189,24 @@ const styles = StyleSheet.create({
   itemRatings: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
   },
   itemRating: {
     fontSize: 12,
+    fontWeight: "500",
+    marginLeft: 4,
+  },
+  itemRatingTotal: {
+    fontSize: 10,
+    color: "grey",
   },
   itemDifficulty: {
     fontSize: 12,
+    fontWeight: "300",
   },
   backButtonText: {
     color: "#E3A444",
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "500",
   },
 });
