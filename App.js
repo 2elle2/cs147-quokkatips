@@ -81,8 +81,8 @@ export default function App() {
         >
           {props => <AppDetails {...props} user={user} />}
         </Stack.Screen>
-        <Stack.Screen name="Explore"
-          component={ExploreScreen}
+        <Stack.Screen
+          name="Explore"
           options={{ headerShown: false }} 
         >
           {props => <ExploreScreen {...props} user={user} />}
