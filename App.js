@@ -77,10 +77,16 @@ export default function App() {
         />
         <Stack.Screen
           name="AppDetails"
-          component={AppDetails}
           options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Explore" component={ExploreScreen} options={{}} />
+        >
+          {props => <AppDetails {...props} user={user} />}
+        </Stack.Screen>
+        <Stack.Screen name="Explore"
+          component={ExploreScreen}
+          options={{ headerShown: false }} 
+        >
+          {props => <ExploreScreen {...props} user={user} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
