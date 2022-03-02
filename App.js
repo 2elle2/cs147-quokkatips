@@ -1,9 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 
-import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useState } from 'react';
 
 import HomeScreen from "./screens/HomeScreen";
 import AppDetails from "./screens/AppDetails";
@@ -14,15 +15,18 @@ import SignUpScreenTwo from "./screens/SignUpScreenTwo";
 
 import MyGuidesScreen from "./screens/MyGuidesScreen";
 import ExploreScreen from "./screens/ExploreScreen";
+import ReviewDetails from "./screens/ReviewDetails";
 
 import Colors from "./Themes/colors";
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [user, setUser] = useState({}); // Use state to pass user object between components
+  console.log(user, "App.js");
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -62,15 +66,20 @@ export default function App() {
         /> */}
         <Stack.Screen
           name="Home"
-          component={HomeScreen}
           options={{ headerShown: false }}
+        >
+          {props => <HomeScreen {...props} setUser={setUser} />}
+        </ Stack.Screen>
+        <Stack.Screen
+          name="ReviewDetails"
+          component={ReviewDetails}
+          option={{ headerShown: false }}
         />
         <Stack.Screen
           name="AppDetails"
           component={AppDetails}
           options={{ headerShown: false }}
         />
-
         <Stack.Screen name="Explore" component={ExploreScreen} options={{}} />
       </Stack.Navigator>
     </NavigationContainer>

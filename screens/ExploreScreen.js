@@ -1,20 +1,30 @@
 import React from "react";
 
+import { useEffect, useState } from "react";
+import { db } from "../firebase";
+import { collection, doc, getDocs } from "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
+import { FontAwesome } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import Colors from "../Themes/colors";
 
 import {
-  SafeAreaView,
-  View,
   FlatList,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
-  StatusBar,
-  ScrollView,
-  Pressable,
+  View,
+  Image,
 } from "react-native";
 
-import { FontAwesome } from "@expo/vector-icons";
+import { FirebaseError } from "firebase/app";
+import { AuthErrorCodes } from "firebase/auth";
 
 const DATA = [
   { id: "1", title: "Desmos" },
@@ -32,23 +42,44 @@ const DATA = [
 
 const Item = (props) => {
   const navigation = useNavigation();
-
+  let speedometer;
+  let difficulty;
+  if (props.app.rating > 4) {
+    speedometer = "speedometer-slow";
+    difficulty = "Easy";
+  } else if (props.app.rating > 2) {
+    speedometer = "speedometer-medium";
+    difficulty = "Medium";
+  } else {
+    speedometer = "speedometer";
+    difficulty = "Hard";
+  }
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate("AppDetails", { appName: props.title });
+        navigation.navigate("AppDetails", { app: props.app });
       }}
     >
       <View style={styles.item}>
-        <View style={styles.itemImage}></View>
+        <View style={styles.itemImageContainer}>
+          <Image style={styles.itemImage} source={{ uri: props.app.logo }} />
+        </View>
         <View style={styles.itemInfo}>
-          <Text style={styles.title}>{props.title}</Text>
+          <Text style={styles.title}>{props.app.name}</Text>
           <View style={styles.itemRatings}>
-            <FontAwesome name="star" size={10} color="black" />
-            <Text style={styles.itemRating}>4.3</Text>
-            <Text style={styles.itemRatingTotal}>/ 5</Text>
+            <FontAwesome name="star" size={12} color="black" />
+            <Text style={styles.itemRating}>{props.app.rating}</Text>
+            <Text style={styles.itemRatingTotal}>/ 5 </Text>
+            <Octicons name="primitive-dot" size={8} color="gray" />
+            <Text> </Text>
 
-            <Text style={styles.itemDifficulty}>Easy</Text>
+            <MaterialCommunityIcons
+              name={speedometer}
+              size={12}
+              color="black"
+            />
+
+            <Text style={styles.itemDifficulty}> {difficulty}</Text>
           </View>
         </View>
       </View>
@@ -56,15 +87,15 @@ const Item = (props) => {
   );
 };
 
-const renderItem = ({ item }) => <Item title={item.title} />;
+const renderItem = ({ item }) => <Item app={item} />;
 
-const CategoryCarrousel = ({ category, navigation }) => (
+const CategoryCarrousel = ({ category, navigation, data }) => (
   <View style={styles.categoryContainer}>
     <View style={styles.categoryHeaders}>
       <Text style={styles.categoryName}>{category}</Text>
       <Pressable
         onPress={() => {
-          navigation.navigate("ViewAll", { category: category });
+          navigation.navigate("ViewAll", { category: category, apps: data });
         }}
       >
         <Text style={styles.viewAllButton}>View All</Text>
@@ -73,7 +104,7 @@ const CategoryCarrousel = ({ category, navigation }) => (
 
     <FlatList
       horizontal
-      data={DATA}
+      data={data}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       showsHorizontalScrollIndicator={false}
@@ -83,26 +114,58 @@ const CategoryCarrousel = ({ category, navigation }) => (
 
 export default function ExploreScreen() {
   const navigation = useNavigation();
+  const [firestore_data, setData] = useState([]); // Save list of guides from firestore
+  // in local state
+
+  useEffect(() => getGuides(), []); // Pass in empty array so it will only run once on component mount
+
+  /**
+   * Helper Function: getGuides
+   *
+   * Callback function for useEffect. Retrieves all documents in the "guides" collection.
+   * The array of guides is saved to the state variable "firestore_data";
+   */
+  const getGuides = async () => {
+    const querySnapshot = await getDocs(collection(db, "guides"));
+    const guides = querySnapshot.docs.map((doc) => {
+      let guide = doc.data();
+      guide.id = doc.id; // Set the id prop on the guide object
+      return guide;
+    });
+    console.log(guides);
+    setData(guides);
+  };
 
   return (
     // "Sort by..." picker
     // List of the user's guides
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Pressable style={styles.backButton}>
+          <Ionicons name="ios-menu-outline" size={40} color="#E3A444" />
+        </Pressable>
+        <Text style={styles.categoryText}>Explore</Text>
+      </View>
+      <View style={styles.searchBar}>
+        <AntDesign name="search1" size={22} color={Colors.gray} />
+        <Text style={styles.searchText}>Search apps...</Text>
+      </View>
       <ScrollView>
-        <RNPickerSelect
-          style={{ padding: 10 }}
-          onValueChange={(value) => console.log(value)}
-          placeholder={{ label: "Sort by...", value: null, color: "gray" }}
-          items={[
-            { label: "Recenty Added", value: "Recently Added" },
-            { label: "Most Used", value: "Most Used" },
-            { label: "Alphabetical", value: "Alphabetical" },
-          ]}
-          style={pickerSelectStyles}
+        <CategoryCarrousel
+          category="Recommended"
+          navigation={navigation}
+          data={firestore_data}
         />
-        <CategoryCarrousel category="Recommended" navigation={navigation} />
-        <CategoryCarrousel category="Mathematics" navigation={navigation} />
-        <CategoryCarrousel category="Trending" navigation={navigation} />
+        <CategoryCarrousel
+          category="Mathematics"
+          navigation={navigation}
+          data={firestore_data}
+        />
+        <CategoryCarrousel
+          category="Trending"
+          navigation={navigation}
+          data={firestore_data}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -115,6 +178,47 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 300,
     backgroundColor: "white",
+    //alignItems: "center",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "90%",
+    height: 30,
+    marginBottom: 6,
+    alignSelf: "center",
+  },
+  categoryText: {
+    fontSize: 22,
+    fontWeight: "700",
+  },
+  backButton: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    position: "absolute",
+    left: 0,
+  },
+  searchBar: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 24,
+    borderStyle: "solid",
+    borderWidth: 2,
+    borderColor: Colors.gray,
+    width: "90%",
+    height: 39,
+    alignSelf: "center",
+    paddingHorizontal: 10,
+  },
+  searchText: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginLeft: 8,
+    color: "gray",
   },
   item: {
     height: "85%",
@@ -140,7 +244,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   title: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "bold",
   },
   categoryContainer: {
@@ -160,10 +264,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "400",
   },
-  itemImage: {
-    backgroundColor: "#E3A444",
+  itemImageContainer: {
     width: "100%",
     height: "75%",
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
+  },
+  itemImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
     borderTopRightRadius: 5,
     borderTopLeftRadius: 5,
   },
@@ -179,6 +289,8 @@ const styles = StyleSheet.create({
   },
   itemRating: {
     fontSize: 12,
+    fontWeight: "500",
+    marginLeft: 4,
   },
   itemRatingTotal: {
     fontSize: 10,
@@ -186,6 +298,7 @@ const styles = StyleSheet.create({
   },
   itemDifficulty: {
     fontSize: 12,
+    fontWeight: "300",
   },
   viewAllButton: {
     fontSize: 16,
