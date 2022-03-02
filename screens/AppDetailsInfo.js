@@ -8,10 +8,14 @@ import {
   Pressable,
   ScrollView,
   Image,
+  Modal,
+  TouchableOpacity,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Chip } from 'react-native-paper';
 import { Rating } from 'react-native-elements';
 import { useNavigation } from "@react-navigation/native";
+
 
 /* -------- Begin dummy data for testing purposes. Won't use in actual app. -------- */
 const APP_DATA = {
@@ -82,8 +86,6 @@ const APP_DATA = {
 }
 /* -------- End dummy data for testing purposes. Won't use in actual app. -------- */
 
-const addToMyGuides = () => {console.log("Added to my guides!")}; // TODO: replace this click handler
-const writeReviewClicked = () => {console.log("Write a review!")}; // TODO: replace this click handler
 
 // PREVIEW SECTION: Rendering a preview image
 const PreviewImageItem = (props) => {
@@ -96,6 +98,7 @@ const PreviewImageItem = (props) => {
   );
 };
 const renderPreviewImg = ({ item }) => <PreviewImageItem imageLink={item} />;
+
 
 // RATINGS & REVIEWS SECTION: Rendering a rating category (overall, engagement, or ease of use)
 const RatingCategory = (props) => {
@@ -118,7 +121,8 @@ const RatingCategory = (props) => {
   )
 }
 
-// RATINVS & REVIEWS SECTION: Rendering a review
+
+// RATINGS & REVIEWS SECTION: Rendering a review
 const ReviewItem = (props) => {
   const navigation = useNavigation(); // To handle click on "View More"
   return (
@@ -165,25 +169,147 @@ const renderReview = ({ item }) => <ReviewItem
   ratingEase={item.ratingEase}
 />;
 
+const writeReviewClicked = () => {console.log("Write a review!")}; // TODO: replace this click handler
+
+
+// MODAL OVERLAY: Add to my guides
+const AddModal = (props) => {
+  const navigation = useNavigation();
+  const parent = props.parent;
+  const app = props.parent.props.app;
+  const user = props.parent.props.user;
+
+  return <Modal
+    animationType="fade"
+    transparent={true}
+    visible={parent.state.showAddAlert}
+    onRequestClose={() => {parent.setState({ showAddAlert: false });}}
+  >
+    <TouchableOpacity 
+      style={styles.modalOverlay} 
+      activeOpacity={1} 
+      onPressOut={() => {parent.setState({showAddAlert: false})}}
+    >
+      <TouchableWithoutFeedback>
+        <View style={styles.modalView}>
+          <Image style={styles.quokkaImage} source={require('../assets/Quokkas/yes-quokka.png')}/>
+          <Text style={styles.modalTitle}>Success!</Text>
+          <Text style={styles.modalMessage}>{app.name + " has been added to your guides."}</Text>
+          <TouchableOpacity 
+            style={[{backgroundColor: '#E3A444'}, styles.modalButton]}
+            onPress={() => { // When "Keep viewing App Info" is clicked
+              parent.setState({showAddAlert: false}); // Hide the modal window
+            }}>
+            <Text style={styles.modalButtonText}>Keep viewing App Info</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[{backgroundColor: '#201947'}, styles.modalButton]} 
+            onPress={() => { // When "Go to My Guides" is pressed
+              parent.setState({showAddAlert: false}) // Hide the modal view
+              navigation.navigate("Home", {screen: "My Guides"}); // Navigate to the My Guides screen
+            }}>
+            <Text style={styles.modalButtonText}>Go to My Guides</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    </TouchableOpacity> 
+  </Modal>
+}
+
+
+// MODAL OVERLAY: Remove from my guides
+const RemoveModal = (props) => {
+  const parent = props.parent;
+  const app = props.parent.props.app;
+  const user = props.parent.props.user;
+
+  return <Modal
+    animationType="fade"
+    transparent={true}
+    visible={parent.state.showRemoveAlert}
+    onRequestClose={() => {parent.setState({ showRemoveAlert: false });}}
+  >
+    <TouchableOpacity 
+      style={styles.modalOverlay} 
+      activeOpacity={1} 
+      onPressOut={() => {parent.setState({showRemoveAlert: false})}}
+    >
+      <TouchableWithoutFeedback>
+        <View style={styles.modalView}>
+          <Text style={styles.modalTitle}>Remove {app.name}?</Text>
+          <Text style={styles.modalMessage}>
+            You will no longer be able to see this app in your guides, but you can always add it back later.
+          </Text>
+          <TouchableOpacity 
+            style={[{backgroundColor: '#D01010'}, styles.modalButton]}
+            onPress={() => { // When "Yes, I want to remove" is pressed
+              /*
+               * TODO: Remove this guide from the user's guides in firestore
+               */
+              
+              // Remove this guide from the user's guides locally
+              let index = user.guides.indexOf(app.id);
+              if (index > -1) {
+                user.guides.splice(index, 1);
+              }
+              parent.setState({showRemoveAlert: false}) // Hide the modal window
+              parent.props.parentCallback(); // Rerender the parent
+            }}>
+            <Text style={styles.modalButtonText}>Yes, I want to remove</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[{backgroundColor: '#201947'}, styles.modalButton]}
+            onPress={() => { // When "No, keep this app" is pressed
+              parent.setState({showRemoveAlert: false}); // Hide the modal window
+            }}>
+            <Text style={styles.modalButtonText}>No, keep this app</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    </TouchableOpacity> 
+  </Modal>
+}
+
+
 // FINAL OUTPUT
 class AppDetailsInfo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { showRemoveAlert: false, showAddAlert: false }; // Control visibility of modal windows
+  };
+
   render() {
     let appInfo;
     if (this.props.app != null) {
       appInfo = <SafeAreaView>
+        <RemoveModal parent={this}/>
+        <AddModal parent={this}/>
         <ScrollView style={styles.scrollView}>
         <View style={styles.basicInfo}>
           <Image style={styles.logo} source={{uri: this.props.app.logo}} />
           <View style={styles.nameSloganButton}>
             <Text style={styles.appName}>{this.props.app.name}</Text>
             <Text style={styles.appSlogan}>{this.props.app.slogan}</Text>
-            <Pressable style={styles.addRemoveButton} onPress={addToMyGuides}>
-              <Text style={styles.buttonText}>Add to My Guides</Text>
-            </Pressable>
+            {this.props.user.guides.includes(this.props.app.id)?
+              <Pressable style={styles.removeButton} onPress={() => {this.setState({ showRemoveAlert: true });}}>
+                <Text style={styles.removeText}>Remove</Text>
+              </Pressable> :
+              <Pressable style={styles.addButton} onPress={() => {
+                /*
+                 * TODO: Add this guide to the user's guides in firestore
+                 */
+
+                this.props.user.guides.push(this.props.app.id); // Add this guide to the user's guides locally
+                this.setState({ showAddAlert: true }); // Show the modal window
+                this.props.parentCallback(); // Rerender the parent
+              }}>
+                <Text style={styles.addText}>Add to My Guides</Text>
+              </Pressable>
+            }
           </View>
         </View>
         <View style={styles.tags}>
-          {APP_DATA.tags.map((item, index) => {
+          {this.props.app.tags.map((item, index) => {
             return (
               <View style={{marginHorizontal: 3, marginTop: 3}}>
                 <Chip
@@ -219,9 +345,13 @@ class AppDetailsInfo extends React.Component {
         <View style={styles.ratingsAndReviews}>
           <View style={styles.ratingsAndReviewsHeader}>
             <Text style={styles.sectionTitleText}>Ratings &amp; Reviews</Text>
-            <Pressable style={styles.writeReviewButton} onPress={writeReviewClicked}>
-              <Text style={styles.buttonText}>WRITE A REVIEW</Text>
-            </Pressable>
+            {
+              this.props.user.guides.includes(this.props.app.id)? 
+              <Pressable style={styles.writeReviewButton} onPress={writeReviewClicked}>
+                <Text style={styles.buttonText}>WRITE A REVIEW</Text>
+              </Pressable> : 
+              <View/>
+            }
           </View>
           <RatingCategory category="Overall rating" value={this.props.app.rating.toFixed(1)} />
           <RatingCategory category="Student engagement" value={this.props.app.ratingEngagement.toFixed(1)} />
@@ -268,19 +398,36 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#888888"
   },
-  addRemoveButton: {
+  addButton: {
     marginLeft: 15,
     marginTop: 5,
     alignItems: 'center',
     alignSelf:'baseline',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingVertical: 8,
+    paddingHorizontal: 30,
     borderRadius: 10,
     elevation: 3,
     backgroundColor: '#E3A444',   
   },
-  buttonText: {
+  removeButton: {
+    marginLeft: 15,
+    marginTop: 5,
+    alignItems: 'center',
+    alignSelf:'baseline',
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: '#E3A444',  
+  },
+  addText: {
     color: "white",
+    fontSize: 16,
+    fontWeight: "bold"
+  },
+  removeText: {
+    color: "#E3A444",
     fontSize: 16,
     fontWeight: "bold"
   },
@@ -368,6 +515,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginBottom: 5
   },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: 'bold'
+  },
   ratingValue: {
     display: "flex",
     flexDirection: "row"
@@ -388,7 +541,58 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 3,
     backgroundColor: '#201947',   
-  }
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: "10%",
+    marginVertical: "30%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 33,
+  },
+  modalButton: {
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 5,
+    width: "100%",
+    shadowColor: 'black',
+    shadowOffset: { width: -1, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  modalButtonText: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalTitle: {
+    marginBottom: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: "center"
+  },
+  modalMessage: {
+    marginBottom: 10,
+    fontSize: 16,
+    color: '#888888',
+    textAlign: 'center'
+  },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  quokkaImage: {
+    width: 150,
+    height: 150,
+    marginRight: 10,
+  },
 });
 
 export default AppDetailsInfo;
