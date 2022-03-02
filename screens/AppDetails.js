@@ -14,7 +14,7 @@ import AppDetailsInfo from "./AppDetailsInfo";
 import AppDetailsFeatures from "./AppDetailsFeatures";
 
 export default function AppDetails({ route }) {
-  const { appName } = route.params;
+  const { app } = route.params;
   const navigation = useNavigation();
   const Tab = createMaterialTopTabNavigator();
 
@@ -44,7 +44,7 @@ export default function AppDetails({ route }) {
       >
         <Tab.Screen
           name="INFO"
-          children={()=><AppDetailsInfo appName={appName}/>}
+          children={()=><AppDetailsInfo app={app}/>}
           options={{
             tabBarLabel: 'INFO',
             tabBarIcon: ({ focused, color }) =>
@@ -53,7 +53,7 @@ export default function AppDetails({ route }) {
         />
         <Tab.Screen
           name="FEATURES"
-          children={()=><AppDetailsFeatures appName={appName}/>}
+          children={()=><AppDetailsFeatures app={app}/>}
           options={{
             tabBarLabel: 'FEATURES',
             tabBarIcon: ({ focused, color }) =>

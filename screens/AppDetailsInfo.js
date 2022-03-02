@@ -13,30 +13,30 @@ import { Chip } from 'react-native-paper';
 import { Rating } from 'react-native-elements';
 import { useNavigation } from "@react-navigation/native";
 
-/* -------- Begin dummy data. TODO: replace with firestore data. -------- */
+/* -------- Begin dummy data for testing purposes. Won't use in actual app. -------- */
 const APP_DATA = {
   name: "Desmos",
   slogan: "Meet Happy",
   logo: "https://picsum.photos/100/100",
   tags: ["Communication", "Meetings", "Video"],
-  previewImages: [
-    { id: "1", link: "https://picsum.photos/300/200" },
-    { id: "2", link: "https://picsum.photos/300/200" },
-    { id: "3", link: "https://picsum.photos/300/200" },
-    { id: "4", link: "https://picsum.photos/300/200" },
-    { id: "5", link: "https://picsum.photos/300/200" },
+  screenshots: [
+    "https://picsum.photos/300/200",
+    "https://picsum.photos/300/200",
+    "https://picsum.photos/300/200",
+    "https://picsum.photos/300/200",
+    "https://picsum.photos/300/200",
   ],
-  summary: "Zoom's secure, reliable video platform powers all your communication needs, " + 
+  description: "Zoom's secure, reliable video platform powers all your communication needs, " + 
             "including meetings, chat, phone, webinars, and online events.",
-  ratingOverall: 4.6,
+  rating: 4.6,
   ratingEngagement: 5.0,
   ratingEase: 4.0,
   reviews: [
     { 
       id: "1",
       title: "I really recommend it! It’s awesomely amazing!",
-      date: "Apr 13",
-      ratingOverall: 5.0,
+      createdAt: new Date().toLocaleDateString("en-US"),
+      rating: 5.0,
       ratingEngagement: 5.0,
       ratingEase: 4.0,
       user: 
@@ -58,8 +58,8 @@ const APP_DATA = {
     { 
       id: "2",
       title: "I really recommend it! It’s awesomely amazing!",
-      date: "Apr 13",
-      ratingOverall: 5.0,
+      createdAt: new Date().toLocaleDateString("en-US"),
+      rating: 5.0,
       ratingEngagement: 5.0,
       ratingEase: 4.0,
       user: 
@@ -80,10 +80,10 @@ const APP_DATA = {
     },
   ]
 }
-/* -------- End dummy data. TODO: replace with firestore data. -------- */
+/* -------- End dummy data for testing purposes. Won't use in actual app. -------- */
 
-const addToMyGuides = () => {console.log("Added to my guides!")}; // TODO: replace this
-const writeReviewClicked = () => {console.log("Write a review!")}; // TODO: replace this
+const addToMyGuides = () => {console.log("Added to my guides!")}; // TODO: replace this click handler
+const writeReviewClicked = () => {console.log("Write a review!")}; // TODO: replace this click handler
 
 // PREVIEW SECTION: Rendering a preview image
 const PreviewImageItem = (props) => {
@@ -91,10 +91,11 @@ const PreviewImageItem = (props) => {
     <Image 
       style={styles.itemImage}
       source={{uri: props.imageLink}}
+      resizeMode='cover'
     />
   );
 };
-const renderPreviewImg = ({ item }) => <PreviewImageItem imageLink={item.link} />;
+const renderPreviewImg = ({ item }) => <PreviewImageItem imageLink={item} />;
 
 // RATINGS & REVIEWS SECTION: Rendering a rating category (overall, engagement, or ease of use)
 const RatingCategory = (props) => {
@@ -124,12 +125,12 @@ const ReviewItem = (props) => {
     <View style={styles.itemReview}>
       <View style={styles.reviewTitleDate}>
         <Text ellipsizeMode='tail' numberOfLines={1} style={{flex: 1, fontSize: 16, fontWeight: 'bold'}}>{props.title}</Text>
-        <Text style={{textAlign: 'right', marginLeft: 5, fontSize: 16, color: '#888888'}}>{props.date}</Text>
+        <Text style={{textAlign: 'right', marginLeft: 5, fontSize: 16, color: '#888888'}}>{props.createdAt}</Text>
       </View>
       <Rating
         type="star"
         fractions={1}
-        startingValue={props.ratingOverall}
+        startingValue={props.rating}
         readonly
         tintColor="#E3E3E3"
         imageSize={20}
@@ -145,7 +146,7 @@ const ReviewItem = (props) => {
       <Text ellipsizeMode='tail' numberOfLines={3} style={{fontSize: 16}}>{props.myTake}</Text>
       <Pressable
         onPress={() => {
-          navigation.navigate("ReviewDetails", { review: props }); // Todo: change this to navigate to review details screen
+          navigation.navigate("ReviewDetails", { review: props });
         }}
       >
         <Text style={{fontSize: 16, color: "#E3A444", textAlign: 'right', marginVertical: 5}}>View More</Text>
@@ -155,82 +156,91 @@ const ReviewItem = (props) => {
 };
 const renderReview = ({ item }) => <ReviewItem 
   title={item.title} 
-  date={item.date} 
+  createdAt={item.createdAt} 
   user={item.user} 
+  usage={item.usage}
   myTake={item.myTake} 
-  ratingOverall={item.ratingOverall} 
+  rating={item.rating}
+  ratingEngagement={item.ratingEngagement}
+  ratingEase={item.ratingEase}
 />;
 
 // FINAL OUTPUT
 class AppDetailsInfo extends React.Component {
   render() {
-    return <SafeAreaView>
-      <ScrollView style={styles.scrollView}>
-      <View style={styles.basicInfo}>
-        <Image style={styles.logo} source={{uri: APP_DATA.logo}} />
-        <View style={styles.nameSloganButton}>
-          <Text style={styles.appName}>{this.props.appName}</Text>
-          <Text style={styles.appSlogan}>{APP_DATA.slogan}</Text>
-          <Pressable style={styles.addRemoveButton} onPress={addToMyGuides}>
-            <Text style={styles.buttonText}>Add to My Guides</Text>
-          </Pressable>
+    let appInfo;
+    if (this.props.app != null) {
+      appInfo = <SafeAreaView>
+        <ScrollView style={styles.scrollView}>
+        <View style={styles.basicInfo}>
+          <Image style={styles.logo} source={{uri: this.props.app.logo}} />
+          <View style={styles.nameSloganButton}>
+            <Text style={styles.appName}>{this.props.app.name}</Text>
+            <Text style={styles.appSlogan}>{this.props.app.slogan}</Text>
+            <Pressable style={styles.addRemoveButton} onPress={addToMyGuides}>
+              <Text style={styles.buttonText}>Add to My Guides</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
-      <View style={styles.tags}>
-        {APP_DATA.tags.map((item, index) => {
-          return (
-            <View style={{marginHorizontal: 3, marginTop: 3}}>
-              <Chip
-                key={index}
-                height={30} // Give desirable height to chip
-                textStyle={{ color:'white', fontSize: 16 }} // Label properties
-                style={{ backgroundColor: '#C4C4C4' }} // Display diff color BG
-              >
-                {item}
-              </Chip>
-            </View>
-          );
-        })}
-      </View>
-      <View style={{borderBottomColor: '#C4C4C4', borderBottomWidth: 1, marginLeft: 15}} />
-      <View style={styles.preview}>
-        <Text style={styles.sectionTitleText}>Preview</Text>
-        <FlatList
-          style={{marginLeft: 15}}
-          horizontal
-          data={APP_DATA.previewImages}
-          renderItem={renderPreviewImg}
-          keyExtractor={(previewImage) => previewImage.id}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-      <View style={{borderBottomColor: '#C4C4C4', borderBottomWidth: 1, marginLeft: 15}} />
-      <View style={styles.summary}>
-        <Text style={styles.sectionTitleText}>Summary</Text>
-        <Text style={styles.summaryText}>{APP_DATA.summary}</Text>
-      </View>
-      <View style={{borderBottomColor: '#C4C4C4', borderBottomWidth: 1, marginLeft: 15}} />
-      <View style={styles.ratingsAndReviews}>
-        <View style={styles.ratingsAndReviewsHeader}>
-          <Text style={styles.sectionTitleText}>Ratings &amp; Reviews</Text>
-          <Pressable style={styles.writeReviewButton} onPress={writeReviewClicked}>
-            <Text style={styles.buttonText}>WRITE A REVIEW</Text>
-          </Pressable>
+        <View style={styles.tags}>
+          {APP_DATA.tags.map((item, index) => {
+            return (
+              <View style={{marginHorizontal: 3, marginTop: 3}}>
+                <Chip
+                  key={index}
+                  height={30} // Give desirable height to chip
+                  textStyle={{ color:'white', fontSize: 16 }} // Label properties
+                  style={{ backgroundColor: '#C4C4C4' }} // Display diff color BG
+                >
+                  {item}
+                </Chip>
+              </View>
+            );
+          })}
         </View>
-        <RatingCategory category="Overall rating" value={APP_DATA.ratingOverall.toFixed(1)} />
-        <RatingCategory category="Student engagement" value={APP_DATA.ratingEngagement.toFixed(1)} />
-        <RatingCategory category="Ease of use" value={APP_DATA.ratingEase.toFixed(1)} />
-        <FlatList
-          style={{marginLeft: 15}}
-          horizontal
-          data={APP_DATA.reviews}
-          renderItem={renderReview}
-          keyExtractor={(review) => review.id}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-      </ScrollView>
-    </SafeAreaView>
+        <View style={{borderBottomColor: '#C4C4C4', borderBottomWidth: 1, marginLeft: 15}} />
+        <View style={styles.preview}>
+          <Text style={styles.sectionTitleText}>Preview</Text>
+          <FlatList
+            style={{marginLeft: 15}}
+            horizontal
+            data={this.props.app.screenshots}
+            renderItem={renderPreviewImg}
+            keyExtractor={(_item, index) => index.toString()}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+        <View style={{borderBottomColor: '#C4C4C4', borderBottomWidth: 1, marginLeft: 15, marginBottom: 10}} />
+        <View style={styles.description}>
+          <Text style={styles.sectionTitleText}>Summary</Text>
+          <Text style={styles.summaryText}>{this.props.app.description}</Text>
+        </View>
+        <View style={{borderBottomColor: '#C4C4C4', borderBottomWidth: 1, marginLeft: 15, marginTop: 10}} />
+        <View style={styles.ratingsAndReviews}>
+          <View style={styles.ratingsAndReviewsHeader}>
+            <Text style={styles.sectionTitleText}>Ratings &amp; Reviews</Text>
+            <Pressable style={styles.writeReviewButton} onPress={writeReviewClicked}>
+              <Text style={styles.buttonText}>WRITE A REVIEW</Text>
+            </Pressable>
+          </View>
+          <RatingCategory category="Overall rating" value={this.props.app.rating.toFixed(1)} />
+          <RatingCategory category="Student engagement" value={this.props.app.ratingEngagement.toFixed(1)} />
+          <RatingCategory category="Ease of use" value={this.props.app.ratingEase.toFixed(1)} />
+          <FlatList
+            style={{marginLeft: 15}}
+            horizontal
+            data={APP_DATA.reviews} // TODO: Replace this with an array of reviews from firestore
+            renderItem={renderReview}
+            keyExtractor={(review) => review.id}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+        </ScrollView>
+      </SafeAreaView>
+    } else {
+      appInfo = <View/>;
+    }
+    return appInfo;
   }
 }
 
@@ -291,11 +301,10 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 10,
     marginBottom: 15,
-    height: 180
+    height: 360
   },
   summary: {
-    flex: 1,
-    marginVertical: 15,
+    flex: 1
   },
   summaryText: {
     fontSize: 16,
@@ -303,7 +312,7 @@ const styles = StyleSheet.create({
   },
   ratingsAndReviews: {
     flex: 1,
-    marginTop: 15,
+    marginTop: 10,
     height: 340
   },
   reviewTitleDate: {
@@ -328,7 +337,6 @@ const styles = StyleSheet.create({
     flex: 1
   },
   logo: {
-    backgroundColor: "#E3A444",
     width: 100,
     height: 100,
     borderRadius: 20,
@@ -337,10 +345,11 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     marginRight: 10,
-    backgroundColor: "#E3A444",
-    width: 240,
+    width: 200,
     height: "100%",
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#C4C4C4'
   },
   itemReview: {
     flex: 1,

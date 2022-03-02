@@ -12,13 +12,14 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Rating } from 'react-native-elements';
+import { connectFirestoreEmulator } from "firebase/firestore";
 
-/* -------- Begin dummy data. TODO: replace with firestore data. -------- */
+/* -------- Begin dummy data for testing purposes. Won't use in actual app. -------- */
 const REVIEW_DATA = { 
     id: "2",
     title: "I really recommend it! It’s awesomely amazing!",
-    date: "Apr 13",
-    ratingOverall: 5.0,
+    createdAt: new Date().toLocaleDateString("en-US"),
+    rating: 5.0,
     ratingEngagement: 5.0,
     ratingEase: 4.6,
     user: 
@@ -37,7 +38,7 @@ const REVIEW_DATA = {
             + "may have some technical difficulties from time to time but it’s all right we all have technical difficulties! "
             + "Zoom works with Internet as well so you need Wi-Fi and Internet to do Zoom."
 }
-/* -------- End dummy data. TODO: replace with firestore data. -------- */
+/* -------- End dummy data for testing purposes. Won't use in actual app. -------- */
 
 // Rendering a rating category (overall, engagement, or ease of use)
 const RatingCategory = (props) => {
@@ -63,6 +64,7 @@ const RatingCategory = (props) => {
 
 // FINAL OUTPUT
 export default function ReviewDetails({ route }) {
+  const { review } = route.params;
   const navigation = useNavigation();
 
   return (
@@ -82,24 +84,24 @@ export default function ReviewDetails({ route }) {
       <ScrollView style={styles.scrollView}>
         <View style={styles.review}>
             <View style={styles.titleDate}>
-                <Text style={{fontSize: 16, fontWeight: 'bold', flex: 1}}>{REVIEW_DATA.title}</Text>
-                <Text style={{fontSize: 16, color: '#888888', textAlign: 'right'}}>{REVIEW_DATA.date}</Text>
+                <Text style={{fontSize: 16, fontWeight: 'bold', flex: 1}}>{review.title}</Text>
+                <Text style={{fontSize: 16, color: '#888888', textAlign: 'right'}}>{review.createdAt}</Text>
             </View>
             <View style={styles.user}>
                 <Image style={styles.userPicture} source={{uri: "https://picsum.photos/50/50"}}/>
                 <View style={styles.userNameBio}>
-                    <Text style={{fontSize: 16, fontWeight: 'bold', marginLeft: 10}}>{REVIEW_DATA.user.name}</Text>
-                    <Text style={{fontSize: 16, color: '#888888', marginLeft: 10}}>{REVIEW_DATA.user.gradeLevels[0]} {REVIEW_DATA.user.subjects[0]} teacher</Text>
+                    <Text style={{fontSize: 16, fontWeight: 'bold', marginLeft: 10}}>{review.user.name}</Text>
+                    <Text style={{fontSize: 16, color: '#888888', marginLeft: 10}}>{review.user.gradeLevels[0]} {review.user.subjects[0]} teacher</Text>
                 </View>
             </View>
             <Text style={styles.sectionTitleText}>Ratings</Text>
-            <RatingCategory category="Overall rating" value={REVIEW_DATA.ratingOverall.toFixed(1)} />
-            <RatingCategory category="Student engagement" value={REVIEW_DATA.ratingEngagement.toFixed(1)} />
-            <RatingCategory category="Ease of use" value={REVIEW_DATA.ratingEase.toFixed(1)} />
+            <RatingCategory category="Overall rating" value={review.rating.toFixed(1)} />
+            <RatingCategory category="Student engagement" value={review.ratingEngagement.toFixed(1)} />
+            <RatingCategory category="Ease of use" value={review.ratingEase.toFixed(1)} />
             <Text style={styles.sectionTitleText}>How I use it</Text>
-            <Text style={styles.reviewText}>{REVIEW_DATA.usage}</Text>
+            <Text style={styles.reviewText}>{review.usage}</Text>
             <Text style={styles.sectionTitleText}>My take</Text>
-            <Text style={styles.reviewText}>{REVIEW_DATA.myTake}</Text>
+            <Text style={styles.reviewText}>{review.myTake}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
