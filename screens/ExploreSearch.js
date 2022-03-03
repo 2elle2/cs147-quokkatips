@@ -113,33 +113,13 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
   </View>
 );
 
-export default function ExploreSearch({ route }) {
+export default function ExploreSearch({ route, user, guides }) {
   const navigation = useNavigation();
   const [firestore_data, setData] = useState([]); // Save list of guides from firestore
   // in local state
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
-  useEffect(() => getGuides(), []); // Pass in empty array so it will only run once on component mount
 
-  /**
-   * Helper Function: getGuides
-   *
-   * Callback function for useEffect. Retrieves all documents in the "guides" collection.
-   * The array of guides is saved to the state variable "firestore_data";
-   */
-  const getGuides = async () => {
-    const querySnapshot = await getDocs(collection(db, "guides"));
-    const guides = querySnapshot.docs.map((doc) => {
-      let guide = doc.data();
-      guide.id = doc.id; // Set the id prop on the guide object
-      return guide;
-    });
-    console.log(guides);
-    setData(guides);
-  };
-
-  const { apps } = route.params;
-  console.log("apps", apps);
   return (
     // "Sort by..." picker
     // List of the user's guides
@@ -163,7 +143,7 @@ export default function ExploreSearch({ route }) {
       </View>
       <GridList
         searchPhrase={searchPhrase}
-        data={apps}
+        data={guides}
         setClicked={setClicked}
       />
     </SafeAreaView>

@@ -75,7 +75,6 @@ const Item = (props) => {
     </Pressable>
   );
 };
-
 const renderItem = ({ item }) => <Item app={item} />;
 
 const CategoryCarrousel = ({ category, navigation, data }) => (
@@ -93,7 +92,7 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
 
     <FlatList
       horizontal
-      data={data}
+      data={data.slice(0, 3)}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       showsHorizontalScrollIndicator={false}
@@ -104,27 +103,8 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
 export default function ExploreScreen(props) {
   // console.log(props, "ExploreScreen");
   const navigation = useNavigation();
-  const [firestore_data, setData] = useState([]); // Save list of guides from firestore
-  // in local state
-
-  useEffect(() => getGuides(), []); // Pass in empty array so it will only run once on component mount
-
-  /**
-   * Helper Function: getGuides
-   *
-   * Callback function for useEffect. Retrieves all documents in the "guides" collection.
-   * The array of guides is saved to the state variable "firestore_data";
-   */
-  const getGuides = async () => {
-    const querySnapshot = await getDocs(collection(db, "guides"));
-    const guides = querySnapshot.docs.map((doc) => {
-      let guide = doc.data();
-      guide.id = doc.id; // Set the id prop on the guide object
-      return guide;
-    });
-    // console.log(guides);
-    setData(guides);
-  };
+  console.log("props", props);
+  console.log("USER", props.user);
 
   return (
     // "Sort by..." picker
@@ -138,7 +118,7 @@ export default function ExploreScreen(props) {
       </View>
       <Pressable
         onPress={() => {
-          navigation.navigate("ExploreSearch", { apps: firestore_data });
+          navigation.navigate("ExploreSearch", { apps: props.guides });
         }}
         style={styles.searchBarContainer}
       >
@@ -161,18 +141,33 @@ export default function ExploreScreen(props) {
         <CategoryCarrousel
           category="Recommended"
           navigation={navigation}
-          data={firestore_data}
+          data={props.guides}
         />
         <CategoryCarrousel
           category="Mathematics"
           navigation={navigation}
-          data={firestore_data}
+          data={props.guides.filter(function (app) {
+            return app.tags.includes("Mathematics");
+          })}
         />
         <CategoryCarrousel
-          category="Trending"
+          category="Communication"
           navigation={navigation}
-          data={firestore_data}
+          data={props.guides.filter(function (app) {
+            return app.tags.includes("Communication");
+          })}
         />
+
+        {props.user.subjects.map((tag, index) => (
+          <CategoryCarrousel
+            category={tag}
+            navigation={navigation}
+            key={index}
+            data={props.guides.filter(function (app) {
+              return app.tags.includes(tag);
+            })}
+          />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );

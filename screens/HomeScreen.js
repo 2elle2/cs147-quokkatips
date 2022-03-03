@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import { useState } from "react";
 
 import MyGuidesScreen from "./MyGuidesScreen";
 import AskQuokkaScreen from "./AskQuokkaScreen";
@@ -12,6 +13,8 @@ import Colors from "../Themes/colors";
 import ExploreScreen from "./ExploreScreen";
 
 export default function HomeScreen(props) {
+  const [user, setUser] = useState({}); // Use state to pass user object between components
+  const [guides, setGuides] = useState([]);
   console.log(props, "homescreen");
   /**
    * Helper Function: getGuides
@@ -27,6 +30,7 @@ export default function HomeScreen(props) {
       return guide;
     });
     // console.log(guides, "HomeScreen.js");
+    setGuides(guides);
     props.setGuides(guides);
   };
 
@@ -37,6 +41,7 @@ export default function HomeScreen(props) {
       let user = docSnap.data();
       user.id = docSnap.id; // Add the id prop to the user object
       console.log(user, "HomeScreen.js"); // Can get user data and set in state
+      setUser(user);
       props.setUser(user); // Saves user object in parent state
     }
   };
@@ -62,17 +67,17 @@ export default function HomeScreen(props) {
   return (
     <Tab.Navigator
       // Make 'My Guides' the initial tab
-      initialRouteName="My Guides"
+      initialRouteName="MyGuides"
       // Customize icons and appearance
       screenOptions={({ route }) => ({
         tabBarStyle: { height: 84 },
         tabBarIcon: ({ focused, color, size }) => {
           let icon;
           switch (route.name) {
-            case "My Guides":
+            case "MyGuides":
               icon = focused ? "book" : "book-outline";
               break;
-            case "Explore":
+            case "ExploreScreen":
               icon = focused ? "compass" : "compass-outline";
               break;
             case "Ask Quokka":
@@ -87,16 +92,13 @@ export default function HomeScreen(props) {
         tabBarInactiveTintColor: Colors.darkgray,
       })}
     >
-      <Tab.Screen
-        name="Explore"
-        component={ExploreScreen}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="My Guides"
-        component={MyGuidesScreen}
-        options={{ headerShown: false }}
-      />
+      <Tab.Screen name="ExploreScreen" options={{ headerShown: false }}>
+        {(props) => <ExploreScreen {...props} user={user} guides={guides} />}
+      </Tab.Screen>
+      <Tab.Screen name="MyGuides" options={{ headerShown: false }}>
+        {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
+      </Tab.Screen>
+
       <Tab.Screen name="Ask Quokka" component={AskQuokkaScreen} />
     </Tab.Navigator>
   );

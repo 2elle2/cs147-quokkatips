@@ -58,23 +58,14 @@ export default function App() {
           component={SignUpScreenTwo}
           options={{ headerShown: false }}
         />
-
-        {/* <Stack.Screen
+        <Stack.Screen
           name="MyGuides"
-          component={MyGuidesScreen}
           options={{
-            headerRight: () => (
-              <Button
-                onPress={() => {
-                  // auth().signOut()
-                  alert("TODO: implement log out");
-                }}
-                title="Log Out"
-                color={Colors.yellow}
-              />
-            ),
+            headerShown: false,
           }}
-        /> */}
+        >
+          {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
+        </Stack.Screen>
         <Stack.Screen name="Home" options={{ headerShown: false }}>
           {(props) => (
             <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />
@@ -88,15 +79,15 @@ export default function App() {
         <Stack.Screen name="AppDetails" options={{ headerShown: false }}>
           {(props) => <AppDetails {...props} user={user} />}
         </Stack.Screen>
-        <Stack.Screen name="Explore" options={{ headerShown: false }}>
-          {(props) => <ExploreScreen {...props} user={user} />}
+        <Stack.Screen name="ExploreStack" options={{ headerShown: false }}>
+          {(props) => <ExploreStack {...props} user={user} guides={guides} />}
         </Stack.Screen>
 
         <Stack.Screen // THIS BLOCK DOES NOTHING BTW LOL :)))))) (gotta not use ExploreStack)
-          name="ExploreScreen"
+          name="ExploreSearch"
           options={{ headerShown: false, cardStyleInterpolator: forFade }}
         >
-          {(props) => <ExploreScreen {...props} user={user} guides={guides} />}
+          {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
         </Stack.Screen>
         <Stack.Screen name="ViewAll" component={ViewAll} />
       </Stack.Navigator>

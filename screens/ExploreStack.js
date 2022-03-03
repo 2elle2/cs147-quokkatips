@@ -44,8 +44,9 @@ const Item = ({ title }) => (
   </View>
 );
 
-export default function ExploreStack() {
+export default function ExploreStack({ user, guides }) {
   const renderItem = ({ item }) => <Item title={item.title} />;
+  console.log("PROPS", guides);
 
   return (
     <Stack.Navigator
@@ -53,7 +54,12 @@ export default function ExploreStack() {
         headerShown: false,
       })}
     >
-      <Stack.Screen name="ExploreScreen" component={ExploreScreen} />
+      <Stack.Screen // THIS BLOCK DOES NOTHING BTW LOL :)))))) (gotta not use ExploreStack)
+        name="ExploreScreen"
+        options={{ headerShown: false }}
+      >
+        {(props) => <ExploreScreen {...props} user={user} guides={guides} />}
+      </Stack.Screen>{" "}
       <Stack.Screen name="ViewAll" component={ViewAll} />
     </Stack.Navigator>
   );

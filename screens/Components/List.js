@@ -8,18 +8,29 @@ import {
   Image,
   FlatList,
   SafeAreaView,
+  Pressable,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import Colors from "../../Themes/colors";
 import { serverTimestamp } from "firebase/firestore";
 
 // defining the item that will be rendered in the Flat List
-const Item = ({ title, image }) => (
-  <View style={styles.itemStyle}>
-    <Image style={styles.logoStyle} source={{ uri: image }} />
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+const Item = (props) => {
+  const navigation = useNavigation();
+  return (
+    <Pressable
+      onPress={() => {
+        navigation.navigate("AppDetails", { app: props.app });
+      }}
+    >
+      <View style={styles.itemStyle}>
+        <Image style={styles.logoStyle} source={{ uri: props.app.logo }} />
+        <Text style={styles.title}>{props.app.name}</Text>
+      </View>
+    </Pressable>
+  );
+};
 
 // the filter
 const List = ({ searchPhrase, setClicked, data }) => {
@@ -33,7 +44,7 @@ const List = ({ searchPhrase, setClicked, data }) => {
   const renderItem = ({ item }) => {
     // when no input, show all
     if (searchPhrase === "") {
-      return <Item title={item.name} image={item.image} />;
+      return <Item app={item} />;
     }
     // filter of the name
     if (
@@ -106,5 +117,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     backgroundColor: Colors.darkpurple, //testing purposes
+    resizeMode: "cover",
   },
 });

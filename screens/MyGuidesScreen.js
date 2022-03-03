@@ -23,7 +23,7 @@ import List from "./Components/List";
 import SearchBar from "./Components/SearchBar";
 
 // export default function MyGuidesScreen() {
-const MyGuidesScreen = () => {
+const MyGuidesScreen = ({ user, guides }) => {
   const DATA = [
     { id: "1", title: "Desmos", image: "https://syracuseuniversity.zoom.us/" },
     { id: "2", title: "Canvas", image: "https://syracuseuniversity.zoom.us/" },
@@ -76,6 +76,7 @@ const MyGuidesScreen = () => {
 
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
+  console.log(guides);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -92,7 +93,15 @@ const MyGuidesScreen = () => {
         setClicked={setClicked}
         placeHolderText={"Search my saved guides..."}
       />
-      {<List searchPhrase={searchPhrase} data={DATA} setClicked={setClicked} />}
+      {
+        <List
+          searchPhrase={searchPhrase}
+          data={guides.filter(function (app) {
+            return user.guides.includes(app.id);
+          })}
+          setClicked={setClicked}
+        />
+      }
     </SafeAreaView>
   );
 };
