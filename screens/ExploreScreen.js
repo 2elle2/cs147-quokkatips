@@ -29,20 +29,6 @@ import {
 import { FirebaseError } from "firebase/app";
 import { AuthErrorCodes } from "firebase/auth";
 
-const DATA = [
-  { id: "1", title: "Desmos" },
-  { id: "2", title: "Canvas" },
-  { id: "3", title: "QuokkaTips" },
-  { id: "4", title: "Google Docs" },
-  { id: "5", title: "Slack" },
-  { id: "6", title: "Google Sheets" },
-  { id: "7", title: "Google Slides" },
-  { id: "8", title: "Microsoft PowerPoint" },
-  { id: "9", title: "Microsoft Word" },
-  { id: "10", title: "Microsoft Excel" },
-  { id: "11", title: "Microsoft Teams" },
-];
-
 const Item = (props) => {
   const navigation = useNavigation();
   let speedometer;
@@ -115,7 +101,8 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
   </View>
 );
 
-export default function ExploreScreen() {
+export default function ExploreScreen(props) {
+  // console.log(props, "ExploreScreen");
   const navigation = useNavigation();
   const [firestore_data, setData] = useState([]); // Save list of guides from firestore
   // in local state
@@ -135,7 +122,7 @@ export default function ExploreScreen() {
       guide.id = doc.id; // Set the id prop on the guide object
       return guide;
     });
-    console.log(guides);
+    // console.log(guides);
     setData(guides);
   };
 

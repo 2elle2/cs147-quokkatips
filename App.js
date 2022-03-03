@@ -27,6 +27,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [user, setUser] = useState({}); // Use state to pass user object between components
+  const [guides, setGuides] = useState([]);
   console.log(user, "App.js");
 
   const forFade = ({ current }) => ({
@@ -75,7 +76,9 @@ export default function App() {
           }}
         /> */}
         <Stack.Screen name="Home" options={{ headerShown: false }}>
-          {(props) => <HomeScreen {...props} setUser={setUser} />}
+          {(props) => (
+            <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />
+          )}
         </Stack.Screen>
         <Stack.Screen
           name="ReviewDetails"
@@ -88,16 +91,13 @@ export default function App() {
         <Stack.Screen name="Explore" options={{ headerShown: false }}>
           {(props) => <ExploreScreen {...props} user={user} />}
         </Stack.Screen>
-        <Stack.Screen
-          name="ExploreSearch"
-          options={{
-            headerShown: false,
-            cardStyleInterpolator: forFade,
-          }}
+
+        <Stack.Screen // THIS BLOCK DOES NOTHING BTW LOL :)))))) (gotta not use ExploreStack)
+          name="ExploreScreen"
+          options={{ headerShown: false, cardStyleInterpolator: forFade }}
         >
-          {(props) => <ExploreSearch {...props} user={user} />}
+          {(props) => <ExploreScreen {...props} user={user} guides={guides} />}
         </Stack.Screen>
-        <Stack.Screen name="ExploreScreen" component={ExploreScreen} />
         <Stack.Screen name="ViewAll" component={ViewAll} />
       </Stack.Navigator>
     </NavigationContainer>
