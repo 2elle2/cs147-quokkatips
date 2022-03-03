@@ -18,6 +18,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
+
 import Colors from "../Themes/colors";
 import List from "./Components/List";
 import SearchBar from "./Components/SearchBar";
@@ -73,6 +75,7 @@ const MyGuidesScreen = ({ user, guides }) => {
   // const DATA = ['Desmos', 'Canvas', 'QuokkaTips', 'Google Docs', 'Slack'];
 
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
@@ -100,6 +103,7 @@ const MyGuidesScreen = ({ user, guides }) => {
             return user.guides.includes(app.id);
           })}
           setClicked={setClicked}
+          //reRenderMyGuides={rerenderParentCallback}
         />
       }
     </SafeAreaView>

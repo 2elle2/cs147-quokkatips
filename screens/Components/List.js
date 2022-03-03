@@ -18,10 +18,14 @@ import { serverTimestamp } from "firebase/firestore";
 // defining the item that will be rendered in the Flat List
 const Item = (props) => {
   const navigation = useNavigation();
+  console.log("item props", props);
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate("AppDetails", { app: props.app });
+        navigation.navigate("AppDetails", {
+          app: props.app,
+          reRenderMyGuides: props.reRenderMyGuides,
+        });
       }}
     >
       <View style={styles.itemStyle}>
@@ -33,7 +37,8 @@ const Item = (props) => {
 };
 
 // the filter
-const List = ({ searchPhrase, setClicked, data }) => {
+const List = ({ searchPhrase, setClicked, data, reRenderMyGuides }) => {
+  console.log("rerender", reRenderMyGuides);
   let newData = data;
   if (searchPhrase) {
     newData = data.filter((item) => {
@@ -52,7 +57,7 @@ const List = ({ searchPhrase, setClicked, data }) => {
         .toUpperCase()
         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))
     ) {
-      return <Item title={item.name} image={item.image} />;
+      return <Item app={item} />;
     }
   };
 

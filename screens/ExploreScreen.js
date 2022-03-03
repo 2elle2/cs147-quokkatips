@@ -92,7 +92,7 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
 
     <FlatList
       horizontal
-      data={data.slice(0, 3)}
+      data={data.slice(0, 5)}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       showsHorizontalScrollIndicator={false}
@@ -103,6 +103,7 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
 export default function ExploreScreen(props) {
   // console.log(props, "ExploreScreen");
   const navigation = useNavigation();
+
   console.log("props", props);
   console.log("USER", props.user);
 

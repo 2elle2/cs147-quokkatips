@@ -66,7 +66,10 @@ export default function App() {
         >
           {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
         </Stack.Screen>
-        <Stack.Screen name="Home" options={{ headerShown: false }}>
+        <Stack.Screen
+          name="Home"
+          options={{ headerShown: false, cardStyleInterpolator: forFade }}
+        >
           {(props) => (
             <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />
           )}

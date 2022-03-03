@@ -64,6 +64,11 @@ export default function HomeScreen(props) {
 
   // Bottom tab navigator
   const Tab = createBottomTabNavigator();
+  const forFade = ({ current }) => ({
+    cardStyle: {
+      opacity: current.progress,
+    },
+  });
   return (
     <Tab.Navigator
       // Make 'My Guides' the initial tab
@@ -92,10 +97,16 @@ export default function HomeScreen(props) {
         tabBarInactiveTintColor: Colors.darkgray,
       })}
     >
-      <Tab.Screen name="ExploreScreen" options={{ headerShown: false }}>
+      <Tab.Screen
+        name="ExploreScreen"
+        options={{ headerShown: false, cardStyleInterpolator: forFade }}
+      >
         {(props) => <ExploreScreen {...props} user={user} guides={guides} />}
       </Tab.Screen>
-      <Tab.Screen name="MyGuides" options={{ headerShown: false }}>
+      <Tab.Screen
+        name="MyGuides"
+        options={{ headerShown: false, cardStyleInterpolator: forFade }}
+      >
         {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
       </Tab.Screen>
 
