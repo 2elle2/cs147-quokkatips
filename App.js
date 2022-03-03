@@ -24,7 +24,7 @@ const Stack = createStackNavigator();
 export default function App() {
   const [user, setUser] = useState({}); // Use state to pass user object between components
   const [guides, setGuides] = useState([]);
-  console.log(user, "App.js");
+  // console.log(user, "App.js");
   // console.log(guides, "App.js");
   return (
     <NavigationContainer>

@@ -12,7 +12,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Colors from '../Themes/colors';
 
 export default function HomeScreen(props) {
-  console.log(props, "homescreen");
+  // console.log(props, "homescreen");
   /**
    * Helper Function: getGuides
    *
@@ -36,7 +36,7 @@ export default function HomeScreen(props) {
     if (docSnap.exists) {
       let user = docSnap.data();
       user.id = docSnap.id; // Add the id prop to the user object
-      console.log(user, "HomeScreen.js"); // Can get user data and set in state
+      // console.log(user, "HomeScreen.js"); // Can get user data and set in state
       props.setUser(user); // Saves user object in parent state
     }
   };
@@ -49,7 +49,7 @@ export default function HomeScreen(props) {
       // User is signed in, see docs for list of available properties
       // https://firebase.google.com/docs/refernce/js/firebase.User
 
-      console.log(user);
+      // console.log(user);
       getUserInfo(user);
       getGuides();
     } else {
