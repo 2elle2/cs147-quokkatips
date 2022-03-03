@@ -9,11 +9,9 @@ import { Octicons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { Feather, Entypo } from "@expo/vector-icons";
-
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../Themes/colors";
-import List from "./Components/List";
+import GridList from "./Components/GridList";
 import SearchBar from "./Components/SearchBar";
 import {
   FlatList,
@@ -28,6 +26,20 @@ import {
 
 import { FirebaseError } from "firebase/app";
 import { AuthErrorCodes } from "firebase/auth";
+
+const DATA = [
+  { id: "1", title: "Desmos" },
+  { id: "2", title: "Canvas" },
+  { id: "3", title: "QuokkaTips" },
+  { id: "4", title: "Google Docs" },
+  { id: "5", title: "Slack" },
+  { id: "6", title: "Google Sheets" },
+  { id: "7", title: "Google Slides" },
+  { id: "8", title: "Microsoft PowerPoint" },
+  { id: "9", title: "Microsoft Word" },
+  { id: "10", title: "Microsoft Excel" },
+  { id: "11", title: "Microsoft Teams" },
+];
 
 const Item = (props) => {
   const navigation = useNavigation();
@@ -75,6 +87,7 @@ const Item = (props) => {
     </Pressable>
   );
 };
+
 const renderItem = ({ item }) => <Item app={item} />;
 
 const CategoryCarrousel = ({ category, navigation, data }) => (
@@ -92,7 +105,7 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
 
     <FlatList
       horizontal
-      data={data.slice(0, 5)}
+      data={data}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       showsHorizontalScrollIndicator={false}
@@ -100,76 +113,39 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
   </View>
 );
 
-export default function ExploreScreen(props) {
-  // console.log(props, "ExploreScreen");
+export default function ExploreSearch({ route, user, guides }) {
   const navigation = useNavigation();
-
-  console.log("props", props);
-  console.log("USER", props.user);
+  const [firestore_data, setData] = useState([]); // Save list of guides from firestore
+  // in local state
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const [clicked, setClicked] = useState(false);
 
   return (
     // "Sort by..." picker
     // List of the user's guides
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Pressable style={styles.hamburgerIcon}>
-          <Ionicons name="ios-menu-outline" size={40} color="#E3A444" />
-        </Pressable>
-        <Text style={styles.categoryText}>Explore</Text>
+        <Text style={styles.headerText}>Explore</Text>
       </View>
-      <Pressable
-        onPress={() => {
-          navigation.navigate("ExploreSearch", { apps: props.guides });
-        }}
-        style={styles.searchBarContainer}
-      >
+      <View style={styles.searchBarContainer}>
         <View style={styles.searchBar}>
-          {/* search Icon */}
-          <Feather
-            name="search"
-            size={20}
-            color={Colors.darkgray}
-            style={{ marginLeft: 1 }}
+          <SearchBar
+            searchPhrase={searchPhrase}
+            setSearchPhrase={setSearchPhrase}
+            clicked={clicked}
+            setClicked={setClicked}
+            placeHolderText="Search apps..."
           />
-          {/* Input field */}
-          <Text style={styles.searchText}>Search apps...</Text>
         </View>
-      </Pressable>
-      <ScrollView
-        style={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <CategoryCarrousel
-          category="Recommended"
-          navigation={navigation}
-          data={props.guides}
-        />
-        <CategoryCarrousel
-          category="Mathematics"
-          navigation={navigation}
-          data={props.guides.filter(function (app) {
-            return app.tags.includes("Mathematics");
-          })}
-        />
-        <CategoryCarrousel
-          category="Communication"
-          navigation={navigation}
-          data={props.guides.filter(function (app) {
-            return app.tags.includes("Communication");
-          })}
-        />
-
-        {props.user.subjects.map((tag, index) => (
-          <CategoryCarrousel
-            category={tag}
-            navigation={navigation}
-            key={index}
-            data={props.guides.filter(function (app) {
-              return app.tags.includes(tag);
-            })}
-          />
-        ))}
-      </ScrollView>
+        <Pressable onPress={() => navigation.goBack()}>
+          <Text style={styles.cancelButton}>Cancel</Text>
+        </Pressable>
+      </View>
+      <GridList
+        searchPhrase={searchPhrase}
+        data={guides}
+        setClicked={setClicked}
+      />
     </SafeAreaView>
   );
 }
@@ -193,44 +169,41 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     alignSelf: "center",
   },
-  categoryText: {
+  headerText: {
     fontSize: 22,
     fontWeight: "700",
   },
-  hamburgerIcon: {
+  backButton: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     position: "absolute",
     left: 0,
   },
-  scrollContainer: {
-    marginTop: 10,
-  },
   searchBarContainer: {
-    marginTop: 10,
-    marginLeft: 24,
-    marginRight: 24,
-    justifyContent: "flex-start",
-    alignItems: "center",
+    display: "flex",
     flexDirection: "row",
+    alignItems: "center",
   },
   searchBar: {
-    padding: 10,
+    display: "flex",
     flexDirection: "row",
-    width: "100%",
-    backgroundColor: Colors.white,
-    borderRadius: 15,
-    borderWidth: 1.5,
-    borderColor: Colors.gray,
+    width: "85%",
     alignItems: "center",
-    justifyContent: "space-evenly",
+  },
+  listContainer: {
+    marginTop: 10,
+  },
+  cancelButton: {
+    color: Colors.yellow,
+    fontSize: 18,
+    paddingTop: 8,
+    marginLeft: -14,
   },
   searchText: {
     fontSize: 16,
     marginLeft: 10,
     width: "90%",
-    color: Colors.gray,
   },
   item: {
     height: "85%",

@@ -3,16 +3,19 @@ import { useEffect } from "react";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import { useState } from "react";
 
 import MyGuidesScreen from "./MyGuidesScreen";
-import ExploreStack from "./ExploreStack";
 import AskQuokkaScreen from "./AskQuokkaScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Colors from '../Themes/colors';
+import Colors from "../Themes/colors";
+import ExploreScreen from "./ExploreScreen";
 
 export default function HomeScreen(props) {
-  // console.log(props, "homescreen");
+  const [user, setUser] = useState({}); // Use state to pass user object between components
+  const [guides, setGuides] = useState([]);
+  console.log(props, "homescreen");
   /**
    * Helper Function: getGuides
    *
@@ -27,6 +30,7 @@ export default function HomeScreen(props) {
       return guide;
     });
     // console.log(guides, "HomeScreen.js");
+    setGuides(guides);
     props.setGuides(guides);
   };
 
@@ -36,6 +40,8 @@ export default function HomeScreen(props) {
     if (docSnap.exists) {
       let user = docSnap.data();
       user.id = docSnap.id; // Add the id prop to the user object
+      console.log(user, "HomeScreen.js"); // Can get user data and set in state
+      setUser(user);
       // console.log(user, "HomeScreen.js"); // Can get user data and set in state
       props.setUser(user); // Saves user object in parent state
     }
@@ -59,13 +65,18 @@ export default function HomeScreen(props) {
 
   // Bottom tab navigator
   const Tab = createBottomTabNavigator();
+  const forFade = ({ current }) => ({
+    cardStyle: {
+      opacity: current.progress,
+    },
+  });
   return (
     <Tab.Navigator
       // Make 'My Guides' the initial tab
       initialRouteName="My Guides"
       // Customize icons and appearance
       screenOptions={({ route }) => ({
-        tabBarStyle: {height: 84},
+        tabBarStyle: { height: 84 },
         tabBarIcon: ({ focused, color, size }) => {
           let icon;
           switch (route.name) {
@@ -89,24 +100,17 @@ export default function HomeScreen(props) {
     >
       <Tab.Screen
         name="Explore"
-        component={ExploreStack}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen 
-        name="My Guides" 
-        component={MyGuidesScreen} 
-        options={{
-          title: 'My Guides',
-          headerStyle: {
-            backgroundColor: Colors.darkpurple,
-          },
-          headerTintColor: Colors.white,
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontSize: 20,
-          },
-        }}
-      />
+        options={{ headerShown: false, cardStyleInterpolator: forFade }}
+      >
+        {(props) => <ExploreScreen {...props} user={user} guides={guides} />}
+      </Tab.Screen>
+      <Tab.Screen
+        name="My Guides"
+        options={{ headerShown: false, cardStyleInterpolator: forFade }}
+      >
+        {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
+      </Tab.Screen>
+
       <Tab.Screen name="Ask Quokka" component={AskQuokkaScreen} />
     </Tab.Navigator>
   );

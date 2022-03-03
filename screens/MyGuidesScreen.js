@@ -2,70 +2,116 @@
 // https://snack.expo.dev/embedded/@aboutreact/example-of-search-bar-in-react-native?iframeId=ewbug1wk1e&preview=true&platform=ios&theme=dark
 // https://reactnative-examples.com/show-divider-separator-between-flatlist-items-in-react-native/
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import RNPickerSelect from "react-native-picker-select";
-import { 
-  SafeAreaView, 
-  View, 
-  FlatList, 
-  StyleSheet, 
-  Text, 
+import {
+  SafeAreaView,
+  View,
+  FlatList,
+  StyleSheet,
+  Text,
   Image,
-  StatusBar, 
-  TextInput 
-} from 'react-native';
+  StatusBar,
+  TextInput,
+  Pressable,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+
 import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
+
 import Colors from "../Themes/colors";
 import List from "./Components/List";
 import SearchBar from "./Components/SearchBar";
 
 // export default function MyGuidesScreen() {
-const MyGuidesScreen = () => {
+const MyGuidesScreen = ({ user, guides }) => {
   const DATA = [
-    {id: '1', title: 'Desmos', image: 'https://syracuseuniversity.zoom.us/'},
-    {id: '2', title: 'Canvas', image: 'https://syracuseuniversity.zoom.us/'},
-    {id: '3', title: 'QuokkaTips', image: 'https://syracuseuniversity.zoom.us/'},
-    {id: '4', title: 'Google Docs', image: 'https://syracuseuniversity.zoom.us/'},
-    {id: '5', title: 'Slack', image: 'https://syracuseuniversity.zoom.us/'},
-    {id: '6', title: 'Google Sheets', image: 'https://syracuseuniversity.zoom.us/'},
-    {id: '7', title: 'Google Slides', image: 'https://syracuseuniversity.zoom.us/'},
-    {id: '8', title: 'Microsoft PowerPoint', image: 'https://syracuseuniversity.zoom.us/'},
-    {id: '9', title: 'Microsoft Word', image: 'https://syracuseuniversity.zoom.us/'},
-    {id: '10', title: 'Microsoft Excel', image: 'https://syracuseuniversity.zoom.us/'},
-    {id: '11', title: 'Microsoft Teams', image: 'https://syracuseuniversity.zoom.us/'},
+    { id: "1", title: "Desmos", image: "https://syracuseuniversity.zoom.us/" },
+    { id: "2", title: "Canvas", image: "https://syracuseuniversity.zoom.us/" },
+    {
+      id: "3",
+      title: "QuokkaTips",
+      image: "https://syracuseuniversity.zoom.us/",
+    },
+    {
+      id: "4",
+      title: "Google Docs",
+      image: "https://syracuseuniversity.zoom.us/",
+    },
+    { id: "5", title: "Slack", image: "https://syracuseuniversity.zoom.us/" },
+    {
+      id: "6",
+      title: "Google Sheets",
+      image: "https://syracuseuniversity.zoom.us/",
+    },
+    {
+      id: "7",
+      title: "Google Slides",
+      image: "https://syracuseuniversity.zoom.us/",
+    },
+    {
+      id: "8",
+      title: "Microsoft PowerPoint",
+      image: "https://syracuseuniversity.zoom.us/",
+    },
+    {
+      id: "9",
+      title: "Microsoft Word",
+      image: "https://syracuseuniversity.zoom.us/",
+    },
+    {
+      id: "10",
+      title: "Microsoft Excel",
+      image: "https://syracuseuniversity.zoom.us/",
+    },
+    {
+      id: "11",
+      title: "Microsoft Teams",
+      image: "https://syracuseuniversity.zoom.us/",
+    },
   ];
 
-// const DATA = ['Desmos', 'Canvas', 'QuokkaTips', 'Google Docs', 'Slack'];
+  // const DATA = ['Desmos', 'Canvas', 'QuokkaTips', 'Google Docs', 'Slack'];
 
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
-    const [searchPhrase, setSearchPhrase] = useState("");
-    const [clicked, setClicked] = useState(false);
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const [clicked, setClicked] = useState(false);
+  console.log(guides);
 
-    return (
-      <SafeAreaView style={styles.container}>
-        <SearchBar
-          searchPhrase={searchPhrase}
-          setSearchPhrase={setSearchPhrase}
-          clicked={clicked}
-          setClicked={setClicked}
-        />
-        { (
-  
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Pressable style={styles.hamburgerIcon}>
+          <Ionicons name="ios-menu-outline" size={40} color="#E3A444" />
+        </Pressable>
+        <Text style={styles.headerText}>My Guides</Text>
+      </View>
+      <SearchBar
+        searchPhrase={searchPhrase}
+        setSearchPhrase={setSearchPhrase}
+        clicked={clicked}
+        setClicked={setClicked}
+        placeHolderText={"Search my saved guides..."}
+      />
+      {
         <List
           searchPhrase={searchPhrase}
-          data={DATA}
+          data={guides.filter(function (app) {
+            return user.guides.includes(app.id);
+          })}
           setClicked={setClicked}
+          //reRenderMyGuides={rerenderParentCallback}
         />
-  
-        )}
-      </SafeAreaView>
-    );
-  };
+      }
+    </SafeAreaView>
+  );
+};
 
-  export default MyGuidesScreen;
+export default MyGuidesScreen;
 
-    
 //     return (
 //         // List of the user's guides
 //         <SafeAreaView style={styles.container}>
@@ -83,9 +129,8 @@ const MyGuidesScreen = () => {
 //             })}  */}
 //           </View>
 
-
 //           {/* "Sort by..." picker */}
-//           <RNPickerSelect 
+//           <RNPickerSelect
 //               onValueChange={(value) => console.log(value)}
 //               placeholder={{label: "Sort by...", value: null, color: 'gray'}}
 //               items={[
@@ -100,9 +145,9 @@ const MyGuidesScreen = () => {
 //               keyExtractor={item => item.id}
 //               ItemSeparatorComponent={ItemSeparatorView}
 //               // renderItem={ItemView}
-//               renderItem={({item}) => 
-//                 <ItemRender 
-//                   title={item.title} 
+//               renderItem={({item}) =>
+//                 <ItemRender
+//                   title={item.title}
 //                   image={item.image}
 //                 />
 //               }
@@ -120,8 +165,6 @@ const styles = StyleSheet.create({
     // minHeight: 300,
   },
 
-
-
   // item: {
   //   backgroundColor: 'white',
   //   padding: 20,
@@ -136,11 +179,30 @@ const styles = StyleSheet.create({
   //   shadowOpacity: 0.2,
   //   shadowRadius: 3,
   // },
-
-
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "90%",
+    height: 30,
+    marginBottom: 6,
+    alignSelf: "center",
+  },
+  headerText: {
+    fontSize: 22,
+    fontWeight: "700",
+  },
+  hamburgerIcon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    position: "absolute",
+    left: 0,
+  },
   inputView: {
-    flexDirection: 'row',
-    width: '90%',
+    flexDirection: "row",
+    width: "90%",
     height: 40,
     borderRadius: 16,
     borderWidth: 1.5,
@@ -149,18 +211,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 5,
     paddingLeft: 12,
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: Colors.white,
   },
 
   inputText: {
     fontSize: 16,
-    fontStyle: 'italic',
+    fontStyle: "italic",
     paddingLeft: 4,
   },
 
-  sortText: {
-    
-  }
-
+  sortText: {},
 });

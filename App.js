@@ -1,10 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button } from "react-native";
 
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useState } from 'react';
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { useState } from "react";
 
 import HomeScreen from "./screens/HomeScreen";
 import AppDetails from "./screens/AppDetails";
@@ -15,17 +15,26 @@ import SignUpScreenTwo from "./screens/SignUpScreenTwo";
 
 import MyGuidesScreen from "./screens/MyGuidesScreen";
 import ExploreScreen from "./screens/ExploreScreen";
+import ExploreSearch from "./screens/ExploreSearch";
+import ViewAll from "./screens/ViewAll";
 import ReviewDetails from "./screens/ReviewDetails";
 
 import Colors from "./Themes/colors";
+import { CardStyleInterpolators } from "@react-navigation/stack";
+import { forVerticalIOS } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   const [user, setUser] = useState({}); // Use state to pass user object between components
   const [guides, setGuides] = useState([]);
-  // console.log(user, "App.js");
-  // console.log(guides, "App.js");
+  console.log(user, "App.js");
+
+  const forFade = ({ current }) => ({
+    cardStyle: {
+      opacity: current.progress,
+    },
+  });
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -49,46 +58,41 @@ export default function App() {
           component={SignUpScreenTwo}
           options={{ headerShown: false }}
         />
-
-        {/* <Stack.Screen
+        <Stack.Screen
           name="MyGuides"
-          component={MyGuidesScreen}
           options={{
-            headerRight: () => (
-              <Button
-                onPress={() => {
-                  // auth().signOut()
-                  alert("TODO: implement log out");
-                }}
-                title="Log Out"
-                color={Colors.yellow}
-              />
-            ),
+            headerShown: false,
           }}
-        /> */}
+        >
+          {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
+        </Stack.Screen>
         <Stack.Screen
           name="Home"
-          options={{ headerShown: false }}
+          options={{ headerShown: false, cardStyleInterpolator: forFade }}
         >
-          {props => <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />}
-        </ Stack.Screen>
+          {(props) => (
+            <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />
+          )}
+        </Stack.Screen>
         <Stack.Screen
           name="ReviewDetails"
           component={ReviewDetails}
           option={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="AppDetails"
-          options={{ headerShown: false }}
-        >
-          {props => <AppDetails {...props} user={user} />}
+        <Stack.Screen name="AppDetails" options={{ headerShown: false }}>
+          {(props) => <AppDetails {...props} user={user} />}
         </Stack.Screen>
+        <Stack.Screen name="ExploreStack" options={{ headerShown: false }}>
+          {(props) => <ExploreStack {...props} user={user} guides={guides} />}
+        </Stack.Screen>
+
         <Stack.Screen // THIS BLOCK DOES NOTHING BTW LOL :)))))) (gotta not use ExploreStack)
-          name="Explore"
-          options={{ headerShown: false }}
+          name="ExploreSearch"
+          options={{ headerShown: false, cardStyleInterpolator: forFade }}
         >
-          {props => <ExploreScreen {...props} user={user} guides={guides} />}
+          {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
         </Stack.Screen>
+        <Stack.Screen name="ViewAll" component={ViewAll} />
       </Stack.Navigator>
     </NavigationContainer>
   );
