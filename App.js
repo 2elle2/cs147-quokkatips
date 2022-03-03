@@ -23,7 +23,9 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [user, setUser] = useState({}); // Use state to pass user object between components
-  console.log(user, "App.js");
+  const [guides, setGuides] = useState([]);
+  // console.log(user, "App.js");
+  // console.log(guides, "App.js");
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -68,7 +70,7 @@ export default function App() {
           name="Home"
           options={{ headerShown: false }}
         >
-          {props => <HomeScreen {...props} setUser={setUser} />}
+          {props => <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />}
         </ Stack.Screen>
         <Stack.Screen
           name="ReviewDetails"
@@ -77,10 +79,16 @@ export default function App() {
         />
         <Stack.Screen
           name="AppDetails"
-          component={AppDetails}
           options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Explore" component={ExploreScreen} options={{}} />
+        >
+          {props => <AppDetails {...props} user={user} />}
+        </Stack.Screen>
+        <Stack.Screen // THIS BLOCK DOES NOTHING BTW LOL :)))))) (gotta not use ExploreStack)
+          name="Explore"
+          options={{ headerShown: false }}
+        >
+          {props => <ExploreScreen {...props} user={user} guides={guides} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
