@@ -17,6 +17,7 @@ import MyGuidesScreen from "./screens/MyGuidesScreen";
 import ExploreScreen from "./screens/ExploreScreen";
 import ExploreSearch from "./screens/ExploreSearch";
 import ViewAll from "./screens/ViewAll";
+import FeatureDetails from "./screens/FeatureDetails";
 import ReviewDetails from "./screens/ReviewDetails";
 
 import Colors from "./Themes/colors";
@@ -93,6 +94,7 @@ export default function App() {
           {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
         </Stack.Screen>
         <Stack.Screen name="ViewAll" component={ViewAll} />
+        <Stack.Screen name="FeatureDetails" component={FeatureDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

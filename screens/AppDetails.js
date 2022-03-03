@@ -21,6 +21,7 @@ export default function AppDetails(props) {
   const user = props.user; // The currently logged in user
   const rerenderParentCallback = useForceUpdate(); // Called when the child updates
 
+  console.log(props.user + 'asdf');
   return (
     // Screen header
     // Top tab navigator
@@ -44,7 +45,7 @@ export default function AppDetails(props) {
 
           tabBarStyle: { backgroundColor: "white" },
           tabBarIndicatorStyle: { backgroundColor: "#E3A444" },
-          swipeEnabled: user.guides.includes(app.id) ? true : false, // Disable swiping when features are locked
+          // swipeEnabled: user.guides.includes(app.id) ? true : false, // Disable swiping when features are locked
         }}
       >
         <Tab.Screen
@@ -81,8 +82,8 @@ export default function AppDetails(props) {
             />
           )}
           options={
-            user.guides.includes(app.id)
-              ? {
+            // user.guides.includes(app.id) ?
+                {
                   // Features are unlocked
                   tabBarLabel: "FEATURES",
                   tabBarIcon: ({ focused, color }) => (
@@ -93,19 +94,19 @@ export default function AppDetails(props) {
                     />
                   ),
                 }
-              : {
-                  // Features are locked
-                  tabBarLabel: "Add to Guides to see specific features!",
-                }
+              // : {
+              //     // Features are locked
+              //     tabBarLabel: "Add to Guides to see specific features!",
+              //   }
           }
           // Disable pressing the tab when features are locked
-          listeners={
-            !user.guides.includes(app.id)
-              ? {
-                  tabPress: (e) => e.preventDefault(),
-                }
-              : {}
-          }
+          // listeners={
+          //   !user.guides.includes(app.id)
+          //     ? {
+          //         tabPress: (e) => e.preventDefault(),
+          //       }
+          //     : {}
+          // }
         />
       </Tab.Navigator>
     </SafeAreaView>
