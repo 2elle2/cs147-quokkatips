@@ -15,6 +15,14 @@ import {
 import { Chip } from "react-native-paper";
 import { Rating } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../firebase";
 
 /* -------- Begin dummy data for testing purposes. Won't use in actual app. -------- */
 const APP_DATA = {
@@ -166,7 +174,7 @@ const ReviewItem = (props) => {
       <View style={styles.reviewUser}>
         <Image
           style={styles.userPicture}
-          source={{ uri: "https://picsum.photos/50/50" }}
+          source={{ uri: props.user.picture }}
         />
         <View style={styles.userNameBio}>
           <Text style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>
@@ -211,6 +219,10 @@ const renderReview = ({ item }) => (
     ratingEase={item.ratingEase}
   />
 );
+
+const writeReviewClicked = () => {
+  console.log("Write a review!");
+}; // TODO: replace this click handler
 
 const writeReviewClicked = () => {
   console.log("Write a review!");
@@ -263,7 +275,7 @@ const AddModal = (props) => {
               onPress={() => {
                 // When "Go to My Guides" is pressed
                 parent.setState({ showAddAlert: false }); // Hide the modal view
-                navigation.navigate("Home", { screen: "MyGuides" }); // Navigate to the My Guides screen
+                navigation.navigate("Home", { screen: "My Guides" }); // Navigate to the My Guides screen
               }}
             >
               <Text style={styles.modalButtonText}>Go to My Guides</Text>
@@ -306,17 +318,17 @@ const RemoveModal = (props) => {
             </Text>
             <TouchableOpacity
               style={[{ backgroundColor: "#D01010" }, styles.modalButton]}
-              onPress={() => {
+              onPress={async () => {
                 // When "Yes, I want to remove" is pressed
-                /*
-                 * TODO: Remove this guide from the user's guides in firestore
-                 */
-
                 // Remove this guide from the user's guides locally
                 let index = user.guides.indexOf(app.id);
                 if (index > -1) {
                   user.guides.splice(index, 1);
                 }
+                // Update firestore:
+                const userRef = doc(db, "users", user.id);
+                await updateDoc(userRef, { guides: user.guides });
+
                 parent.setState({ showRemoveAlert: false }); // Hide the modal window
                 parent.props.parentCallback(); // Rerender the parent
               }}
@@ -343,7 +355,43 @@ const RemoveModal = (props) => {
 class AppDetailsInfo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showRemoveAlert: false, showAddAlert: false }; // Control visibility of modal windows
+    this.state = {
+      showRemoveAlert: false, // Control visibility of modal windows
+      showAddAlert: false,
+      reviews: [],
+    };
+  }
+
+  // Query review data on component mount
+  async componentDidMount() {
+    // Query all reviews from the selected app
+    const querySnapshot = await getDocs(
+      collection(db, "guides", this.props.app.id, "reviews")
+    );
+    const reviewsToBe = querySnapshot.docs.map((reviewSnap) => {
+      let review = reviewSnap.data();
+      review.id = reviewSnap.id; // Set the id prop on the review object
+      return review;
+    });
+
+    // Add the user object to each review
+    let reviews = [];
+    for (let i = 0; i < reviewsToBe.length; i++) {
+      let review = reviewsToBe[i];
+      const userSnap = await getDoc(doc(db, "users", review.user));
+      if (userSnap.exists) {
+        let reviewer = userSnap.data();
+        reviewer.id = userSnap.id;
+        review.createdAt = review.createdAt
+          .toDate()
+          .toLocaleDateString("en-US");
+        review.user = reviewer;
+        reviews.push(review);
+      }
+    }
+
+    // console.log(reviews, "AppDetailsInfo.js");
+    this.setState({ reviews });
   }
 
   render() {
@@ -374,13 +422,16 @@ class AppDetailsInfo extends React.Component {
                 ) : (
                   <Pressable
                     style={styles.addButton}
-                    onPress={() => {
-                      /*
-                       * TODO: Add this guide to the user's guides in firestore
-                       */
-
+                    onPress={async () => {
                       this.props.user.guides.push(this.props.app.id); // Add this guide to the user's guides locally
                       this.setState({ showAddAlert: true }); // Show the modal window
+
+                      // Update firestore:
+                      const userRef = doc(db, "users", this.props.user.id);
+                      await updateDoc(userRef, {
+                        guides: this.props.user.guides,
+                      });
+
                       this.props.parentCallback(); // Rerender the parent
                     }}
                   >
@@ -476,7 +527,7 @@ class AppDetailsInfo extends React.Component {
               <FlatList
                 style={{ marginLeft: 15 }}
                 horizontal
-                data={APP_DATA.reviews} // TODO: Replace this with an array of reviews from firestore
+                data={this.state.reviews}
                 renderItem={renderReview}
                 keyExtractor={(review) => review.id}
                 showsHorizontalScrollIndicator={false}
