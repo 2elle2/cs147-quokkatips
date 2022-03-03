@@ -257,7 +257,7 @@ const AddModal = (props) => {
             <Text style={styles.modalMessage}>
               {app.name + " has been added to your guides."}
             </Text>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[{ backgroundColor: "#E3A444" }, styles.modalButton]}
               onPress={() => {
                 // When "Keep viewing App Info" is clicked
@@ -265,9 +265,9 @@ const AddModal = (props) => {
               }}
             >
               <Text style={styles.modalButtonText}>Keep viewing App Info</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
-              style={[{ backgroundColor: "#201947" }, styles.modalButton]}
+              style={[{ backgroundColor: "#E3A444" }, styles.modalButton]}
               onPress={() => {
                 // When "Go to My Guides" is pressed
                 parent.setState({ showAddAlert: false }); // Hide the modal view
@@ -313,7 +313,23 @@ const RemoveModal = (props) => {
               can always add it back later.
             </Text>
             <TouchableOpacity
-              style={[{ backgroundColor: "#D01010" }, styles.modalButton]}
+              style={[{ backgroundColor: "#E3A444" }, styles.modalButton]}
+              onPress={() => {
+                // When "No, keep this app" is pressed
+                parent.setState({ showRemoveAlert: false }); // Hide the modal window
+              }}
+            >
+              <Text style={styles.modalButtonText}>No, keep this app</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                {
+                  backgroundColor: "white",
+                  borderColor: "#D01010",
+                  borderWidth: 1,
+                },
+                styles.modalButton,
+              ]}
               onPress={async () => {
                 // When "Yes, I want to remove" is pressed
                 // Remove this guide from the user's guides locally
@@ -329,16 +345,9 @@ const RemoveModal = (props) => {
                 parent.props.parentCallback(); // Rerender the parent
               }}
             >
-              <Text style={styles.modalButtonText}>Yes, I want to remove</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[{ backgroundColor: "#201947" }, styles.modalButton]}
-              onPress={() => {
-                // When "No, keep this app" is pressed
-                parent.setState({ showRemoveAlert: false }); // Hide the modal window
-              }}
-            >
-              <Text style={styles.modalButtonText}>No, keep this app</Text>
+              <Text style={styles.modalButtonTextRemove}>
+                Yes, I want to remove
+              </Text>
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
@@ -609,12 +618,12 @@ const styles = StyleSheet.create({
   addText: {
     color: "white",
     fontSize: 22,
-    fontWeight: "600",
+    fontWeight: "500",
   },
   removeText: {
     color: "#E3A444",
     fontSize: 22,
-    fontWeight: "600",
+    fontWeight: "500",
   },
   tags: {
     display: "flex",
@@ -709,7 +718,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 14,
     color: "white",
-    fontWeight: "600",
+    fontWeight: "500",
   },
   ratingValue: {
     display: "flex",
@@ -761,7 +770,13 @@ const styles = StyleSheet.create({
   modalButtonText: {
     color: "white",
     fontSize: 20,
-    fontWeight: "600",
+    fontWeight: "500",
+    textAlign: "center",
+  },
+  modalButtonTextRemove: {
+    color: "#D01010",
+    fontSize: 20,
+    fontWeight: "500",
     textAlign: "center",
   },
   modalTitle: {
