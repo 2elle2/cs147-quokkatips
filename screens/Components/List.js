@@ -11,7 +11,7 @@ import {
   Pressable,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import { Entypo } from "@expo/vector-icons";
 import Colors from "../../Themes/colors";
 import { serverTimestamp } from "firebase/firestore";
 
@@ -31,6 +31,9 @@ const Item = (props) => {
       <View style={styles.itemStyle}>
         <Image style={styles.logoStyle} source={{ uri: props.app.logo }} />
         <Text style={styles.title}>{props.app.name}</Text>
+        <View style={styles.rightButton}>
+          <Entypo name="chevron-right" size={24} color="black" />
+        </View>
       </View>
     </Pressable>
   );
@@ -69,6 +72,8 @@ const List = ({ searchPhrase, setClicked, data, reRenderMyGuides }) => {
           padding: 1,
           marginVertical: 8,
           backgroundColor: Colors.gray,
+          height: 0.5,
+          width: "94%",
         }}
       />
     );
@@ -98,7 +103,7 @@ export default List;
 const styles = StyleSheet.create({
   list__container: {
     flex: 1,
-    marginTop: 10,
+    marginTop: 12,
     marginLeft: 10,
     width: "100%",
     // marginBottom: 60,
@@ -108,7 +113,8 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     flexDirection: "row",
-    padding: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     alignItems: "center",
   },
   title: {
@@ -123,5 +129,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
     backgroundColor: Colors.darkpurple, //testing purposes
     resizeMode: "cover",
+  },
+  rightButton: {
+    position: "absolute",
+    right: 30,
   },
 });

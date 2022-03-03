@@ -39,9 +39,10 @@ export default function AppDetails(props) {
         initialRouteName="Feed"
         screenOptions={{
           tabBarActiveTintColor: "#E3A444",
-          tabBarInactiveTintColor: "#E3A444",
+          tabBarInactiveTintColor: "gray",
           tabBarLabelStyle: { fontSize: 14 },
-          tabBarStyle: { backgroundColor: "#F2F2F2" },
+
+          tabBarStyle: { backgroundColor: "white" },
           tabBarIndicatorStyle: { backgroundColor: "#E3A444" },
           swipeEnabled: user.guides.includes(app.id) ? true : false, // Disable swiping when features are locked
         }}
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
+    backgroundColor: "white",
   },
   backButtonText: {
     color: "#E3A444",

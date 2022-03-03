@@ -130,7 +130,7 @@ const RatingCategory = (props) => {
           fractions={1}
           startingValue={props.value}
           readonly
-          tintColor="#F2F2F2"
+          tintColor="white"
           imageSize={20}
         />
       </View>
@@ -219,10 +219,6 @@ const renderReview = ({ item }) => (
     ratingEase={item.ratingEase}
   />
 );
-
-const writeReviewClicked = () => {
-  console.log("Write a review!");
-}; // TODO: replace this click handler
 
 const writeReviewClicked = () => {
   console.log("Write a review!");
@@ -398,10 +394,13 @@ class AppDetailsInfo extends React.Component {
     let appInfo;
     if (this.props.app != null) {
       appInfo = (
-        <SafeAreaView>
+        <SafeAreaView style={styles.container}>
           <RemoveModal parent={this} />
           <AddModal parent={this} />
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            style={styles.scrollView}
+            showsVerticalScrollIndicator={false}
+          >
             <View style={styles.basicInfo}>
               <Image
                 style={styles.logo}
@@ -443,12 +442,16 @@ class AppDetailsInfo extends React.Component {
             <View style={styles.tags}>
               {this.props.app.tags.map((item, index) => {
                 return (
-                  <View style={{ marginHorizontal: 3, marginTop: 3 }}>
+                  <View style={styles.tagText}>
                     <Chip
                       key={index}
                       height={30} // Give desirable height to chip
                       textStyle={{ color: "white", fontSize: 16 }} // Label properties
-                      style={{ backgroundColor: "#C4C4C4" }} // Display diff color BG
+                      style={{
+                        backgroundColor: "#C4C4C4",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }} // Display diff color BG
                     >
                       {item}
                     </Chip>
@@ -545,6 +548,9 @@ class AppDetailsInfo extends React.Component {
 
 // Style sheet
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+  },
   basicInfo: {
     display: "flex",
     flexDirection: "row",
@@ -552,53 +558,63 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     height: 100,
-    margin: 15,
+    margin: 20,
   },
   nameSloganButton: {
     flex: 1,
   },
   appName: {
     marginLeft: 15,
-    fontSize: 22,
+    fontSize: 25,
     fontWeight: "bold",
   },
   appSlogan: {
     marginLeft: 15,
     fontSize: 16,
     color: "#888888",
+    width: "80%",
   },
   addButton: {
     marginLeft: 15,
     marginTop: 5,
     alignItems: "center",
     alignSelf: "baseline",
-    paddingVertical: 8,
-    paddingHorizontal: 30,
-    borderRadius: 10,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
+    borderRadius: 6,
     elevation: 3,
     backgroundColor: "#E3A444",
+    shadowColor: "black",
+    shadowOffset: { width: -1, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   removeButton: {
     marginLeft: 15,
     marginTop: 5,
     alignItems: "center",
     alignSelf: "baseline",
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 10,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
+    borderRadius: 6,
     elevation: 3,
+    backgroundColor: "white",
     borderWidth: 1,
     borderColor: "#E3A444",
+    shadowColor: "black",
+    shadowOffset: { width: -1, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   addText: {
     color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 22,
+    fontWeight: "600",
   },
   removeText: {
     color: "#E3A444",
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 22,
+    fontWeight: "600",
   },
   tags: {
     display: "flex",
@@ -607,10 +623,15 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginBottom: 15,
   },
+  tagText: {
+    marginHorizontal: 3,
+    marginTop: 3,
+    display: "flex",
+  },
   sectionTitleText: {
     marginLeft: 15,
     marginBottom: 10,
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "bold",
   },
   preview: {
@@ -653,8 +674,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 105,
+    height: 105,
     borderRadius: 20,
     borderColor: "#C4C4C4",
     borderWidth: 1,
@@ -686,9 +707,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 14,
     color: "white",
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   ratingValue: {
     display: "flex",
@@ -702,19 +723,25 @@ const styles = StyleSheet.create({
   },
   writeReviewButton: {
     marginRight: 15,
+    marginTop: 5,
     alignItems: "center",
     transform: [{ translateY: -5 }],
     alignSelf: "baseline",
     paddingVertical: 5,
     paddingHorizontal: 10,
-    borderRadius: 10,
+    borderRadius: 6,
     elevation: 3,
     backgroundColor: "#201947",
+    shadowColor: "black",
+    shadowOffset: { width: -1, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   modalView: {
-    flex: 1,
+    height: "auto",
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
     marginHorizontal: "10%",
     marginVertical: "30%",
     backgroundColor: "white",
@@ -722,10 +749,10 @@ const styles = StyleSheet.create({
     padding: 33,
   },
   modalButton: {
-    borderRadius: 10,
+    borderRadius: 6,
     padding: 10,
     marginVertical: 5,
-    width: "100%",
+    width: 250,
     shadowColor: "black",
     shadowOffset: { width: -1, height: 5 },
     shadowOpacity: 0.2,
@@ -734,13 +761,13 @@ const styles = StyleSheet.create({
   modalButtonText: {
     color: "white",
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "600",
     textAlign: "center",
   },
   modalTitle: {
     marginBottom: 10,
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "600",
     textAlign: "center",
   },
   modalMessage: {
@@ -756,6 +783,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: "rgba(0,0,0,0.5)",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   quokkaImage: {
     width: 150,

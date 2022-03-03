@@ -73,17 +73,17 @@ export default function HomeScreen(props) {
   return (
     <Tab.Navigator
       // Make 'My Guides' the initial tab
-      initialRouteName="MyGuides"
+      initialRouteName="My Guides"
       // Customize icons and appearance
       screenOptions={({ route }) => ({
         tabBarStyle: { height: 84 },
         tabBarIcon: ({ focused, color, size }) => {
           let icon;
           switch (route.name) {
-            case "MyGuides":
+            case "My Guides":
               icon = focused ? "book" : "book-outline";
               break;
-            case "ExploreScreen":
+            case "Explore":
               icon = focused ? "compass" : "compass-outline";
               break;
             case "Ask Quokka":
@@ -99,13 +99,13 @@ export default function HomeScreen(props) {
       })}
     >
       <Tab.Screen
-        name="ExploreScreen"
+        name="Explore"
         options={{ headerShown: false, cardStyleInterpolator: forFade }}
       >
         {(props) => <ExploreScreen {...props} user={user} guides={guides} />}
       </Tab.Screen>
       <Tab.Screen
-        name="MyGuides"
+        name="My Guides"
         options={{ headerShown: false, cardStyleInterpolator: forFade }}
       >
         {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
