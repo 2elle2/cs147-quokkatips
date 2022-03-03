@@ -1,40 +1,24 @@
+// Based off of https://blog.logrocket.com/create-react-native-search-bar-from-scratch/
+// List.js
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
-  ImageBackground,
+  Image,
   FlatList,
   SafeAreaView,
   Pressable,
-  Image,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { Dimensions } from "react-native";
+import Colors from "../../Themes/colors";
+import { serverTimestamp } from "firebase/firestore";
 
-import { useEffect, useState } from "react";
-import { db } from "../firebase";
-import { collection, doc, getDocs } from "firebase/firestore";
-
-const DATA = [
-  { id: "1", title: "Desmos" },
-  { id: "2", title: "Canvas" },
-  { id: "3", title: "QuokkaTips" },
-  { id: "4", title: "Google Docs" },
-  { id: "5", title: "Slack" },
-  { id: "6", title: "Google Sheets" },
-  { id: "7", title: "Google Slides" },
-  { id: "8", title: "Microsoft PowerPoint" },
-  { id: "9", title: "Microsoft Word" },
-  { id: "10", title: "Microsoft Excel" },
-  { id: "11", title: "Microsoft Teams" },
-];
-
-const { width } = Dimensions.get("window");
-
+// defining the item that will be rendered in the Flat List
 const Item = (props) => {
   const navigation = useNavigation();
   let speedometer;
@@ -77,72 +61,77 @@ const Item = (props) => {
   );
 };
 
-export default function ViewAll({ route }) {
-  const renderItem = ({ item }) => <Item app={item} />;
-  const [firestore_data, setData] = useState([]); // Save list of guides from firestore
-  // in local state
+// the filter
+const GridList = ({ searchPhrase, setClicked, data }) => {
+  let newData = data;
+  if (searchPhrase) {
+    newData = data.filter((item) => {
+      console.log(item);
+      return item.name.toUpperCase().includes(searchPhrase.toUpperCase());
+    });
+  }
+  const renderItem = ({ item }) => {
+    // when no input, show all
+    if (searchPhrase === "") {
+      return <Item app={item} />;
+    }
+    // filter of the name
+    if (
+      item.name
+        .toUpperCase()
+        .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))
+    ) {
+      return <Item app={item} />;
+    }
+  };
 
-  const navigation = useNavigation();
-  const { category, apps } = route.params;
-  console.log(apps);
+  const ItemSeparatorView = () => {
+    return (
+      // Flat List Item divider line
+      <View
+        style={{
+          padding: 1,
+          marginVertical: 8,
+          backgroundColor: Colors.gray,
+        }}
+      />
+    );
+  };
+
   return (
-    <SafeAreaView style={styles.body}>
-      <View style={styles.header}>
-        <Pressable
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
-          <Ionicons name="chevron-back" size={28} color="#E3A444" />
-          <Text style={styles.backButtonText}> Back</Text>
-        </Pressable>
-        <Text style={styles.categoryText}>{category}</Text>
-      </View>
-
-      <View style={styles.gridContainer}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={apps}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          numColumns={2}
-        ></FlatList>
+    <SafeAreaView style={styles.list__container}>
+      <View
+        style={styles.listView}
+        onStartShouldSetResponder={() => {
+          setClicked(false);
+        }}
+      >
+        <View style={styles.gridContainer}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={newData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            numColumns={2}
+          ></FlatList>
+        </View>
       </View>
     </SafeAreaView>
   );
-}
+};
+
+export default GridList;
 
 const styles = StyleSheet.create({
-  body: {
+  list__container: {
     flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "white",
-    marginBottom: 6,
-  },
-  backgroundImage: {
+    marginTop: 10,
+    marginLeft: 10,
     width: "100%",
-    height: "100%",
+    // marginBottom: 60,
   },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "95%",
-    height: 30,
-    marginBottom: 6,
-  },
-  categoryText: {
-    fontSize: 22,
-    fontWeight: "700",
-  },
-  backButton: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    position: "absolute",
-    left: 0,
+  listView: {
+    flex: 1,
   },
   gridContainer: {
     flex: 1,
@@ -204,10 +193,5 @@ const styles = StyleSheet.create({
   itemDifficulty: {
     fontSize: 12,
     fontWeight: "300",
-  },
-  backButtonText: {
-    color: "#E3A444",
-    fontSize: 22,
-    fontWeight: "500",
   },
 });

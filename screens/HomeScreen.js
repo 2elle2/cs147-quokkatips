@@ -5,11 +5,11 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 import MyGuidesScreen from "./MyGuidesScreen";
-import ExploreStack from "./ExploreStack";
 import AskQuokkaScreen from "./AskQuokkaScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Colors from '../Themes/colors';
+import Colors from "../Themes/colors";
+import ExploreScreen from "./ExploreScreen";
 
 export default function HomeScreen(props) {
   const getUserInfo = async (user) => {
@@ -45,7 +45,7 @@ export default function HomeScreen(props) {
       initialRouteName="My Guides"
       // Customize icons and appearance
       screenOptions={({ route }) => ({
-        tabBarStyle: {height: 84},
+        tabBarStyle: { height: 84 },
         tabBarIcon: ({ focused, color, size }) => {
           let icon;
           switch (route.name) {
@@ -69,23 +69,13 @@ export default function HomeScreen(props) {
     >
       <Tab.Screen
         name="Explore"
-        component={ExploreStack}
+        component={ExploreScreen}
         options={{ headerShown: false }}
       />
-      <Tab.Screen 
-        name="My Guides" 
-        component={MyGuidesScreen} 
-        options={{
-          title: 'My Guides',
-          headerStyle: {
-            backgroundColor: Colors.darkpurple,
-          },
-          headerTintColor: Colors.white,
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontSize: 20,
-          },
-        }}
+      <Tab.Screen
+        name="My Guides"
+        component={MyGuidesScreen}
+        options={{ headerShown: false }}
       />
       <Tab.Screen name="Ask Quokka" component={AskQuokkaScreen} />
     </Tab.Navigator>

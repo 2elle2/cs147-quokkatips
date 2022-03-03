@@ -15,36 +15,33 @@ import { serverTimestamp } from "firebase/firestore";
 
 // defining the item that will be rendered in the Flat List
 const Item = ({ title, image }) => (
-    <View style={styles.itemStyle}>
-        <Image 
-            style={styles.logoStyle}
-            source={{uri: image}}/>
-        <Text style={styles.title}>{title}</Text>
-    </View>
+  <View style={styles.itemStyle}>
+    <Image style={styles.logoStyle} source={{ uri: image }} />
+    <Text style={styles.title}>{title}</Text>
+  </View>
 );
 
 // the filter
 const List = ({ searchPhrase, setClicked, data }) => {
-    let newData = data;
-    if(searchPhrase)
-        { 
-            newData = data.filter((item) => 
-            {
-            console.log(item)
-            return item.title.toUpperCase().includes(searchPhrase.toUpperCase());
-            }
-            )
-        }
+  let newData = data;
+  if (searchPhrase) {
+    newData = data.filter((item) => {
+      console.log(item);
+      return item.name.toUpperCase().includes(searchPhrase.toUpperCase());
+    });
+  }
   const renderItem = ({ item }) => {
     // when no input, show all
     if (searchPhrase === "") {
-      return (
-        <Item title={item.title} image={item.image} />
-      );
+      return <Item title={item.name} image={item.image} />;
     }
     // filter of the name
-    if (item.title.toUpperCase().includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))) {
-      return <Item title={item.title} image={item.image} />;
+    if (
+      item.name
+        .toUpperCase()
+        .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))
+    ) {
+      return <Item title={item.name} image={item.image} />;
     }
   };
 
@@ -53,27 +50,27 @@ const List = ({ searchPhrase, setClicked, data }) => {
       // Flat List Item divider line
       <View
         style={{
-            padding: 1,
-            marginVertical: 8,
-            backgroundColor: Colors.gray,
+          padding: 1,
+          marginVertical: 8,
+          backgroundColor: Colors.gray,
         }}
       />
-    )
-  }
+    );
+  };
 
   return (
     <SafeAreaView style={styles.list__container}>
-        <View 
-            style={styles.listView}
-            onStartShouldSetResponder={() => {
-            setClicked(false);
-            }}
-        >
+      <View
+        style={styles.listView}
+        onStartShouldSetResponder={() => {
+          setClicked(false);
+        }}
+      >
         <FlatList
-            data={newData}
-            renderItem={renderItem}
-            ItemSeparatorComponent={ItemSeparatorView}
-            keyExtractor={(item) => item.id}
+          data={newData}
+          renderItem={renderItem}
+          ItemSeparatorComponent={ItemSeparatorView}
+          keyExtractor={(item) => item.id}
         />
       </View>
     </SafeAreaView>
@@ -90,13 +87,13 @@ const styles = StyleSheet.create({
     width: "100%",
     // marginBottom: 60,
   },
-  listView:{
+  listView: {
     flex: 1,
   },
   itemStyle: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 20,
@@ -105,7 +102,7 @@ const styles = StyleSheet.create({
   logoStyle: {
     height: 56,
     width: 60,
-    borderRadius: 15, 
+    borderRadius: 15,
     marginLeft: 10,
     marginRight: 10,
     backgroundColor: Colors.darkpurple, //testing purposes

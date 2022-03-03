@@ -9,11 +9,9 @@ import { Octicons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { Feather, Entypo } from "@expo/vector-icons";
-
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../Themes/colors";
-import List from "./Components/List";
+import GridList from "./Components/GridList";
 import SearchBar from "./Components/SearchBar";
 import {
   FlatList,
@@ -115,11 +113,12 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
   </View>
 );
 
-export default function ExploreScreen() {
+export default function ExploreSearch({ route }) {
   const navigation = useNavigation();
   const [firestore_data, setData] = useState([]); // Save list of guides from firestore
   // in local state
-
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const [clicked, setClicked] = useState(false);
   useEffect(() => getGuides(), []); // Pass in empty array so it will only run once on component mount
 
   /**
@@ -139,54 +138,34 @@ export default function ExploreScreen() {
     setData(guides);
   };
 
+  const { apps } = route.params;
+  console.log("apps", apps);
   return (
     // "Sort by..." picker
     // List of the user's guides
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Pressable style={styles.hamburgerIcon}>
-          <Ionicons name="ios-menu-outline" size={40} color="#E3A444" />
-        </Pressable>
-        <Text style={styles.categoryText}>Explore</Text>
+        <Text style={styles.headerText}>Explore</Text>
       </View>
-      <Pressable
-        onPress={() => {
-          navigation.navigate("ExploreSearch", { apps: firestore_data });
-        }}
-        style={styles.searchBarContainer}
-      >
+      <View style={styles.searchBarContainer}>
         <View style={styles.searchBar}>
-          {/* search Icon */}
-          <Feather
-            name="search"
-            size={20}
-            color={Colors.darkgray}
-            style={{ marginLeft: 1 }}
+          <SearchBar
+            searchPhrase={searchPhrase}
+            setSearchPhrase={setSearchPhrase}
+            clicked={clicked}
+            setClicked={setClicked}
+            placeHolderText="Search apps..."
           />
-          {/* Input field */}
-          <Text style={styles.searchText}>Search apps...</Text>
         </View>
-      </Pressable>
-      <ScrollView
-        style={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <CategoryCarrousel
-          category="Recommended"
-          navigation={navigation}
-          data={firestore_data}
-        />
-        <CategoryCarrousel
-          category="Mathematics"
-          navigation={navigation}
-          data={firestore_data}
-        />
-        <CategoryCarrousel
-          category="Trending"
-          navigation={navigation}
-          data={firestore_data}
-        />
-      </ScrollView>
+        <Pressable onPress={() => navigation.goBack()}>
+          <Text style={styles.cancelButton}>Cancel</Text>
+        </Pressable>
+      </View>
+      <GridList
+        searchPhrase={searchPhrase}
+        data={apps}
+        setClicked={setClicked}
+      />
     </SafeAreaView>
   );
 }
@@ -210,44 +189,41 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     alignSelf: "center",
   },
-  categoryText: {
+  headerText: {
     fontSize: 22,
     fontWeight: "700",
   },
-  hamburgerIcon: {
+  backButton: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     position: "absolute",
     left: 0,
   },
-  scrollContainer: {
-    marginTop: 10,
-  },
   searchBarContainer: {
-    marginTop: 10,
-    marginLeft: 24,
-    marginRight: 24,
-    justifyContent: "flex-start",
-    alignItems: "center",
+    display: "flex",
     flexDirection: "row",
+    alignItems: "center",
   },
   searchBar: {
-    padding: 10,
+    display: "flex",
     flexDirection: "row",
-    width: "100%",
-    backgroundColor: Colors.white,
-    borderRadius: 15,
-    borderWidth: 1.5,
-    borderColor: Colors.gray,
+    width: "85%",
     alignItems: "center",
-    justifyContent: "space-evenly",
+  },
+  listContainer: {
+    marginTop: 10,
+  },
+  cancelButton: {
+    color: Colors.yellow,
+    fontSize: 18,
+    paddingTop: 8,
+    marginLeft: -14,
   },
   searchText: {
     fontSize: 16,
     marginLeft: 10,
     width: "90%",
-    color: Colors.gray,
   },
   item: {
     height: "85%",
