@@ -77,13 +77,13 @@ const Item = (props) => {
 };
 const renderItem = ({ item }) => <Item app={item} />;
 
-const CategoryCarrousel = ({ category, navigation, data }) => (
+const CategoryCarrousel = ({ category, navigation, data, header }) => (
   <View style={styles.categoryContainer}>
     <View style={styles.categoryHeaders}>
       <Text style={styles.categoryName}>{category}</Text>
       <Pressable
         onPress={() => {
-          navigation.navigate("ViewAll", { category: category, apps: data });
+          navigation.navigate("ViewAll", { header: header, apps: data });
         }}
       >
         <Text style={styles.viewAllButton}>View All</Text>
@@ -140,19 +140,15 @@ export default function ExploreScreen(props) {
         showsVerticalScrollIndicator={false}
       >
         <CategoryCarrousel
-          category="Recommended"
+          category="Recommended for You"
+          header="Recommended"
           navigation={navigation}
           data={props.guides}
         />
+
         <CategoryCarrousel
-          category="Mathematics"
-          navigation={navigation}
-          data={props.guides.filter(function (app) {
-            return app.tags.includes("Mathematics");
-          })}
-        />
-        <CategoryCarrousel
-          category="Communication"
+          category="Popular in Communication"
+          header={"Communication"}
           navigation={navigation}
           data={props.guides.filter(function (app) {
             return app.tags.includes("Communication");
@@ -161,7 +157,8 @@ export default function ExploreScreen(props) {
 
         {props.user.subjects.map((tag, index) => (
           <CategoryCarrousel
-            category={tag}
+            category={"Popular in " + tag}
+            header={tag}
             navigation={navigation}
             key={index}
             data={props.guides.filter(function (app) {
