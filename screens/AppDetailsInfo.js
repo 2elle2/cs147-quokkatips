@@ -202,7 +202,7 @@ const ReviewItem = (props) => {
             fontSize: 16,
             color: "#E3A444",
             textAlign: "right",
-            marginVertical: 5,
+            marginBottom: 10,
           }}
         >
           View More
@@ -292,7 +292,7 @@ const AddModal = (props) => {
                 navigation.navigate("Home", { screen: "My Guides" }); // Navigate to the My Guides screen
               }}
             >
-              <Text style={styles.modalButtonText}>Go to My Guides  </Text>
+              <Text style={styles.modalButtonText}>Go to My Guides   </Text>
               <Ionicons name={"book"} size={24} color={Colors.white} />
             </TouchableOpacity>
           </View>
@@ -478,7 +478,8 @@ class AppDetailsInfo extends React.Component {
                       this.props.parentCallback(); // Rerender the parent
                     }}
                   >
-                    <Text style={styles.addText}>Add to My Guides</Text>
+                    <Text style={styles.addText}>Add to My Guides </Text>
+                    <Ionicons name={"book"} size={24} color={Colors.white} />
                   </Pressable>
                 )}
               </View>
@@ -620,6 +621,8 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   addButton: {
+    flexDirection: "row",
+    justifyContent: "center",
     marginLeft: 15,
     marginTop: 5,
     alignItems: "center",
@@ -739,6 +742,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     marginTop: 5,
+    marginBottom: 5,
     backgroundColor: "#E3E3E3",
     borderRadius: 20,
     padding: 15,
@@ -793,7 +797,9 @@ const styles = StyleSheet.create({
     marginVertical: "30%",
     backgroundColor: "white",
     borderRadius: 10,
-    padding: 36,
+    paddingHorizontal: 36,
+    paddingTop: 60,
+    paddingBottom: 36,
   },
   modalButton: {
     flexDirection: "row",

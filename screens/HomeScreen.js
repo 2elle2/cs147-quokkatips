@@ -76,6 +76,7 @@ export default function HomeScreen(props) {
       initialRouteName="My Guides"
       // Customize icons and appearance
       screenOptions={({ route }) => ({
+        // swipeEnabled: false,
         tabBarStyle: { height: 84 },
         tabBarIcon: ({ focused, color, size }) => {
           let icon;
