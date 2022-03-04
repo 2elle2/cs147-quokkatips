@@ -19,6 +19,10 @@ import ViewAll from "./screens/ViewAll";
 import FeatureDetails from "./screens/FeatureDetails";
 import ReviewDetails from "./screens/ReviewDetails";
 
+import { LogBox } from "react-native";
+
+LogBox.ignoreAllLogs()
+
 import Colors from "./Themes/colors";
 import { CardStyleInterpolators } from "@react-navigation/stack";
 import { forVerticalIOS } from "@react-navigation/stack";
