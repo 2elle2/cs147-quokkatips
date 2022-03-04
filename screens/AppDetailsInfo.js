@@ -23,6 +23,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import Colors from "../Themes/colors";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { AntDesign } from '@expo/vector-icons';
+
 
 /* -------- Begin dummy data for testing purposes. Won't use in actual app. -------- */
 const APP_DATA = {
@@ -247,8 +251,22 @@ const AddModal = (props) => {
           parent.setState({ showAddAlert: false });
         }}
       >
+        
         <TouchableWithoutFeedback>
           <View style={styles.modalView}>
+
+            {/* ADD THIS CLOSE BUTTON */}
+            <TouchableOpacity onPress={() => {
+                parent.setState({ showAddAlert: false })}} 
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  top: 20
+              }}>
+                <AntDesign name="closecircleo" size={30} color={Colors.black} />          
+            </TouchableOpacity>
+            {/* CLOSE BUTTON ENDS */}
+
             <Image
               style={styles.quokkaImage}
               source={require("../assets/Quokkas/yes-quokka.png")}
@@ -274,11 +292,16 @@ const AddModal = (props) => {
                 navigation.navigate("Home", { screen: "My Guides" }); // Navigate to the My Guides screen
               }}
             >
-              <Text style={styles.modalButtonText}>Go to My Guides</Text>
+              <Text style={styles.modalButtonText}>Go to My Guides  </Text>
+              <Ionicons name={"book"} size={24} color={Colors.white} />
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
+
+        
       </TouchableOpacity>
+
+      
     </Modal>
   );
 };
@@ -307,6 +330,18 @@ const RemoveModal = (props) => {
       >
         <TouchableWithoutFeedback>
           <View style={styles.modalView}>
+
+            {/* ADD THIS CLOSE BUTTON */}
+            <TouchableOpacity onPress={() => {
+                parent.setState({ showRemoveAlert: false })}} 
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  top: 20
+              }}>
+                <AntDesign name="closecircleo" size={30} color={Colors.black} />          
+            </TouchableOpacity>
+            {/* CLOSE BUTTON ENDS */}
             <Text style={styles.modalTitle}>Remove {app.name}?</Text>
             <Text style={styles.modalMessage}>
               You will no longer be able to see this app in your guides, but you
@@ -758,9 +793,12 @@ const styles = StyleSheet.create({
     marginVertical: "30%",
     backgroundColor: "white",
     borderRadius: 10,
-    padding: 33,
+    padding: 36,
   },
   modalButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 6,
     padding: 10,
     marginVertical: 5,
@@ -784,7 +822,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     marginBottom: 10,
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "600",
     textAlign: "center",
   },
