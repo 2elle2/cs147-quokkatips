@@ -325,7 +325,7 @@ const RemoveModal = (props) => {
               style={[
                 {
                   backgroundColor: "white",
-                  borderColor: "#D01010",
+                  borderColor: "#D0101066",
                   borderWidth: 1,
                 },
                 styles.modalButton,
@@ -455,9 +455,10 @@ class AppDetailsInfo extends React.Component {
                     <Chip
                       key={index}
                       height={30} // Give desirable height to chip
-                      textStyle={{ color: "white", fontSize: 16 }} // Label properties
+                      textStyle={{ color: "#888888", fontSize: 16 }} // Label properties
                       style={{
-                        backgroundColor: "#C4C4C4",
+                        borderColor: "#C4C4C4",
+                        borderSize: 1,
                         justifyContent: "center",
                         alignItems: "center",
                       }} // Display diff color BG
@@ -594,9 +595,9 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "#E3A444",
     shadowColor: "black",
-    shadowOffset: { width: -1, height: 5 },
+    shadowOffset: { width: -1, height: 4 },
     shadowOpacity: 0.2,
-    shadowRadius: 2,
+    shadowRadius: 5,
   },
   removeButton: {
     marginLeft: 15,
@@ -611,9 +612,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E3A444",
     shadowColor: "black",
-    shadowOffset: { width: -1, height: 5 },
+    shadowOffset: { width: -1, height: 4 },
     shadowOpacity: 0.2,
-    shadowRadius: 2,
+    shadowRadius: 5,
   },
   addText: {
     color: "white",
@@ -636,6 +637,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 3,
     marginTop: 3,
     display: "flex",
+    color: "white",
+    fontWeight: "600",
   },
   sectionTitleText: {
     marginLeft: 15,
@@ -742,9 +745,9 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "#201947",
     shadowColor: "black",
-    shadowOffset: { width: -1, height: 2 },
+    shadowOffset: { width: -1, height: 4 },
     shadowOpacity: 0.2,
-    shadowRadius: 2,
+    shadowRadius: 5,
   },
   modalView: {
     height: "auto",
@@ -763,9 +766,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     width: 250,
     shadowColor: "black",
-    shadowOffset: { width: -1, height: 5 },
+    shadowOffset: { width: -1, height: 4 },
     shadowOpacity: 0.2,
-    shadowRadius: 2,
+    shadowRadius: 5,
   },
   modalButtonText: {
     color: "white",
@@ -774,7 +777,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalButtonTextRemove: {
-    color: "#D01010",
+    color: "#D01010c8",
     fontSize: 20,
     fontWeight: "500",
     textAlign: "center",

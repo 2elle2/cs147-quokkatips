@@ -33,10 +33,10 @@ const Item = (props) => {
   const navigation = useNavigation();
   let speedometer;
   let difficulty;
-  if (props.app.rating > 4) {
+  if (props.app.ratingEase > 3.5) {
     speedometer = "speedometer-slow";
     difficulty = "Easy";
-  } else if (props.app.rating > 2) {
+  } else if (props.app.ratingEase > 2) {
     speedometer = "speedometer-medium";
     difficulty = "Medium";
   } else {
