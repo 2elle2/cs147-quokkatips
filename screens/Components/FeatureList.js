@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
   },
   featureDescription: {
     marginHorizontal: 8,
+    paddingRight: 8,
     marginTop: 3,
     fontSize: 16,
     color: '#888888',

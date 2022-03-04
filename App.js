@@ -13,7 +13,6 @@ import LogInScreen from "./screens/LogInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import SignUpScreenTwo from "./screens/SignUpScreenTwo";
 
-import MyGuidesScreen from "./screens/MyGuidesScreen";
 import ExploreScreen from "./screens/ExploreScreen";
 import ExploreSearch from "./screens/ExploreSearch";
 import ViewAll from "./screens/ViewAll";
@@ -38,7 +37,9 @@ export default function App() {
   });
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator 
+        screenOptions={{ 
+          headerShown: false }}>
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -59,22 +60,19 @@ export default function App() {
           component={SignUpScreenTwo}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="MyGuides"
-          options={{
-            headerShown: false,
-          }}
-        >
-          {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
-        </Stack.Screen>
+
         <Stack.Screen
           name="Home"
-          options={{ headerShown: false, cardStyleInterpolator: forFade }}
+          options={{ 
+            headerShown: false, 
+            gestureEnabled: false,
+            cardStyleInterpolator: forFade }}
         >
           {(props) => (
             <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />
           )}
         </Stack.Screen>
+
         <Stack.Screen
           name="ReviewDetails"
           component={ReviewDetails}
@@ -83,16 +81,25 @@ export default function App() {
         <Stack.Screen name="AppDetails" options={{ headerShown: false }}>
           {(props) => <AppDetails {...props} user={user} />}
         </Stack.Screen>
-        <Stack.Screen name="ExploreStack" options={{ headerShown: false }}>
-          {(props) => <ExploreStack {...props} user={user} guides={guides} />}
-        </Stack.Screen>
 
-        <Stack.Screen // THIS BLOCK DOES NOTHING BTW LOL :)))))) (gotta not use ExploreStack)
+        {/* <Stack.Screen // THIS BLOCK DOES NOTHING BTW LOL :)))))) (gotta not use ExploreStack)
+          name="ExploreStack" 
+          options={{ 
+            headerShown: false,
+            gestureEnabled: false,
+            }}>
+          {(props) => <ExploreStack {...props} user={user} guides={guides} />}
+        </Stack.Screen> */}
+
+        <Stack.Screen 
           name="ExploreSearch"
-          options={{ headerShown: false, cardStyleInterpolator: forFade }}
+          options={{ 
+            headerShown: false, 
+            cardStyleInterpolator: forFade }}
         >
           {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
         </Stack.Screen>
+
         <Stack.Screen name="ViewAll" component={ViewAll} />
         <Stack.Screen name="FeatureDetails" component={FeatureDetails} />
       </Stack.Navigator>
