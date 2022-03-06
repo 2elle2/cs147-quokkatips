@@ -1,9 +1,10 @@
 import { Text, View } from 'react-native';
+import ARView from './ARView';
 
 export default function AskQuokkaScreen() {
     return (
         <View>
-            <Text>This is the AskQuokkaScreen</Text>
+            <ARView />
         </View>
     )
 }

@@ -79,7 +79,7 @@ const MyGuidesScreen = ({ user, guides }) => {
 
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
-  console.log(guides);
+  // console.log(guides);
 
   return (
     <SafeAreaView style={styles.container}>

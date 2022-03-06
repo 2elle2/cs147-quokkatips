@@ -18,7 +18,7 @@ import { serverTimestamp } from "firebase/firestore";
 // defining the item that will be rendered in the Flat List
 const Item = (props) => {
   const navigation = useNavigation();
-  console.log("item props", props);
+  // console.log("item props", props);
   return (
     <Pressable
       onPress={() => {
@@ -45,7 +45,7 @@ const List = ({ searchPhrase, setClicked, data, reRenderMyGuides }) => {
   let newData = data;
   if (searchPhrase) {
     newData = data.filter((item) => {
-      console.log(item);
+      // console.log(item);
       return item.name.toUpperCase().includes(searchPhrase.toUpperCase());
     });
   }

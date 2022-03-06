@@ -66,7 +66,7 @@ const GridList = ({ searchPhrase, setClicked, data }) => {
   let newData = data;
   if (searchPhrase) {
     newData = data.filter((item) => {
-      console.log(item);
+      // console.log(item);
       return item.name.toUpperCase().includes(searchPhrase.toUpperCase());
     });
   }

@@ -15,7 +15,7 @@ import ExploreScreen from "./ExploreScreen";
 export default function HomeScreen(props) {
   const [user, setUser] = useState({}); // Use state to pass user object between components
   const [guides, setGuides] = useState([]);
-  console.log(props, "homescreen");
+  // console.log(props, "homescreen");
   /**
    * Helper Function: getGuides
    *
