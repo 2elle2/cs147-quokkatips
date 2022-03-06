@@ -33,7 +33,7 @@ class FeatureDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pinned: false,
+      pinned: props.route.params.feature.pinned,
       width: 0,
       height: 0,
     };
@@ -64,7 +64,13 @@ class FeatureDetails extends React.Component {
                       opacity: 1,
                       duration: Toast.durations.SHORT,
                     });
-                    this.setState({pinned: !this.state.pinned});
+                    if (this.state.pinned) { // Unpin
+                      this.setState({pinned: false});
+                      // TODO: set pinned to false in firestore
+                    } else { // Pin
+                      this.setState({pinned: true});
+                      // TODO: set pinned to true in firestore
+                    }
                   }}
                   size={28} 
                   color="#E3A444" />
@@ -74,7 +80,9 @@ class FeatureDetails extends React.Component {
               <Text style={styles.sectionBodyText}>{feature.description}</Text>
               <TouchableOpacity 
                   style={styles.cameraTutorialButton} 
-                  onPress={() => console.log('Camera tutorial button pressed!')}
+                  onPress={() => {
+                    // TODO: navigate to camera tutorial view
+                  }}
               >
                 <Ionicons name="camera" size={40} color="white"/>
                 <Text style={styles.cameraTutorialText}>Camera Tutorial</Text>
