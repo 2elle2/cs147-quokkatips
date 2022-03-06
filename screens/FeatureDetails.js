@@ -15,27 +15,11 @@ export default function(props) {
   return <FeatureDetails {...props} navigation={navigation} />;
 }
 
-// INSTRUCTIONS SECTION: Rendering an instruction (text or image)
-const InstructionItem = (props) => {
-  return (
-    props.instruction.startsWith("http")?
-    <Image
-      style={styles.itemImage}
-      source={{ uri: props.instruction }}
-      resizeMode="cover"
-    /> : 
-    <Text style={styles.sectionBodyText}>{props.instruction}</Text>
-  );
-};
-const renderInstruction = ({ item }) => <InstructionItem instruction={item} />;
-
 class FeatureDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       pinned: props.route.params.feature.pinned,
-      width: 0,
-      height: 0,
     };
   }
 
@@ -87,15 +71,7 @@ class FeatureDetails extends React.Component {
                 <Ionicons name="camera" size={40} color="white"/>
                 <Text style={styles.cameraTutorialText}>Camera Tutorial</Text>
               </TouchableOpacity>
-              <View
-                style={{
-                  width: "100%",
-                  marginTop: 15,
-                  borderBottomColor: "#C4C4C4",
-                  borderBottomWidth: 1,
-                  marginLeft: 15,
-                }}
-              />
+              <View style={styles.divider}/>
               <Text style={styles.sectionTitleText}>Video Demo</Text>
               <View style={{marginTop: 10, marginHorizontal: 15, marginBottom: -25}}>
                 <YoutubePlayer
@@ -104,14 +80,7 @@ class FeatureDetails extends React.Component {
                   videoId={feature.videoId}
                 />
               </View>
-              <View
-                style={{
-                  width: "100%",
-                  borderBottomColor: "#C4C4C4",
-                  borderBottomWidth: 1,
-                  marginLeft: 15,
-                }}
-              />
+              <View style={styles.divider}/>
               <Text style={styles.sectionTitleText}>Instructions</Text>
               {feature.instructions.map(instruction => {
                 return (
@@ -182,6 +151,7 @@ const styles = StyleSheet.create({
       shadowOffset: { width: -1, height: 4 },
       shadowOpacity: 0.2,
       shadowRadius: 5,
+      marginBottom: 15,
     },
     cameraTutorialText: {
       fontSize: 16,
@@ -214,4 +184,10 @@ const styles = StyleSheet.create({
     scrollView: {
       width: "100%",
     },
+    divider: {
+      width: "100%",
+      borderBottomColor: "#C4C4C4",
+      borderBottomWidth: 1,
+      marginLeft: 15,
+    }
 });
