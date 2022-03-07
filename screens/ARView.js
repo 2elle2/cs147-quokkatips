@@ -68,15 +68,148 @@ export default function ARView() {
                     setQuokkaMsg(`Hi there! How can I help?`);
                 }
                 return (
-                    <View></View>
+                    <>
+                    <View style={styles.quokkaText}>
+                        <Image
+                            style={styles.quokkaImage}
+                            source={require('../assets/Quokkas/neutral-standing.png')}
+                        />
+                        <View style={styles.textBubble1}>
+                            <Text style={styles.text}>
+                                {quokkaMsg}
+                            </Text>
+                        </View>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate("Chat", {
+                                // messages: messages,
+                                // setMessages: setMessages,
+                            },
+                            
+                            setTimeout(function(){
+                                console.log("delay message"),
+                                setView(2)}, 1000)  //need to change this later, based on user selections
+                            );
+                        }}
+                        style={styles.chat}
+                    >
+                        <Ionicons name="chatbubbles" size={32} color={Colors.white} />
+                        <Text style={styles.chatText}>Chat</Text>
+                    </TouchableOpacity>
+                    </>
                 );
             case 2:
-                if (quokkaMsg !== "This is the 2nd view screen!") {
-                    setQuokkaMsg("This is the 2nd view screen!");
+                if (quokkaMsg !== "Once you have Zoom open, \nclick the green \"share \nscreen\" button.") {
+                    setQuokkaMsg("Once you have Zoom open, \nclick the green \"share \nscreen\" button.");
                 }
                 return (
-                    <View></View>
+                    <>
+                    <TouchableOpacity onPress={() => setView(3)}>
+                        <Image style={styles.arrowRight} source={require('../assets/Arrows/arrow-t.png')}/>
+                    </TouchableOpacity>
+                    <View style={styles.quokkaText}>
+                        <Image
+                            style={styles.quokkaImage}
+                            source={require('../assets/Quokkas/neutral-standing.png')}
+                        />
+                        <View style={styles.textBubble2}>
+                            <Text style={styles.text}>
+                                {quokkaMsg}
+                            </Text>
+                        </View>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate("Chat", {
+                                // messages: messages,
+                                // setMessages: setMessages,
+                            },
+                            setTimeout(function(){
+                                console.log("delay message"),
+                                setView(3)}, 1000)  //need to change this later, based on user selections
+                            );
+                        }}
+                        style={styles.chat}
+                    >
+                        <Ionicons name="chatbubbles" size={32} color={Colors.white} />
+                        <Text style={styles.chatText}>Chat</Text>
+                    </TouchableOpacity>
+                    </>
                 );
+                case 3:
+                    if (quokkaMsg !== "Click on the screen or app \nyou want to share. Finally, \nclick the blue \"share\" button.") {
+                        setQuokkaMsg("Click on the screen or app \nyou want to share. Finally, \nclick the blue \"share\" button.");
+                    }
+                    return (
+                        <>
+                        <TouchableOpacity onPress={() => {setView(4)}}>
+                            <Image style={styles.arrowUp} source={require('../assets/Arrows/arrow-t.png')}/>
+                        </TouchableOpacity>
+                        <View style={styles.quokkaText}>
+                            <Image
+                                style={styles.quokkaImage}
+                                source={require('../assets/Quokkas/neutral-standing.png')}
+                            />
+                            <View style={styles.textBubble2}>
+                                <Text style={styles.text}>
+                                    {quokkaMsg}
+                                </Text>
+                            </View>
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("Chat", {
+                                    // messages: messages,
+                                    // setMessages: setMessages,
+                                },
+                                setTimeout(function(){
+                                    console.log("delay message"),
+                                    setView(4)}, 1000)  //need to change this later, based on user selections
+                                );
+                            }}
+                            style={styles.chat}
+                        >
+                            <Ionicons name="chatbubbles" size={32} color={Colors.white} />
+                            <Text style={styles.chatText}>Chat</Text>
+                        </TouchableOpacity>
+                        </>
+                    );
+                    case 4:
+                        if (quokkaMsg !== "Great job! You set up \nscreen sharing \nsuccessfully! 👍") {
+                            setQuokkaMsg("Great job! You set up \nscreen sharing \nsuccessfully! 👍");
+                        }
+                        return (
+                            <>
+                            <View style={styles.quokkaText}>
+                                <Image
+                                    style={styles.quokkaImage}
+                                    source={require('../assets/Quokkas/dance2.png')}
+                                />
+                                <View style={styles.textBubble2}>
+                                    <Text style={styles.text}>
+                                        {quokkaMsg}
+                                    </Text>
+                                </View>
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate("Chat", {
+                                        // messages: messages,
+                                        // setMessages: setMessages,
+                                    },
+                                    setTimeout(function(){
+                                        console.log("delay message"),
+                                        setView(1)}, 1000)  //need to change this later, based on user selections
+                                    );
+                                }}
+                                style={styles.chat}
+                            >
+                                <Ionicons name="chatbubbles" size={32} color={Colors.white} />
+                                <Text style={styles.chatText}>Chat</Text>
+                            </TouchableOpacity>
+                            </>
+                        );
         }
     };
 
@@ -97,30 +230,7 @@ export default function ARView() {
 
                 {renderSwitch()}
 
-                <View style={styles.quokkaText}>
-                    <Image
-                        style={styles.quokkaImage}
-                        source={require('../assets/Quokkas/neutral-standing.png')}
-                    />
-                    <View style={styles.textBubble1}>
-                        <Text style={styles.text}>
-                            {quokkaMsg}
-                        </Text>
-                    </View>
-                </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.navigate("Chat", {
-                            // messages: messages,
-                            // setMessages: setMessages,
-                        });
-                    }}
-                    style={styles.chat}
-                >
-                    <Ionicons name="chatbubbles" size={32} color={Colors.white} />
-                    <Text style={styles.chatText}>Chat</Text>
-                </TouchableOpacity>
-
+                
             </Camera>
         </SafeAreaView>
     );
@@ -170,6 +280,15 @@ const styles = StyleSheet.create({
         padding: 8,
         height: 36,
     },
+    textBubble2: {
+        // width: 240,
+        alignItems: "center",
+        backgroundColor: Colors.lightgray,
+        borderRadius: 8,
+        padding: 8,
+        height: 76,
+
+    },
     text: {
         color: Colors.black,
         fontSize: 16,
@@ -199,6 +318,21 @@ const styles = StyleSheet.create({
         paddingBottom: 2,
     },
 
+
+    arrowRight: {
+        width: 100,
+        height: 100,
+        left: 40,
+        top: -80
+    },
+
+    arrowUp: {
+        width: 100,
+        height: 100,
+        left: 240,
+        top: -64,
+        transform: [{ rotate: '250deg' }]
+    }
 
 
 })

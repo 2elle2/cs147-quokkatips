@@ -4,7 +4,15 @@
 
 import React, { useState, useCallback, useEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
+
+const quokkaAvatar = require('../assets/Quokkas/neutral-standing.png');
  
+const quokka = {
+  _id: 2,
+  name: 'Quokka',
+  avatar: quokkaAvatar,
+}
+
 export default function Chat() {
   const [messages, setMessages] = useState([]);
  
@@ -12,16 +20,29 @@ export default function Chat() {
     setMessages([
       {
         _id: 1,
-        text: 'Hello developer',
+        text: 'Hi there! How can I help?',  
         createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
+        quickReplies: {
+          type: 'radio', // or 'checkbox',
+          keepIt: true,
+          values: [
+            {
+              title: 'I need help sharing my screen',
+              value: 'help_share',
+            },
+            {
+              title: 'I need help recording my screen',
+              value: 'help_recording',
+            },
+          ],
         },
+        user: quokka,
       },
     ])
   }, [])
+
+
+  // TODO: Quokka's next message: "Got it! Let's go back to the camera view for more instructions."
  
   const onSend = useCallback((messages = []) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
@@ -37,3 +58,4 @@ export default function Chat() {
     />
   )
 }
+

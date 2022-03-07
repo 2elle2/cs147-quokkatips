@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import { useState } from "react";
 
 import HomeScreen from "./screens/HomeScreen";
@@ -21,6 +21,7 @@ import ReviewDetails from "./screens/ReviewDetails";
 import Chat from "./screens/Chat";
 
 import { LogBox } from "react-native";
+import { AntDesign } from '@expo/vector-icons';
 
 LogBox.ignoreAllLogs()
 
@@ -107,7 +108,29 @@ export default function App() {
 
         <Stack.Screen name="ViewAll" component={ViewAll} />
         <Stack.Screen name="FeatureDetails" component={FeatureDetails} />
-        <Stack.Screen name="Chat" component={Chat} />
+        <Stack.Screen 
+          name="Chat" 
+          component={Chat} 
+          options={{
+            title: "Chat",
+            headerShown: true,
+            headerMode: 'screen',
+            headerBackTitle: 'Back',
+            headerTintColor: Colors.yellow,
+            headerTitleStyle: {
+              fontSize: 22,
+              fontWeight: "700",
+              color: Colors.black,
+            },
+            // headerRight: () => (
+            //   <Pressable onPress={() => navigation.navigate('ARView')}
+            //   >
+            //     <AntDesign name="caretdown" size={24} color={Colors.yellow} />
+            //   </Pressable>
+            // ),
+            // ...TransitionPresets.ModalSlideFromBottomIOS 
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
