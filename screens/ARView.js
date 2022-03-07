@@ -100,9 +100,48 @@ export default function ARView() {
                     </>
                 );
             case 2:
-                if (quokkaMsg !== "Once you have Zoom open, \nclick the green \"share \nscreen\" button.") {
-                    setQuokkaMsg("Once you have Zoom open, \nclick the green \"share \nscreen\" button.");
-                }
+// <<<<<<< HEAD
+//                 if (quokkaMsg !== "Once you have Zoom open, \nclick the green \"share \nscreen\" button.") {
+//                     setQuokkaMsg("Once you have Zoom open, \nclick the green \"share \nscreen\" button.");
+// =======
+//                 if (quokkaMsg !== "Once you have Zoom open, click the green 'Share Screen' button.") {
+//                     setQuokkaMsg("Once you have Zoom open, click the green 'Share Screen' button.");
+//                 }
+//                 return (
+//                     <View></View>
+//                 );
+//             case 3:
+//                 if (quokkaMsg !== "Click on the screen or app you want to share. Finish by clicking the blue 'Share' button.") {
+//                     setQuokkaMsg("Click on the screen or app you want to share. Finish by clicking the blue 'Share' button.");
+//                 }
+//                 return (
+//                     <View></View>
+//                 );
+//             case 4:
+//                 if (quokkaMsg !== "Great job! You set up screen sharing successfully.") {
+//                     setQuokkaMsg("Great job! You set up screen sharing successfully.");
+//                 }
+//                 return (
+//                     <View></View>
+//                 );
+//             case 5:
+//                 if (quokkaMsg !== "Once you have Zoom open, click the circular 'Record' button") {
+//                     setQuokkaMsg("Once you have Zoom open, click the circular 'Record' button");
+//                 }
+//                 return (
+//                     <View></View>
+//                 );
+//             case 6:
+//                 if (quokkaMsg !== "Now, select your preferred storage option.") {
+//                     setQuokkaMsg("Now, select your preferred storage option.");
+//                 }
+//                 return (
+//                     <View></View>
+//                 );
+//             case 7:
+//                 if (quokkaMsg !== "Great job! You set up screen recording successfully.") {
+//                     setQuokkaMsg("Great job! You set up screen recording successfully.");
+//                 }
                 return (
                     <>
                     <TouchableOpacity onPress={() => setView(3)}>
