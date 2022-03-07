@@ -13,9 +13,10 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Pressable, View, TouchableOpacity, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import Colors from '../Themes/colors';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ARView() {
     const [hasPermission, setHasPermission] = useState(null);
@@ -74,50 +75,119 @@ export default function ARView() {
     }
 
     return (
-        <View styles={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+                <Pressable style={styles.hamburgerIcon}>
+                    <Ionicons name="ios-menu-outline" size={40} color="#E3A444" />
+                </Pressable>
+                <Text style={styles.headerText}>Ask Quokka</Text>
+            </View>
 
             <Camera
                 type={Camera.Constants.Type.back}
                 style={{ height:700  }}
             >
-                <Image
-                    style={styles.quokkaImage}
-                    source={require('../assets/Quokkas/dance2.png')}
-                />
+                <View style={styles.cameraViewArea}></View>
 
-                {/*Add render switch*/}
+                <View style={styles.quokkaText}>
+                    <Image
+                        style={styles.quokkaImage}
+                        source={require('../assets/Quokkas/neutral-standing.png')}
+                    />
 
-                <View style={styles.textBubble}>
-                    <Text style={styles.text}>
-                        {
-                            `Hi there! How can I help you?`
-                        }
-                    </Text>
+                    {/*Add render switch*/}
+
+                    <View style={styles.textBubble1}>
+                        <Text style={styles.text}>
+                            {`Hi there! How can I help?`}
+                        </Text>
+                    </View>
+
                 </View>
+                    
+                <TouchableOpacity style={styles.chat}>
+                    <Ionicons name="chatbubbles" size={32} color={Colors.white} />
+                    <Text style={styles.chatText}>Chat</Text>
+                </TouchableOpacity>
+                
             </Camera>
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
-    textBubble: {
-        position: 'absolute',
-        top: 400,
-        left: 50,
+    header: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "90%",
+        height: 30,
+        marginBottom: 6,
+        alignSelf: "center",
+      },
+      headerText: {
+        fontSize: 22,
+        fontWeight: "700",
+      },
+      hamburgerIcon: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        position: "absolute",
+        left: 0,
+      },
+
+    cameraViewArea: {
+        flex: 6,
+        // backgroundColor: "red",  //for testing purposes
+    },
+
+    quokkaText: {
+        flexDirection: "row",
+        flex: 1.5,
+    },
+
+    textBubble1: {
+        // width: 240,
+        alignItems: "center",
         backgroundColor: Colors.lightgray,
         borderRadius: 8,
         padding: 8,
+        height: 36,
     },
     text: {
         color: Colors.black,
-        fontSize: 20,
+        fontSize: 16,
     },
     quokkaImage: {
-
         width: 100,
         height: 100,
-    }
+        // position: "absolute",
+        // top: 44,
+        // left: 16,
+    },
+
+    chat: {
+        position: "absolute",
+        bottom: 44,
+        right: 16,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: Colors.yellow,
+        width: 64,
+        height: 64,
+        borderRadius: 64/2,
+    },
+    chatText: {
+        color: Colors.white,
+        fontSize: 16,
+        paddingBottom: 2,
+    },
+
+
+
 })
