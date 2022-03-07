@@ -28,6 +28,7 @@ export default function ARView() {
         "type": 1,
         "text": "Hello! Good Morning!"
     }]);
+    const [quokkaMsg, setQuokkaMsg] = useState('');
 
 
     /**
@@ -60,11 +61,23 @@ export default function ARView() {
      * der views after certain amount of time passes.
      */
     const renderSwitch = () => {
-        // if (view === 1) {
-        return (
-            <View></View>
-        );
-        // }
+        switch (view) {
+            case 1:
+                // Need to check quokkaMsg so we don't set off an infinite loop
+                if (quokkaMsg !== `Hi there! How can I help?`) {
+                    setQuokkaMsg(`Hi there! How can I help?`);
+                }
+                return (
+                    <View></View>
+                );
+            case 2:
+                if (quokkaMsg !== "This is the 2nd view screen!") {
+                    setQuokkaMsg("This is the 2nd view screen!");
+                }
+                return (
+                    <View></View>
+                );
+        }
     };
 
     return (
@@ -83,7 +96,7 @@ export default function ARView() {
                 <View style={styles.cameraViewArea}></View>
 
                 {renderSwitch()}
-                
+
                 <View style={styles.quokkaText}>
                     <Image
                         style={styles.quokkaImage}
@@ -91,7 +104,7 @@ export default function ARView() {
                     />
                     <View style={styles.textBubble1}>
                         <Text style={styles.text}>
-                            {`Hi there! How can I help?`}
+                            {quokkaMsg}
                         </Text>
                     </View>
                 </View>
