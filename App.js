@@ -21,7 +21,7 @@ import ReviewDetails from "./screens/ReviewDetails";
 
 import { LogBox } from "react-native";
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs();
 
 import Colors from "./Themes/colors";
 import { CardStyleInterpolators } from "@react-navigation/stack";
@@ -39,11 +39,15 @@ export default function App() {
       opacity: current.progress,
     },
   });
+  console.log("USERSS IN APP JS", user);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{ 
-          headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -67,10 +71,11 @@ export default function App() {
 
         <Stack.Screen
           name="Home"
-          options={{ 
-            headerShown: false, 
+          options={{
+            headerShown: false,
             gestureEnabled: false,
-            cardStyleInterpolator: forFade }}
+            cardStyleInterpolator: forFade,
+          }}
         >
           {(props) => (
             <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />
@@ -95,11 +100,12 @@ export default function App() {
           {(props) => <ExploreStack {...props} user={user} guides={guides} />}
         </Stack.Screen> */}
 
-        <Stack.Screen 
+        <Stack.Screen
           name="ExploreSearch"
-          options={{ 
-            headerShown: false, 
-            cardStyleInterpolator: forFade }}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: forFade,
+          }}
         >
           {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
         </Stack.Screen>
