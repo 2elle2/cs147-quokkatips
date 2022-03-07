@@ -7,6 +7,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import { useIsFocused } from "@react-navigation/native";
 
 /* -------- Begin dummy data for testing purposes. Won't use in actual app. -------- */
 const FEATURES = [
@@ -22,6 +23,10 @@ const FEATURES = [
 ];
 /* -------- End dummy data for testing purposes. Won't use in actual app. -------- */
 
+export default function(props) {
+  const isFocused = useIsFocused();
+  return <AppDetailsFeatures {...props} />;
+}
 
 class AppDetailsFeatures extends React.Component {
   constructor(props) {
@@ -44,10 +49,19 @@ class AppDetailsFeatures extends React.Component {
       feature.id = featureSnap.id; // Set the id prop on the review object
       return feature;
     });
+
+    // Sort by alphabetical
+    features.sort(function(featureA, featureB) {
+      if (featureA.name.substring(2) < featureB.name.substring(2)) return -1;
+      if (featureA.name.substring(2) > featureB.name.substring(2)) return 1;
+      return 0;
+    });
+
     this.setState({ features });
   }
 
   render() {
+    console.log("point b user", this.props.user);
     return <SafeAreaView style={styles.container}>
     <SearchBar
       searchPhrase={this.state.searchPhrase}
@@ -61,6 +75,7 @@ class AppDetailsFeatures extends React.Component {
         searchPhrase={this.state.searchPhrase}
         data={this.state.features}
         setClicked={(b) => this.setState({ clicked: b })}
+        user={this.props.user}
       />
     }
   </SafeAreaView>
@@ -117,6 +132,4 @@ const styles = StyleSheet.create({
   },
   sortText: {},
 });
-
-export default AppDetailsFeatures;
 

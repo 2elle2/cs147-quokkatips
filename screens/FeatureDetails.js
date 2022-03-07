@@ -4,7 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { RootSiblingParent } from 'react-native-root-siblings';
 import Toast from 'react-native-root-toast';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Image from 'react-native-image-auto-height';
 import YoutubePlayer from 'react-native-youtube-iframe';
 
@@ -17,10 +16,16 @@ export default function(props) {
 
 class FeatureDetails extends React.Component {
   constructor(props) {
+    console.log("aaaa", props.route.params);
     super(props);
     this.state = {
-      pinned: props.route.params.feature.pinned,
+      user: props.route.params.user,
+      pinned: props.route.params.user.pinned.includes(props.route.params.feature.id),
+      unread: props.route.params.user.unread.includes(props.route.params.feature.id)
     };
+  }
+
+  componentDidMount() {
   }
 
   render() {
@@ -31,7 +36,16 @@ class FeatureDetails extends React.Component {
         <SafeAreaView style={styles.body}>
             <View style={styles.header}>
                 <Pressable
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {
+                      if (this.state.unread) {
+                        this.props.route.param
+                        let index = this.props.route.params.user.unread.indexOf(feature.id);
+                        if (index > -1) {
+                          this.props.route.params.user.unread.splice(index, 1);
+                        }
+                      }
+                      navigation.goBack();
+                    }}
                     style={styles.backButton}
                 >
                     <Ionicons name="chevron-back" size={28} color="#E3A444" />
@@ -50,9 +64,14 @@ class FeatureDetails extends React.Component {
                     });
                     if (this.state.pinned) { // Unpin
                       this.setState({pinned: false});
+                      let index = this.props.route.params.user.pinned.indexOf(feature.id);
+                      if (index > -1) {
+                        this.props.route.params.user.pinned.splice(index, 1);
+                      }
                       // TODO: set pinned to false in firestore
                     } else { // Pin
                       this.setState({pinned: true});
+                      this.props.route.params.user.pinned.push(feature.id);
                       // TODO: set pinned to true in firestore
                     }
                   }}
@@ -72,6 +91,13 @@ class FeatureDetails extends React.Component {
                 <Text style={styles.cameraTutorialText}>Camera Tutorial</Text>
               </TouchableOpacity>
               <View style={styles.divider}/>
+              {feature.updates?
+              <View style={this.state.unread? {backgroundColor: '#ECECEC'}: {}}>
+                <Text style={styles.sectionTitleText}>What's New 🆕</Text>
+                <Text style={styles.sectionBodyText}>{feature.updates}</Text>
+                <View style={{height: 15}}></View>
+                <View style={styles.divider}/>
+              </View> : <View/>}
               <Text style={styles.sectionTitleText}>Video Demo</Text>
               <View style={{marginTop: 10, marginHorizontal: 15, marginBottom: -25}}>
                 <YoutubePlayer
@@ -155,7 +181,7 @@ const styles = StyleSheet.create({
     },
     cameraTutorialText: {
       fontSize: 16,
-      color: Colors.white,
+      color: 'white',
     },
     sectionTitleText: {
       marginTop: 15,
@@ -167,7 +193,7 @@ const styles = StyleSheet.create({
       marginHorizontal: 15
     },
     sectionBodyText: {
-      marginTop: 15,
+      marginTop: 10,
       fontSize: 16,
       color: 'black',
       marginHorizontal: 15
@@ -189,5 +215,5 @@ const styles = StyleSheet.create({
       borderBottomColor: "#C4C4C4",
       borderBottomWidth: 1,
       marginLeft: 15,
-    }
+    },
 });

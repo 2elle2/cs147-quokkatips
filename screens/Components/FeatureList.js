@@ -11,30 +11,50 @@ import {
   Pressable,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 // defining the item that will be rendered in the Flat List
 const Item = (props) => {
   const navigation = useNavigation();
+  let unread = props.user.unread.includes(props.feature.id);
+  let pinned = props.user.pinned.includes(props.feature.id);
   return (
     <Pressable
+      style={unread? {backgroundColor: '#ECECEC'}: {}}
       onPress={() => {
+        console.log("bbbb", props.user);
         navigation.navigate("FeatureDetails", {
-          feature: props.feature,
+          feature: props.feature, user: props.user,
         });
       }}
     >
       <View style={styles.itemStyle}>
-        <Text style={styles.featureName}>{props.feature.name}</Text>
-        <Text numberOfLines={2} ellipsizeMode='tail' style={styles.featureDescription}>{props.feature.description}</Text>
+          {unread? 
+            <View style={styles.unreadCircle}/> :
+            <View style={styles.readCircle}/>
+          }
+          {unread? 
+            <Text style={[{fontWeight: 'bold'}, styles.featureName]}>{props.feature.name}</Text> :
+            <Text style={styles.featureName}>{props.feature.name}</Text> 
+          }
+          {pinned? 
+            <Ionicons style={styles.bookmarkIcon} name="bookmark" color="#E3A444" size={15}/> : 
+            <View/>
+          }
       </View>
+      <Text numberOfLines={2} ellipsizeMode='tail' style={styles.featureDescription}>{props.feature.description}</Text>
     </Pressable>
   );
 };
 
 // the filter
-const List = ({ searchPhrase, setClicked, data }) => {
+const List = (props) => {
+  let data = props.data;
+  let setClicked = props.setClicked;
+  let searchPhrase = props.searchPhrase;
+  let user = props.user;
   let newData = data;
+  console.log("point a user", user);
   if (searchPhrase) {
     newData = data.filter((item) => {
       return item.name.toUpperCase().includes(searchPhrase.toUpperCase());
@@ -43,7 +63,7 @@ const List = ({ searchPhrase, setClicked, data }) => {
   const renderItem = ({ item }) => {
     // when no input, show all
     if (searchPhrase === "") {
-      return <Item feature={item} />;
+      return <Item feature={item} user={user} />;
     }
     // filter of the name
     if (
@@ -51,7 +71,7 @@ const List = ({ searchPhrase, setClicked, data }) => {
         .toUpperCase()
         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))
     ) {
-      return <Item feature={item} />;
+      return <Item feature={item} user={user} />;
     }
   };
 
@@ -61,10 +81,9 @@ const List = ({ searchPhrase, setClicked, data }) => {
       <View
         style={{
           padding: 1,
-          marginVertical: 8,
           backgroundColor: '#C4C4C4',
           height: 0.5,
-          marginLeft: 10
+          marginLeft: 20
         }}
       />
     );
@@ -95,27 +114,46 @@ const styles = StyleSheet.create({
   list__container: {
     flex: 1,
     marginTop: 12,
-    marginLeft: 10,
     width: "100%",
   },
   listView: {
     flex: 1,
   },
   itemStyle: {
-    flex: 1,
-    paddingHorizontal: 8,
+    display: "flex",
+    marginTop: 8,
     paddingVertical: 4,
+    flexDirection: "row",
+    alignItems: "center",
   },
   featureName: {
-    marginHorizontal: 8,
     fontSize: 16,
     color: 'black',
   },
   featureDescription: {
-    marginHorizontal: 8,
-    paddingRight: 8,
     marginTop: 3,
     fontSize: 16,
+    marginHorizontal: 20,
     color: '#888888',
+    marginBottom: 8,
+  },
+  unreadCircle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    margin: 5,
+    backgroundColor: "#E3A444",
+  },
+  readCircle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    margin: 5,
+    backgroundColor: "transparent",
+  },
+  bookmarkIcon: {
+    position: 'absolute',
+    right: 10,
+    top: 5,
   }
 });
