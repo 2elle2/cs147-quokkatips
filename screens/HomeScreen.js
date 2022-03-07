@@ -112,7 +112,11 @@ export default function HomeScreen(props) {
         {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
       </Tab.Screen>
 
-      <Tab.Screen name="Ask Quokka" component={AskQuokkaScreen} />
+      <Tab.Screen 
+        name="Ask Quokka" 
+        options={{ headerShown: false, cardStyleInterpolator: forFade }}
+        component={AskQuokkaScreen} >
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }
