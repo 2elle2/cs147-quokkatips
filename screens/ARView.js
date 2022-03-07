@@ -17,10 +17,18 @@ import { StyleSheet, Text, SafeAreaView, Pressable, View, TouchableOpacity, Imag
 import { Camera } from 'expo-camera';
 import Colors from '../Themes/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { Chat } from './Chat';
+import { useNavigation } from "@react-navigation/native";
 
 export default function ARView() {
+    const navigation = useNavigation();
     const [hasPermission, setHasPermission] = useState(null);
-    const [view, setView] = useState(1);  //increment how we progress through tutorial
+    const [view, setView] = useState(1);  // increment how we progress through tutorial
+    const [messages, setMessages] = useState([{
+        "type": 1,
+        "text": "Hello! Good Morning!"
+    }]);
+
 
     /**
      * Check to see if the user has given permission to use their camera.
@@ -45,8 +53,6 @@ export default function ARView() {
     };
 
     /**
-     * Unimplemented yet.
-     * 
      * After each view change, renders the next view. For example, 
      * renders view 1 (Quokka saying "How can I help you?") on view
      * 1, followed by user response, then press of next view button 
@@ -56,23 +62,10 @@ export default function ARView() {
     const renderSwitch = () => {
         // if (view === 1) {
         return (
-            <View
-                style={{
-                    position: 'absolute',
-                    top: 200,
-                }}
-            >
-                <Text
-                    style={{
-                        color: 'white'
-                    }}
-                >
-                    Hi there! How can I help you?
-                </Text>
-            </View>
+            <View></View>
         );
         // }
-    }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -85,31 +78,36 @@ export default function ARView() {
 
             <Camera
                 type={Camera.Constants.Type.back}
-                style={{ height:700  }}
+                style={{ height: 700 }}
             >
                 <View style={styles.cameraViewArea}></View>
 
+                {renderSwitch()}
+                
                 <View style={styles.quokkaText}>
                     <Image
                         style={styles.quokkaImage}
                         source={require('../assets/Quokkas/neutral-standing.png')}
                     />
-
-                    {/*Add render switch*/}
-
                     <View style={styles.textBubble1}>
                         <Text style={styles.text}>
                             {`Hi there! How can I help?`}
                         </Text>
                     </View>
-
                 </View>
-                    
-                <TouchableOpacity style={styles.chat}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate("Chat", {
+                            // messages: messages,
+                            // setMessages: setMessages,
+                        });
+                    }}
+                    style={styles.chat}
+                >
                     <Ionicons name="chatbubbles" size={32} color={Colors.white} />
                     <Text style={styles.chatText}>Chat</Text>
                 </TouchableOpacity>
-                
+
             </Camera>
         </SafeAreaView>
     );
@@ -128,18 +126,18 @@ const styles = StyleSheet.create({
         height: 30,
         marginBottom: 6,
         alignSelf: "center",
-      },
-      headerText: {
+    },
+    headerText: {
         fontSize: 22,
         fontWeight: "700",
-      },
-      hamburgerIcon: {
+    },
+    hamburgerIcon: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         position: "absolute",
         left: 0,
-      },
+    },
 
     cameraViewArea: {
         flex: 6,
@@ -180,7 +178,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.yellow,
         width: 64,
         height: 64,
-        borderRadius: 64/2,
+        borderRadius: 64 / 2,
     },
     chatText: {
         color: Colors.white,

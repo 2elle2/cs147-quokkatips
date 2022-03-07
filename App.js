@@ -18,6 +18,7 @@ import ExploreSearch from "./screens/ExploreSearch";
 import ViewAll from "./screens/ViewAll";
 import FeatureDetails from "./screens/FeatureDetails";
 import ReviewDetails from "./screens/ReviewDetails";
+import Chat from "./screens/Chat";
 
 import { LogBox } from "react-native";
 
@@ -106,6 +107,7 @@ export default function App() {
 
         <Stack.Screen name="ViewAll" component={ViewAll} />
         <Stack.Screen name="FeatureDetails" component={FeatureDetails} />
+        <Stack.Screen name="Chat" component={Chat} />
       </Stack.Navigator>
     </NavigationContainer>
   );
