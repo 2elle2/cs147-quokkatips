@@ -68,20 +68,13 @@ const RemoveModal = (props) => {
               <AntDesign name="closecircleo" size={30} color={Colors.black} />
             </TouchableOpacity>
             {/* CLOSE BUTTON ENDS */}
-            <Text style={styles.modalTitle}>Logout</Text>
-            <Text style={styles.modalMessage}>
+            <Text style={styles.modalTitle}>
+              Are you sure you want to log out?
+            </Text>
+            {/* <Text style={styles.modalMessage}>
               You will be logged out of your account, but can always log back in
               later.
-            </Text>
-            <TouchableOpacity
-              style={[{ backgroundColor: "#E3A444" }, styles.modalButton]}
-              onPress={() => {
-                // When "No, keep this app" is pressed
-                parent.setState({ showRemoveAlert: false }); // Hide the modal window
-              }}
-            >
-              <Text style={styles.modalButtonText}>No, stay logged in</Text>
-            </TouchableOpacity>
+            </Text> */}
             <TouchableOpacity
               style={[
                 {
@@ -91,9 +84,30 @@ const RemoveModal = (props) => {
                 },
                 styles.modalButton,
               ]}
-              onPress={() => props.navigation.navigate("Welcome")}
+              onPress={async () => {
+                parent.setState({ showRemoveAlert: false }); // Hide the modal window
+                const auth = getAuth();
+                await auth.signOut();
+                props.navigation.navigate("Welcome");
+              }}
             >
-              <Text style={styles.modalButtonTextRemove}>Yes, logout</Text>
+              <Text style={styles.modalButtonTextRemove}>Log out</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                {
+                  backgroundColor: "white",
+                  borderColor: Colors.gray,
+                  borderWidth: 1,
+                },
+                styles.modalButton,
+              ]}
+              onPress={() => {
+                // When "No, keep this app" is pressed
+                parent.setState({ showRemoveAlert: false }); // Hide the modal window
+              }}
+            >
+              <Text style={styles.modalButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
@@ -276,25 +290,37 @@ class HomeScreen extends React.Component {
           ]}
         >
           <View style={styles.mainDrawer}>
-            <Text style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>
-              {this.state.user.name}
-            </Text>
-            <Image
-              style={styles.userPicture}
-              source={{ uri: this.state.user.picture }}
-            />
-            <Text>Stuff</Text>
-            <Button title="Close menu" onPress={this.showSlidingDrawer} />
-            <Pressable
-              style={styles.removeButton}
-              onPress={async () => {
-                const auth = getAuth();
-                await auth.signOut();
-                this.setState({ showRemoveAlert: true });
-              }}
-            >
-              <Text style={styles.removeText}>Logout</Text>
-            </Pressable>
+            <View style={styles.userInfoContainer}>
+              <Image
+                style={styles.userPicture}
+                source={{ uri: this.state.user.picture }}
+              />
+              <Text
+                style={{
+                  fontSize: 24,
+                  fontWeight: "500",
+                  marginLeft: 10,
+                  color: "white",
+                }}
+              >
+                {this.state.user.name}
+              </Text>
+            </View>
+            {/* <Text>Stuff</Text>
+            <Button title="Close menu" onPress={this.showSlidingDrawer} /> */}
+            <View style={styles.drawerLinksContainer}>
+              <Pressable onPress={() => navigation.navigate("AboutScreen")}>
+                <Text style={styles.drawerLink}>About QuokkaTips</Text>
+              </Pressable>
+              <Pressable
+                style={styles.drawerLink}
+                onPress={async () => {
+                  this.setState({ showRemoveAlert: true });
+                }}
+              >
+                <Text style={styles.removeText}>Logout</Text>
+              </Pressable>
+            </View>
           </View>
           <Pressable
             style={styles.outSideDrawer}
@@ -322,10 +348,35 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#FFC107",
-    justifyContent: "space-evenly",
     maxWidth: 290,
     alignItems: "center",
+    shadowColor: "black",
+    shadowOffset: { width: -1, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+  userInfoContainer: {
+    height: "15%",
+    width: 290,
+    backgroundColor: Colors.yellow,
+    paddingLeft: 35,
+    paddingTop: 30,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  drawerLinksContainer: {
+    width: "100%",
+    height: "850%",
+    backgroundColor: "white",
+    paddingLeft: 35,
+    paddingTop: 15,
+  },
+  drawerLink: {
+    fontSize: 20,
+    fontWeight: "500",
+    margin: 20,
   },
   outSideDrawer: {
     height: "100%",
@@ -410,7 +461,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   modalButtonText: {
-    color: "white",
+    color: "gray",
     fontSize: 20,
     fontWeight: "500",
     textAlign: "center",
