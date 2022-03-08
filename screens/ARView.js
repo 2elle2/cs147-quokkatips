@@ -177,8 +177,8 @@ export default function ARView() {
                     </>
                 );
                 case 3:
-                    if (quokkaMsg !== "Click on the screen or app \nyou want to share. Finally, \nclick the blue \"share\" button.") {
-                        setQuokkaMsg("Click on the screen or app \nyou want to share. Finally, \nclick the blue \"share\" button.");
+                    if (quokkaMsg !== "Click on the screen you\nwant to share, and click\nthe blue \"share\" button.") {
+                        setQuokkaMsg("Click on the screen you\nwant to share, and click\nthe blue \"share\" button.");
                     }
                     return (
                         <>

@@ -22,20 +22,20 @@ export default function Chat() {
         _id: 1,
         text: 'Hi there! How can I help?',  
         createdAt: new Date(),
-        quickReplies: {
-          type: 'radio', // or 'checkbox',
-          keepIt: true,
-          values: [
-            {
-              title: 'I need help sharing my screen',
-              value: 'help_share',
-            },
-            {
-              title: 'I need help recording my screen',
-              value: 'help_recording',
-            },
-          ],
-        },
+        // quickReplies: {
+        //   type: 'radio', // or 'checkbox',
+        //   keepIt: true,
+        //   values: [
+        //     {
+        //       title: 'I need help sharing my screen',
+        //       value: 'help_share',
+        //     },
+        //     {
+        //       title: 'I need help recording my screen',
+        //       value: 'help_recording',
+        //     },
+        //   ],
+        // },
         user: quokka,
       },
     ])
