@@ -1,11 +1,11 @@
 import React from "react";
 import { SafeAreaView, View, StyleSheet, Text, Pressable } from "react-native";
-
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import AppDetailsInfo from "./AppDetailsInfo";
 import AppDetailsFeatures from "./AppDetailsFeatures";
+import { useIsFocused } from "@react-navigation/native";
 
 // Forces the component to rerender
 function useForceUpdate() {
@@ -17,11 +17,16 @@ export default function AppDetails(props) {
   const { app } = props.route.params;
   const navigation = useNavigation();
   const Tab = createMaterialTopTabNavigator();
-
   const user = props.user; // The currently logged in user
   const rerenderParentCallback = useForceUpdate(); // Called when the child updates
+  useIsFocused();
 
-  console.log(props.user + 'asdf');
+  // Count the total number of feature updates
+  let unreadCount = 0;
+  for (const [, features] of Object.entries(user.unread? user.unread: {})) {
+    unreadCount += features.length;
+  }
+
   return (
     // Screen header
     // Top tab navigator
@@ -55,7 +60,6 @@ export default function AppDetails(props) {
               app={app}
               user={user}
               parentCallback={rerenderParentCallback}
-              //reRenderMyGuides={props.reRenderMyGuides}
             />
           )}
           options={{
@@ -76,45 +80,34 @@ export default function AppDetails(props) {
           name="FEATURES"
           children={() => (
             <AppDetailsFeatures
-              app={app}
+              appName={app.name}
+              appId={app.id}
               user={user}
               parentCallback={rerenderParentCallback}
             />
           )}
           options={
-            // user.guides.includes(app.id) ?
-                {
-                  // Features are unlocked
-                  tabBarLabel: "FEATURES",
-                  tabBarIcon: ({ focused, color }) => (
-                    <Ionicons
-                      name={focused ? "list" : "list-outline"}
-                      size={25}
-                      color={color}
-                    />
-                  ),
-                }
-              // : {
-              //     // Features are locked
-              //     tabBarLabel: "Add to Guides to see specific features!",
-              //   }
+            {
+              tabBarLabel: "FEATURES",
+              tabBarIcon: ({ focused, color }) => (
+                <Ionicons
+                  name={focused ? "list" : "list-outline"}
+                  size={25}
+                  color={color}
+                />
+              ),
+            }
           }
-          // Disable pressing the tab when features are locked
-          // listeners={
-          //   !user.guides.includes(app.id)
-          //     ? {
-          //         tabPress: (e) => e.preventDefault(),
-          //       }
-          //     : {}
-          // }
         />
       </Tab.Navigator>
     </SafeAreaView>
   );
 }
 
+// Style sheet
 const styles = StyleSheet.create({
   header: {
+    alignSelf: "center",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
