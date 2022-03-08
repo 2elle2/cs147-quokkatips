@@ -27,6 +27,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Colors from "../Themes/colors";
 import ExploreScreen from "./ExploreScreen";
 import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 
 // Hard-coded drawer width
 const DRAWER_WIDTH = 300;
@@ -211,7 +212,7 @@ class HomeScreen extends React.Component {
 
     // Count the total number of feature updates
     let unreadCount = 0;
-    for (const [, features] of Object.entries(user.unread? user.unread: {})) {
+    for (const [, features] of Object.entries(this.state.user.unread? this.state.user.unread: {})) {
       unreadCount += features.length;
     }
 
