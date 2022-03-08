@@ -103,7 +103,7 @@ const MyGuidesScreen = ({ user, guides }) => {
             return user.guides.includes(app.id);
           })}
           setClicked={setClicked}
-          //reRenderMyGuides={rerenderParentCallback}
+          user={user}
         />
       }
     </SafeAreaView>
