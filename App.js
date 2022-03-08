@@ -23,11 +23,12 @@ import Chat from "./screens/Chat";
 import { LogBox } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs();
 
 import Colors from "./Themes/colors";
 import { CardStyleInterpolators } from "@react-navigation/stack";
 import { forVerticalIOS } from "@react-navigation/stack";
+import AboutScreen from "./screens/AboutScreen";
 
 const Stack = createStackNavigator();
 
@@ -41,11 +42,34 @@ export default function App() {
       opacity: current.progress,
     },
   });
+
+  const verticalAnimation = {
+    gestureDirection: "vertical",
+    cardStyleInterpolator: ({ current, layouts }) => {
+      return {
+        cardStyle: {
+          transform: [
+            {
+              translateY: current.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [layouts.screen.height, 0],
+              }),
+            },
+          ],
+        },
+      };
+    },
+  };
+
+  console.log("USERSS IN APP JS", user);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{ 
-          headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -69,10 +93,11 @@ export default function App() {
 
         <Stack.Screen
           name="Home"
-          options={{ 
-            headerShown: false, 
+          options={{
+            headerShown: false,
             gestureEnabled: false,
-            cardStyleInterpolator: forFade }}
+            cardStyleInterpolator: forFade,
+          }}
         >
           {(props) => (
             <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />
@@ -97,11 +122,12 @@ export default function App() {
           {(props) => <ExploreStack {...props} user={user} guides={guides} />}
         </Stack.Screen> */}
 
-        <Stack.Screen 
+        <Stack.Screen
           name="ExploreSearch"
-          options={{ 
-            headerShown: false, 
-            cardStyleInterpolator: forFade }}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: forFade,
+          }}
         >
           {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
         </Stack.Screen>
@@ -128,7 +154,28 @@ export default function App() {
             //     <AntDesign name="caretdown" size={24} color={Colors.yellow} />
             //   </Pressable>
             // ),
-            // ...TransitionPresets.ModalSlideFromBottomIOS 
+            // ...TransitionPresets.ModalSlideFromBottomIOS
+          }} 
+        />
+        <Stack.Screen
+          name="AboutScreen"
+          component={AboutScreen}
+          options={{
+            gestureDirection: "vertical",
+            cardStyleInterpolator: ({ current, layouts }) => {
+              return {
+                cardStyle: {
+                  transform: [
+                    {
+                      translateY: current.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [layouts.screen.height, 0],
+                      }),
+                    },
+                  ],
+                },
+              };
+            },
           }}
         />
       </Stack.Navigator>

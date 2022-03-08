@@ -4,7 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { RootSiblingParent } from 'react-native-root-siblings';
 import Toast from 'react-native-root-toast';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Image from 'react-native-image-auto-height';
 import YoutubePlayer from 'react-native-youtube-iframe';
 
@@ -18,20 +17,44 @@ export default function(props) {
 class FeatureDetails extends React.Component {
   constructor(props) {
     super(props);
+    let app = props.route.params.app;
+    let user = props.route.params.user;
+    let feature = props.route.params.feature;
+    let pinned = user.pinned[app.id].includes(feature.id);
+    let unread = user.unread[app.id].includes(feature.id);
     this.state = {
-      pinned: props.route.params.feature.pinned,
+      app: app,
+      user: user,
+      feature: feature,
+      pinned: pinned,
+      unread: unread,
     };
+  }
+
+  componentDidMount() {
   }
 
   render() {
     const { navigation } = this.props;
-    let feature = this.props.route.params.feature;
+    let app = this.state.app;
+    let feature = this.state.feature;
+    let user = this.state.user;
     return (
       <RootSiblingParent>
         <SafeAreaView style={styles.body}>
             <View style={styles.header}>
                 <Pressable
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {
+                      if (this.state.unread) {
+                        // Remove the feature from the user's unread
+                        let index = user.unread[app.id].indexOf(feature.id);
+                        if (index > -1) {
+                          user.unread[app.id].splice(index, 1);
+                        }
+                        // TODO: update unread in firestore
+                      }
+                      navigation.goBack();
+                    }}
                     style={styles.backButton}
                 >
                     <Ionicons name="chevron-back" size={28} color="#E3A444" />
@@ -50,9 +73,14 @@ class FeatureDetails extends React.Component {
                     });
                     if (this.state.pinned) { // Unpin
                       this.setState({pinned: false});
+                      let index = user.pinned[app.id].indexOf(feature.id);
+                      if (index > -1) {
+                        user.pinned[app.id].splice(index, 1);
+                      }
                       // TODO: set pinned to false in firestore
                     } else { // Pin
                       this.setState({pinned: true});
+                      user.pinned[app.id].push(feature.id);
                       // TODO: set pinned to true in firestore
                     }
                   }}
@@ -72,6 +100,13 @@ class FeatureDetails extends React.Component {
                 <Text style={styles.cameraTutorialText}>Camera Tutorial</Text>
               </TouchableOpacity>
               <View style={styles.divider}/>
+              {feature.updates?
+              <View style={this.state.unread? {backgroundColor: '#ECECEC'}: {}}>
+                <Text style={styles.sectionTitleText}>What's New 🆕</Text>
+                <Text style={styles.sectionBodyText}>{feature.updates}</Text>
+                <View style={{height: 15}}></View>
+                <View style={styles.divider}/>
+              </View> : <View/>}
               <Text style={styles.sectionTitleText}>Video Demo</Text>
               <View style={{marginTop: 10, marginHorizontal: 15, marginBottom: -25}}>
                 <YoutubePlayer
@@ -155,7 +190,7 @@ const styles = StyleSheet.create({
     },
     cameraTutorialText: {
       fontSize: 16,
-      color: Colors.white,
+      color: 'white',
     },
     sectionTitleText: {
       marginTop: 15,
@@ -167,7 +202,7 @@ const styles = StyleSheet.create({
       marginHorizontal: 15
     },
     sectionBodyText: {
-      marginTop: 15,
+      marginTop: 10,
       fontSize: 16,
       color: 'black',
       marginHorizontal: 15
@@ -189,5 +224,5 @@ const styles = StyleSheet.create({
       borderBottomColor: "#C4C4C4",
       borderBottomWidth: 1,
       marginLeft: 15,
-    }
+    },
 });

@@ -25,8 +25,7 @@ import {
 import { db } from "../firebase";
 import Colors from "../Themes/colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { AntDesign } from '@expo/vector-icons';
-
+import { AntDesign } from "@expo/vector-icons";
 
 /* -------- Begin dummy data for testing purposes. Won't use in actual app. -------- */
 const APP_DATA = {
@@ -251,19 +250,20 @@ const AddModal = (props) => {
           parent.setState({ showAddAlert: false });
         }}
       >
-        
         <TouchableWithoutFeedback>
           <View style={styles.modalView}>
-
             {/* ADD THIS CLOSE BUTTON */}
-            <TouchableOpacity onPress={() => {
-                parent.setState({ showAddAlert: false })}} 
-                style={{
-                  position: 'absolute',
-                  right: 20,
-                  top: 20
-              }}>
-                <AntDesign name="closecircleo" size={30} color={Colors.black} />          
+            <TouchableOpacity
+              onPress={() => {
+                parent.setState({ showAddAlert: false });
+              }}
+              style={{
+                position: "absolute",
+                right: 20,
+                top: 20,
+              }}
+            >
+              <AntDesign name="closecircleo" size={30} color={Colors.black} />
             </TouchableOpacity>
             {/* CLOSE BUTTON ENDS */}
 
@@ -292,16 +292,12 @@ const AddModal = (props) => {
                 navigation.navigate("Home", { screen: "My Guides" }); // Navigate to the My Guides screen
               }}
             >
-              <Text style={styles.modalButtonText}>Go to My Guides   </Text>
+              <Text style={styles.modalButtonText}>Go to My Guides </Text>
               <Ionicons name={"book"} size={24} color={Colors.white} />
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
-
-        
       </TouchableOpacity>
-
-      
     </Modal>
   );
 };
@@ -330,16 +326,18 @@ const RemoveModal = (props) => {
       >
         <TouchableWithoutFeedback>
           <View style={styles.modalView}>
-
             {/* ADD THIS CLOSE BUTTON */}
-            <TouchableOpacity onPress={() => {
-                parent.setState({ showRemoveAlert: false })}} 
-                style={{
-                  position: 'absolute',
-                  right: 20,
-                  top: 20
-              }}>
-                <AntDesign name="closecircleo" size={30} color={Colors.black} />          
+            <TouchableOpacity
+              onPress={() => {
+                parent.setState({ showRemoveAlert: false });
+              }}
+              style={{
+                position: "absolute",
+                right: 20,
+                top: 20,
+              }}
+            >
+              <AntDesign name="closecircleo" size={30} color={Colors.black} />
             </TouchableOpacity>
             {/* CLOSE BUTTON ENDS */}
             <Text style={styles.modalTitle}>Remove {app.name}?</Text>
@@ -347,15 +345,6 @@ const RemoveModal = (props) => {
               You will no longer be able to see this app in your guides, but you
               can always add it back later.
             </Text>
-            <TouchableOpacity
-              style={[{ backgroundColor: "#E3A444" }, styles.modalButton]}
-              onPress={() => {
-                // When "No, keep this app" is pressed
-                parent.setState({ showRemoveAlert: false }); // Hide the modal window
-              }}
-            >
-              <Text style={styles.modalButtonText}>No, keep this app</Text>
-            </TouchableOpacity>
             <TouchableOpacity
               style={[
                 {
@@ -383,6 +372,15 @@ const RemoveModal = (props) => {
               <Text style={styles.modalButtonTextRemove}>
                 Yes, I want to remove
               </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[{ backgroundColor: "#E3A444" }, styles.modalButton]}
+              onPress={() => {
+                // When "No, keep this app" is pressed
+                parent.setState({ showRemoveAlert: false }); // Hide the modal window
+              }}
+            >
+              <Text style={styles.modalButtonText}>No, keep this guide</Text>
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
