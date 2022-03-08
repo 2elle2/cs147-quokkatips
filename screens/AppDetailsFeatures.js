@@ -51,7 +51,11 @@ class AppDetailsFeatures extends React.Component {
     });
 
     // Sort by alphabetical
+    let pinned = this.props.user.pinned;
     features.sort(function(featureA, featureB) {
+      console.log("pinned", pinned);
+      if (pinned.includes(featureA.id) && !pinned.includes(featureB.id)) return -1;
+      if (!pinned.includes(featureA.id) && pinned.includes(featureB.id)) return 1;
       if (featureA.name.substring(2) < featureB.name.substring(2)) return -1;
       if (featureA.name.substring(2) > featureB.name.substring(2)) return 1;
       return 0;
@@ -61,7 +65,6 @@ class AppDetailsFeatures extends React.Component {
   }
 
   render() {
-    console.log("point b user", this.props.user);
     return <SafeAreaView style={styles.container}>
     <SearchBar
       searchPhrase={this.state.searchPhrase}
