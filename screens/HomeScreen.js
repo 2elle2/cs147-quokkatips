@@ -96,9 +96,7 @@ const RemoveModal = (props) => {
             <TouchableOpacity
               style={[
                 {
-                  backgroundColor: "white",
-                  borderColor: Colors.gray,
-                  borderWidth: 1,
+                  backgroundColor: Colors.yellow,
                 },
                 styles.modalButton,
               ]}
@@ -461,7 +459,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   modalButtonText: {
-    color: "gray",
+    color: Colors.white,
     fontSize: 20,
     fontWeight: "500",
     textAlign: "center",

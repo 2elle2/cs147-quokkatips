@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Colors from "../Themes/colors";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -20,7 +20,20 @@ export default function AboutScreen() {
         </TouchableOpacity>
         <Text style={styles.headerText}>About QuokkaTips</Text>
       </View>
-      <Text>This is the AboutScreen</Text>
+      <View style={styles.contentContainer}>
+        <Image
+          style={styles.quokkaImage}
+          source={require("../assets/Quokkas/yes-quokka.png")}
+        />
+
+        <Text style={styles.aboutText}>
+          App developed for CS147: Introduction to Human-Computer Interaction
+        </Text>
+        <Text style={styles.studioText}>
+          Studio: The Virtual Learnscape: AR/VR x Education
+        </Text>
+        <Text style={styles.yearText}>Winter 2022</Text>
+      </View>
     </SafeAreaView>
   );
 }
@@ -37,7 +50,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   headerText: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "700",
   },
   closeIcon: {
@@ -46,5 +59,33 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     left: 0,
+  },
+  contentContainer: {
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    padding: 30,
+    height: "89%",
+  },
+  aboutText: {
+    fontSize: 22,
+    textAlign: "center",
+  },
+  studioText: {
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "center",
+    marginTop: 8,
+  },
+  yearText: {
+    fontSize: 20,
+    fontWeight: "400",
+    textAlign: "center",
+    marginTop: 8,
+  },
+  quokkaImage: {
+    width: 280,
+    height: 280,
+    marginRight: 10,
   },
 });
