@@ -1,4 +1,4 @@
-import { Text, View, SafeAreaView, StyleSheet, Pressable, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Pressable, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
@@ -6,6 +6,7 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import Toast from 'react-native-root-toast';
 import Image from 'react-native-image-auto-height';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import SafeAreaView from 'react-native-safe-area-view';
 // const win = Dimensions.get('window');
 
 export default function(props) {
@@ -35,7 +36,7 @@ class FeatureDetails extends React.Component {
 
     return (
       <RootSiblingParent>
-        <SafeAreaView style={styles.body}>
+        <SafeAreaView style={styles.body} forceInset="top">
             <View style={styles.header}>
                 <Pressable
                     onPress={() => {
