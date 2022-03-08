@@ -11,11 +11,12 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Colors from "../Themes/colors";
 import ExploreScreen from "./ExploreScreen";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function HomeScreen(props) {
   const [user, setUser] = useState({}); // Use state to pass user object between components
   const [guides, setGuides] = useState([]);
-  console.log(props, "homescreen");
+  const isFocused = useIsFocused();
   /**
    * Helper Function: getGuides
    *
@@ -70,6 +71,13 @@ export default function HomeScreen(props) {
       opacity: current.progress,
     },
   });
+
+  // Count the total number of feature updates
+  let unreadCount = 0;
+  for (const [, features] of Object.entries(user.unread? user.unread: {})) {
+    unreadCount += features.length;
+  }
+
   return (
     <Tab.Navigator
       // Make 'My Guides' the initial tab
@@ -107,7 +115,10 @@ export default function HomeScreen(props) {
       </Tab.Screen>
       <Tab.Screen
         name="My Guides"
-        options={{ headerShown: false, cardStyleInterpolator: forFade }}
+        options={{ headerShown: false, 
+          cardStyleInterpolator: forFade, 
+          tabBarBadge: unreadCount? unreadCount: null, 
+          tabBarBadgeStyle: {backgroundColor: '#201947'}}}
       >
         {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
       </Tab.Screen>
