@@ -112,7 +112,10 @@ export default function ExploreScreen(props) {
     // List of the user's guides
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Pressable style={styles.hamburgerIcon}>
+        <Pressable
+          style={styles.hamburgerIcon}
+          onPress={() => props.toggleDrawer()}
+        >
           <Ionicons name="ios-menu-outline" size={40} color="#E3A444" />
         </Pressable>
         <Text style={styles.categoryText}>Explore</Text>
@@ -155,7 +158,7 @@ export default function ExploreScreen(props) {
           })}
         />
 
-        {props.user.subjects.map((tag, index) => (
+        {props.user.subjects?.map((tag, index) => (
           <CategoryCarrousel
             category={"Popular in " + tag}
             header={tag}
