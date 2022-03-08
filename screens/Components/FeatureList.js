@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   FlatList,
   SafeAreaView,
   Pressable,
@@ -13,22 +12,25 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
-// defining the item that will be rendered in the Flat List
+// Defining the item that will be rendered in the FlatList
 const Item = (props) => {
   const navigation = useNavigation();
-  console.log('this is props', props);
-  let app = props.app;
-  let user = props.user;
+  let appId = props.appId;
   let feature = props.feature;
-  let unread = user.unread[app.id].includes(feature.id);
-  let pinned = user.pinned[app.id].includes(feature.id);
+  let user = props.user;
+  let unread = user.unread[appId]? user.unread[appId].includes(feature.id): false;
+  let pinned = user.pinned[appId]? user.pinned[appId].includes(feature.id): false;
+
   return (
     <Pressable
       style={unread? {backgroundColor: '#ECECEC'}: {}}
       onPress={() => {
-        console.log("bbbb", user);
         navigation.navigate("FeatureDetails", {
-          feature: feature, user: user, app: app,
+          appId: appId,
+          feature: feature, 
+          user: user,
+          unread: unread,
+          pinned: pinned,
         });
       }}
     >
@@ -51,37 +53,42 @@ const Item = (props) => {
   );
 };
 
-// the filter
+// The filter
 const List = (props) => {
   let data = props.data;
   let setClicked = props.setClicked;
   let searchPhrase = props.searchPhrase;
   let user = props.user;
-  let app = props.app;
+  let appId = props.appId;
   let newData = data;
+
+  // Returns only items that match the search phrase
   if (searchPhrase) {
     newData = data.filter((item) => {
       return item.name.toUpperCase().includes(searchPhrase.toUpperCase());
     });
   }
+
+  // Renders the items
   const renderItem = ({ item }) => {
-    // when no input, show all
+    // When no input, show all
     if (searchPhrase === "") {
-      return <Item feature={item} user={user} app={app}/>;
+      return <Item feature={item} user={user} appId={appId}/>;
     }
-    // filter of the name
+    // Filter of the name
     if (
       item.name
         .toUpperCase()
         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))
     ) {
-      return <Item feature={item} user={user} app={app} />;
+      return <Item feature={item} user={user} appId={appId}/>;
     }
   };
 
+
+  // Renders the FlatList item divider line
   const ItemSeparatorView = () => {
     return (
-      // Flat List Item divider line
       <View
         style={{
           padding: 1,
@@ -114,6 +121,7 @@ const List = (props) => {
 
 export default List;
 
+// Style sheet
 const styles = StyleSheet.create({
   list__container: {
     flex: 1,
