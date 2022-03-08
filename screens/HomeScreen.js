@@ -27,6 +27,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Colors from "../Themes/colors";
 import ExploreScreen from "./ExploreScreen";
 import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 
 // Hard-coded drawer width
 const DRAWER_WIDTH = 300;
@@ -124,6 +125,7 @@ const forFade = ({ current }) => ({
 
 export default function (props) {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   return <HomeScreen {...props} navigation={navigation} />;
 }
 
@@ -216,9 +218,16 @@ class HomeScreen extends React.Component {
     inputRange: [0, 1],
     outputRange: [-500, 0],
   });
-
+        
   render() {
     const { navigation } = this.props;
+
+    // Count the total number of feature updates
+    let unreadCount = 0;
+    for (const [, features] of Object.entries(this.state.user.unread? this.state.user.unread: {})) {
+      unreadCount += features.length;
+    }
+
     return (
       <View style={{ flex: 1 }}>
         <Tab.Navigator
@@ -264,7 +273,11 @@ class HomeScreen extends React.Component {
           </Tab.Screen>
           <Tab.Screen
             name="My Guides"
-            options={{ headerShown: false, cardStyleInterpolator: forFade }}
+            options={{ headerShown: false, 
+              cardStyleInterpolator: forFade, 
+              tabBarBadge: unreadCount? unreadCount: null, 
+              tabBarBadgeStyle: {backgroundColor: '#201947'}}
+            }
           >
             {(props) => (
               <MyGuidesScreen
