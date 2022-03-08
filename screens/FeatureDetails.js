@@ -16,12 +16,18 @@ export default function(props) {
 
 class FeatureDetails extends React.Component {
   constructor(props) {
-    console.log("aaaa", props.route.params);
     super(props);
+    let app = props.route.params.app;
+    let user = props.route.params.user;
+    let feature = props.route.params.feature;
+    let pinned = user.pinned[app.id].includes(feature.id);
+    let unread = user.unread[app.id].includes(feature.id);
     this.state = {
-      user: props.route.params.user,
-      pinned: props.route.params.user.pinned.includes(props.route.params.feature.id),
-      unread: props.route.params.user.unread.includes(props.route.params.feature.id)
+      app: app,
+      user: user,
+      feature: feature,
+      pinned: pinned,
+      unread: unread,
     };
   }
 
@@ -30,7 +36,9 @@ class FeatureDetails extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    let feature = this.props.route.params.feature;
+    let app = this.state.app;
+    let feature = this.state.feature;
+    let user = this.state.user;
     return (
       <RootSiblingParent>
         <SafeAreaView style={styles.body}>
@@ -38,11 +46,12 @@ class FeatureDetails extends React.Component {
                 <Pressable
                     onPress={() => {
                       if (this.state.unread) {
-                        this.props.route.param
-                        let index = this.props.route.params.user.unread.indexOf(feature.id);
+                        // Remove the feature from the user's unread
+                        let index = user.unread[app.id].indexOf(feature.id);
                         if (index > -1) {
-                          this.props.route.params.user.unread.splice(index, 1);
+                          user.unread[app.id].splice(index, 1);
                         }
+                        // TODO: update unread in firestore
                       }
                       navigation.goBack();
                     }}
@@ -64,14 +73,14 @@ class FeatureDetails extends React.Component {
                     });
                     if (this.state.pinned) { // Unpin
                       this.setState({pinned: false});
-                      let index = this.props.route.params.user.pinned.indexOf(feature.id);
+                      let index = user.pinned[app.id].indexOf(feature.id);
                       if (index > -1) {
-                        this.props.route.params.user.pinned.splice(index, 1);
+                        user.pinned[app.id].splice(index, 1);
                       }
                       // TODO: set pinned to false in firestore
                     } else { // Pin
                       this.setState({pinned: true});
-                      this.props.route.params.user.pinned.push(feature.id);
+                      user.pinned[app.id].push(feature.id);
                       // TODO: set pinned to true in firestore
                     }
                   }}

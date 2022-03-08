@@ -50,17 +50,31 @@ class AppDetailsFeatures extends React.Component {
       return feature;
     });
 
-    // Sort by alphabetical
-    let pinned = this.props.user.pinned;
+    // Sort by pinned, then alphabetical
+    let app = this.props.app;
+    let pinnedInApp = this.props.user.pinned[app.id];
     features.sort(function(featureA, featureB) {
-      console.log("pinned", pinned);
-      if (pinned.includes(featureA.id) && !pinned.includes(featureB.id)) return -1;
-      if (!pinned.includes(featureA.id) && pinned.includes(featureB.id)) return 1;
+      if (pinnedInApp.includes(featureA.id) && !pinnedInApp.includes(featureB.id)) return -1;
+      if (!pinnedInApp.includes(featureA.id) && pinnedInApp.includes(featureB.id)) return 1;
       if (featureA.name.substring(2) < featureB.name.substring(2)) return -1;
       if (featureA.name.substring(2) > featureB.name.substring(2)) return 1;
       return 0;
     });
+    this.setState({ features });
+  }
 
+  async componentDidUpdate() {
+    // Sort by pinned, then alphabetical
+    let features = this.state.features;
+    let app = this.props.app;
+    let pinnedInApp = this.props.user.pinned[app.id];
+    features.sort(function(featureA, featureB) {
+      if (pinnedInApp.includes(featureA.id) && !pinnedInApp.includes(featureB.id)) return -1;
+      if (!pinnedInApp.includes(featureA.id) && pinnedInApp.includes(featureB.id)) return 1;
+      if (featureA.name.substring(2) < featureB.name.substring(2)) return -1;
+      if (featureA.name.substring(2) > featureB.name.substring(2)) return 1;
+      return 0;
+    });
     this.setState({ features });
   }
 
@@ -79,6 +93,7 @@ class AppDetailsFeatures extends React.Component {
         data={this.state.features}
         setClicked={(b) => this.setState({ clicked: b })}
         user={this.props.user}
+        app={this.props.app}
       />
     }
   </SafeAreaView>

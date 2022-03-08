@@ -16,15 +16,19 @@ import { Ionicons } from "@expo/vector-icons";
 // defining the item that will be rendered in the Flat List
 const Item = (props) => {
   const navigation = useNavigation();
-  let unread = props.user.unread.includes(props.feature.id);
-  let pinned = props.user.pinned.includes(props.feature.id);
+  console.log('this is props', props);
+  let app = props.app;
+  let user = props.user;
+  let feature = props.feature;
+  let unread = user.unread[app.id].includes(feature.id);
+  let pinned = user.pinned[app.id].includes(feature.id);
   return (
     <Pressable
       style={unread? {backgroundColor: '#ECECEC'}: {}}
       onPress={() => {
-        console.log("bbbb", props.user);
+        console.log("bbbb", user);
         navigation.navigate("FeatureDetails", {
-          feature: props.feature, user: props.user,
+          feature: feature, user: user, app: app,
         });
       }}
     >
@@ -34,15 +38,15 @@ const Item = (props) => {
             <View style={styles.readCircle}/>
           }
           {unread? 
-            <Text style={[{fontWeight: 'bold'}, styles.featureName]}>{props.feature.name}</Text> :
-            <Text style={styles.featureName}>{props.feature.name}</Text> 
+            <Text style={[{fontWeight: 'bold'}, styles.featureName]}>{feature.name}</Text> :
+            <Text style={styles.featureName}>{feature.name}</Text> 
           }
           {pinned? 
             <Ionicons style={styles.bookmarkIcon} name="bookmark" color="#E3A444" size={15}/> : 
             <View/>
           }
       </View>
-      <Text numberOfLines={2} ellipsizeMode='tail' style={styles.featureDescription}>{props.feature.description}</Text>
+      <Text numberOfLines={2} ellipsizeMode='tail' style={styles.featureDescription}>{feature.description}</Text>
     </Pressable>
   );
 };
@@ -53,8 +57,8 @@ const List = (props) => {
   let setClicked = props.setClicked;
   let searchPhrase = props.searchPhrase;
   let user = props.user;
+  let app = props.app;
   let newData = data;
-  console.log("point a user", user);
   if (searchPhrase) {
     newData = data.filter((item) => {
       return item.name.toUpperCase().includes(searchPhrase.toUpperCase());
@@ -63,7 +67,7 @@ const List = (props) => {
   const renderItem = ({ item }) => {
     // when no input, show all
     if (searchPhrase === "") {
-      return <Item feature={item} user={user} />;
+      return <Item feature={item} user={user} app={app}/>;
     }
     // filter of the name
     if (
@@ -71,7 +75,7 @@ const List = (props) => {
         .toUpperCase()
         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))
     ) {
-      return <Item feature={item} user={user} />;
+      return <Item feature={item} user={user} app={app} />;
     }
   };
 
