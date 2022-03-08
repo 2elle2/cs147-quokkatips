@@ -26,6 +26,7 @@ LogBox.ignoreAllLogs();
 import Colors from "./Themes/colors";
 import { CardStyleInterpolators } from "@react-navigation/stack";
 import { forVerticalIOS } from "@react-navigation/stack";
+import AboutScreen from "./screens/AboutScreen";
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,25 @@ export default function App() {
       opacity: current.progress,
     },
   });
+
+  const verticalAnimation = {
+    gestureDirection: "vertical",
+    cardStyleInterpolator: ({ current, layouts }) => {
+      return {
+        cardStyle: {
+          transform: [
+            {
+              translateY: current.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [layouts.screen.height, 0],
+              }),
+            },
+          ],
+        },
+      };
+    },
+  };
+
   console.log("USERSS IN APP JS", user);
 
   return (
@@ -112,6 +132,27 @@ export default function App() {
 
         <Stack.Screen name="ViewAll" component={ViewAll} />
         <Stack.Screen name="FeatureDetails" component={FeatureDetails} />
+        <Stack.Screen
+          name="AboutScreen"
+          component={AboutScreen}
+          options={{
+            gestureDirection: "vertical",
+            cardStyleInterpolator: ({ current, layouts }) => {
+              return {
+                cardStyle: {
+                  transform: [
+                    {
+                      translateY: current.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [layouts.screen.height, 0],
+                      }),
+                    },
+                  ],
+                },
+              };
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
