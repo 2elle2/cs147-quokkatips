@@ -3,59 +3,89 @@
  */
 
 import React, { useState, useCallback, useEffect } from 'react'
+import { render } from 'react-dom';
+import { TextPropTypes } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat'
+import { useNavigation } from "@react-navigation/native";
 
 const quokkaAvatar = require('../assets/Quokkas/neutral-standing.png');
- 
 const quokka = {
   _id: 2,
   name: 'Quokka',
   avatar: quokkaAvatar,
 }
 
-export default function Chat() {
-  const [messages, setMessages] = useState([]);
- 
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hi there! How can I help?',  
-        createdAt: new Date(),
-        quickReplies: {
-          type: 'radio', // or 'checkbox',
-          keepIt: true,
-          values: [
-            {
-              title: 'I need help sharing my screen',
-              value: 'help_share',
-            },
-            {
-              title: 'I need help recording my screen',
-              value: 'help_recording',
-            },
-          ],
-        },
-        user: quokka,
-      },
-    ])
-  }, [])
-
-
-  // TODO: Quokka's next message: "Got it! Let's go back to the camera view for more instructions."
- 
-  const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-  }, [])
- 
-  return (
-    <GiftedChat
-      messages={messages}
-      onSend={messages => onSend(messages)}
-      user={{
-        _id: 1,
-      }}
-    />
-  )
+export default function (props) {
+  const navigation = useNavigation();
+  return <Chat {...props} navigation={navigation} />;
 }
 
+class Chat extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messages: this.props.messages,
+    };
+  }
+
+  // TODO: Quokka's next message: "Got it! Let's go back to the camera view for more instructions."
+
+  onSend(messages = []) {
+    this.setState((previousState) => {
+      const sentMessages = [{ ...messages[0], sent: true, received: true }]
+      return {
+        messages: GiftedChat.append(
+          previousState.messages,
+          sentMessages,
+          Platform.OS !== 'web',
+        )
+      }
+    }, () => {
+      this.props.setMessages(this.state.messages);
+    })
+  }
+
+  onQuickReply(quickReplies) {
+    const createdAt = new Date()
+    if (quickReplies.length === 1) {
+      
+      this.onSend([
+        {
+          createdAt,
+          _id: Math.round(Math.random() * 1000000),
+          text: quickReplies[0].title,
+          user: {
+            _id: 1
+          },
+        },
+      ]);
+      this.onSend([
+        {
+          createdAt,
+          _id: Math.round(Math.random() * 1000000),
+          text: "Got it, thanks! Sending you back to the camera view for more instructions.",
+          user: quokka,
+        },
+      ]);
+      this.props.setView(2);
+      setTimeout(() => { this.props.navigation.goBack() }, 2000);
+    } else {
+      console.warn('replies param is not set correctly')
+    }
+    // var sendBotResponsetxt = "Thanks";
+    // this.sendBotResponse(sendBotResponsetxt);
+  }
+
+  render() {
+    return (
+      <GiftedChat
+        messages={this.state.messages}
+        onSend={messages => this.onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+        onQuickReply={this.onQuickReply.bind(this)}
+      />
+    )
+  }
+}

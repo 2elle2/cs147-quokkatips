@@ -30,11 +30,41 @@ import { CardStyleInterpolators } from "@react-navigation/stack";
 import { forVerticalIOS } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
+const quokkaAvatar = require('./assets/Quokkas/neutral-standing.png');
+const quokka = {
+  _id: 2,
+  name: 'Quokka',
+  avatar: quokkaAvatar,
+}
 
 export default function App() {
   const [user, setUser] = useState({}); // Use state to pass user object between components
   const [guides, setGuides] = useState([]);
-  console.log(user, "App.js");
+  const [view, setView] = useState(1);
+  const [messages, setMessages] = useState([
+    {
+      _id: 1,
+      text: 'Hi there! How can I help?',
+      createdAt: new Date(),
+      quickReplies: {
+        type: 'radio', // or 'radio',
+        keepIt: true,
+        values: [
+          {
+            title: 'I need help sharing my screen',
+            value: 'help_share',
+          },
+          {
+            title: 'I need help recording my screen',
+            value: 'help_recording',
+          },
+        ],
+      },
+      user: quokka,
+    },
+  ]);
+
+  console.log(messages, "App.js");
 
   const forFade = ({ current }) => ({
     cardStyle: {
@@ -43,9 +73,10 @@ export default function App() {
   });
   return (
     <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{ 
-          headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false
+        }}>
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -69,13 +100,19 @@ export default function App() {
 
         <Stack.Screen
           name="Home"
-          options={{ 
-            headerShown: false, 
+          options={{
+            headerShown: false,
             gestureEnabled: false,
-            cardStyleInterpolator: forFade }}
+            cardStyleInterpolator: forFade
+          }}
         >
           {(props) => (
-            <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />
+            <HomeScreen {...props} 
+            setUser={setUser} 
+            setGuides={setGuides} 
+            setView={setView} 
+            view={view} 
+            setMessages={setMessages}/>
           )}
         </Stack.Screen>
 
@@ -97,20 +134,20 @@ export default function App() {
           {(props) => <ExploreStack {...props} user={user} guides={guides} />}
         </Stack.Screen> */}
 
-        <Stack.Screen 
+        <Stack.Screen
           name="ExploreSearch"
-          options={{ 
-            headerShown: false, 
-            cardStyleInterpolator: forFade }}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: forFade
+          }}
         >
           {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
         </Stack.Screen>
 
         <Stack.Screen name="ViewAll" component={ViewAll} />
         <Stack.Screen name="FeatureDetails" component={FeatureDetails} />
-        <Stack.Screen 
-          name="Chat" 
-          component={Chat} 
+        <Stack.Screen
+          name="Chat"
           options={{
             title: "Chat",
             headerShown: true,
@@ -130,7 +167,9 @@ export default function App() {
             // ),
             // ...TransitionPresets.ModalSlideFromBottomIOS 
           }}
-        />
+        >
+          {(props) => <Chat {...props} setView={setView} messages={messages} setMessages={setMessages}/>}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

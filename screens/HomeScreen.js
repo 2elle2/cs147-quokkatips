@@ -13,6 +13,7 @@ import Colors from "../Themes/colors";
 import ExploreScreen from "./ExploreScreen";
 
 export default function HomeScreen(props) {
+  const { view, setView, setMessages } = props;
   const [user, setUser] = useState({}); // Use state to pass user object between components
   const [guides, setGuides] = useState([]);
   // console.log(props, "homescreen");
@@ -48,6 +49,9 @@ export default function HomeScreen(props) {
   };
 
   useEffect(() => {
+    console.log(props, "Homescreen");
+
+
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -112,10 +116,16 @@ export default function HomeScreen(props) {
         {(props) => <MyGuidesScreen {...props} user={user} guides={guides} />}
       </Tab.Screen>
 
-      <Tab.Screen 
-        name="Ask Quokka" 
+      <Tab.Screen
+        name="Ask Quokka"
         options={{ headerShown: false, cardStyleInterpolator: forFade }}
-        component={AskQuokkaScreen} >
+      >
+        {(props) => <AskQuokkaScreen {...props} 
+        view={view} 
+        setView={setView} 
+        guides={guides} 
+        setMessages={setMessages}
+        />}
       </Tab.Screen>
     </Tab.Navigator>
   );
