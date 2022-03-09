@@ -14,11 +14,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 import Colors from "../../Themes/colors";
 import { serverTimestamp } from "firebase/firestore";
+import { Chip } from "react-native-paper";
 
 // defining the item that will be rendered in the Flat List
 const Item = (props) => {
   const navigation = useNavigation();
   // console.log("item props", props);
+  let numUnread = props.user.unread[props.app.id]?.length;
   return (
     <Pressable
       onPress={() => {
@@ -31,6 +33,12 @@ const Item = (props) => {
       <View style={styles.itemStyle}>
         <Image style={styles.logoStyle} source={{ uri: props.app.logo }} />
         <Text style={styles.title}>{props.app.name}</Text>
+        {numUnread?
+          <Chip height={30} textStyle={styles.changesText} style={styles.changesChip}>
+          {numUnread + " Change" + (numUnread > 1? "s" : "")}
+          </Chip> :
+          <View/>
+        }
         <View style={styles.rightButton}>
           <Entypo name="chevron-right" size={24} color="black" />
         </View>
@@ -40,8 +48,7 @@ const Item = (props) => {
 };
 
 // the filter
-const List = ({ searchPhrase, setClicked, data, reRenderMyGuides }) => {
-  console.log("rerender", reRenderMyGuides);
+const List = ({ searchPhrase, setClicked, data, user }) => {
   let newData = data;
   if (searchPhrase) {
     newData = data.filter((item) => {
@@ -52,7 +59,7 @@ const List = ({ searchPhrase, setClicked, data, reRenderMyGuides }) => {
   const renderItem = ({ item }) => {
     // when no input, show all
     if (searchPhrase === "") {
-      return <Item app={item} />;
+      return <Item app={item} user={user} />;
     }
     // filter of the name
     if (
@@ -60,7 +67,7 @@ const List = ({ searchPhrase, setClicked, data, reRenderMyGuides }) => {
         .toUpperCase()
         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))
     ) {
-      return <Item app={item} />;
+      return <Item app={item} user={user}/>;
     }
   };
 
@@ -134,4 +141,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 30,
   },
+  changesChip: {
+    backgroundColor: "#201947",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    right: 55,
+  },
+  changesText: {
+    color: "white", 
+    fontSize: 16
+  }
 });

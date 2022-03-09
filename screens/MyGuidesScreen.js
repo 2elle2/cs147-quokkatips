@@ -25,7 +25,7 @@ import List from "./Components/List";
 import SearchBar from "./Components/SearchBar";
 
 // export default function MyGuidesScreen() {
-const MyGuidesScreen = ({ user, guides }) => {
+const MyGuidesScreen = ({ user, guides, toggleDrawer }) => {
   const DATA = [
     { id: "1", title: "Desmos", image: "https://syracuseuniversity.zoom.us/" },
     { id: "2", title: "Canvas", image: "https://syracuseuniversity.zoom.us/" },
@@ -84,7 +84,7 @@ const MyGuidesScreen = ({ user, guides }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Pressable style={styles.hamburgerIcon}>
+        <Pressable style={styles.hamburgerIcon} onPress={() => toggleDrawer()}>
           <Ionicons name="ios-menu-outline" size={40} color="#E3A444" />
         </Pressable>
         <Text style={styles.headerText}>My Guides</Text>
@@ -103,7 +103,7 @@ const MyGuidesScreen = ({ user, guides }) => {
             return user.guides.includes(app.id);
           })}
           setClicked={setClicked}
-          //reRenderMyGuides={rerenderParentCallback}
+          user={user}
         />
       }
     </SafeAreaView>

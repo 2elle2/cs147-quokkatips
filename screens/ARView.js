@@ -148,7 +148,7 @@ export default function ARView(props) {
             case 3:
                 if (quokkaMsg !== "Click on the screen or app \nyou want to share. Finally, \nclick the blue \"share\" button.") {
                     setQuokkaMsg("Click on the screen or app \nyou want to share. Finally, \nclick the blue \"share\" button.");
-                    props.setMessages()
+                    // props.setMessages()
                 }
                 return (
                     <>
