@@ -130,12 +130,12 @@ export default function App() {
           }}
         >
           {(props) => (
-            <HomeScreen {...props} 
-            setUser={setUser} 
-            setGuides={setGuides} 
-            setView={setView} 
-            view={view} 
-            setMessages={setMessages}/>
+            <HomeScreen {...props}
+              setUser={setUser}
+              setGuides={setGuides}
+              setView={setView}
+              view={view}
+              setMessages={setMessages} />
           )}
         </Stack.Screen>
 
@@ -189,8 +189,10 @@ export default function App() {
             //   </Pressable>
             // ),
             // ...TransitionPresets.ModalSlideFromBottomIOS
-          }} 
-        />
+          }}
+        >
+          {(props) => <Chat {...props} setView={setView} messages={messages} setMessages={setMessages} />}
+        </Stack.Screen>
         <Stack.Screen
           name="AboutScreen"
           component={AboutScreen}
@@ -212,7 +214,6 @@ export default function App() {
             },
           }}
         >
-          {(props) => <Chat {...props} setView={setView} messages={messages} setMessages={setMessages}/>}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

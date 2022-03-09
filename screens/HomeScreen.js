@@ -155,6 +155,7 @@ class HomeScreen extends React.Component {
       return guide;
     });
     // console.log(guides, "HomeScreen.js");
+    console.log("GUIDES SUCCESSFULLY PULLED");
     this.setState({ guides: guides });
     this.setGuides(guides);
   };
