@@ -294,7 +294,6 @@ class HomeScreen extends React.Component {
 
           <Tab.Screen
             name="Ask Quokka"
-            component={AskQuokkaScreen}
             options={{
               headerShown: false,
             }} >
