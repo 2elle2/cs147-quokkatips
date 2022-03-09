@@ -1,4 +1,4 @@
-import { Text, View, SafeAreaView, StyleSheet, Pressable, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Pressable, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
@@ -6,8 +6,8 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import Toast from 'react-native-root-toast';
 import Image from 'react-native-image-auto-height';
 import YoutubePlayer from 'react-native-youtube-iframe';
-
-const win = Dimensions.get('window');
+import SafeAreaView from 'react-native-safe-area-view';
+// const win = Dimensions.get('window');
 
 export default function(props) {
   const navigation = useNavigation();
@@ -17,39 +17,34 @@ export default function(props) {
 class FeatureDetails extends React.Component {
   constructor(props) {
     super(props);
-    let app = props.route.params.app;
-    let user = props.route.params.user;
-    let feature = props.route.params.feature;
-    let pinned = user.pinned[app.id].includes(feature.id);
-    let unread = user.unread[app.id].includes(feature.id);
     this.state = {
-      app: app,
-      user: user,
-      feature: feature,
-      pinned: pinned,
-      unread: unread,
+      appId: props.route.params.appId,
+      feature: props.route.params.feature,
+      user: props.route.params.user,
+      unread: props.route.params.unread,
+      pinned: props.route.params.pinned,
     };
-  }
-
-  componentDidMount() {
   }
 
   render() {
     const { navigation } = this.props;
-    let app = this.state.app;
+    let appId = this.state.appId;
     let feature = this.state.feature;
     let user = this.state.user;
+    let unread = this.state.unread;
+    let pinned = this.state.pinned;
+
     return (
       <RootSiblingParent>
-        <SafeAreaView style={styles.body}>
+        <SafeAreaView style={styles.body} forceInset="top">
             <View style={styles.header}>
                 <Pressable
                     onPress={() => {
-                      if (this.state.unread) {
+                      if (unread) {
                         // Remove the feature from the user's unread
-                        let index = user.unread[app.id].indexOf(feature.id);
+                        let index = user.unread[appId].indexOf(feature.id);
                         if (index > -1) {
-                          user.unread[app.id].splice(index, 1);
+                          user.unread[appId].splice(index, 1);
                         }
                         // TODO: update unread in firestore
                       }
@@ -63,24 +58,25 @@ class FeatureDetails extends React.Component {
                 <Text style={styles.categoryText}>Feature Details</Text>
                 <Ionicons 
                   style={styles.pinButton} 
-                  name={this.state.pinned?"bookmark":"bookmark-outline"} 
+                  name={pinned?"bookmark":"bookmark-outline"} 
                   onPress={() => {
-                    Toast.show(this.state.pinned?'Feature unpinned!': 'Feature pinned!', {
+                    Toast.show(pinned?'Feature unpinned!': 'Feature pinned!', {
                       backgroundColor: "#E3A444",
                       textColor: 'white',
                       opacity: 1,
                       duration: Toast.durations.SHORT,
                     });
-                    if (this.state.pinned) { // Unpin
+                    if (pinned) { // Unpin
                       this.setState({pinned: false});
-                      let index = user.pinned[app.id].indexOf(feature.id);
+                      let index = user.pinned[appId].indexOf(feature.id);
                       if (index > -1) {
-                        user.pinned[app.id].splice(index, 1);
+                        user.pinned[appId].splice(index, 1);
                       }
                       // TODO: set pinned to false in firestore
                     } else { // Pin
                       this.setState({pinned: true});
-                      user.pinned[app.id].push(feature.id);
+                      if (user.pinned[appId] == null) user.pinned[appId] = [];
+                      user.pinned[appId].push(feature.id);
                       // TODO: set pinned to true in firestore
                     }
                   }}
@@ -134,7 +130,7 @@ class FeatureDetails extends React.Component {
   }
 }
 
-
+// Style sheet
 const styles = StyleSheet.create({
     body: {
       flex: 1,

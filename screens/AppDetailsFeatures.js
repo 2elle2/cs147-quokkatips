@@ -1,7 +1,7 @@
-import { Text, View, SafeAreaView, StyleSheet } from 'react-native';
-import React, { Component, useState} from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import FeatureList from "./Components/FeatureList";
 import SearchBar from "./Components/SearchBar";
+import React from "react";
 import {
   collection,
   getDocs,
@@ -24,7 +24,7 @@ const FEATURES = [
 /* -------- End dummy data for testing purposes. Won't use in actual app. -------- */
 
 export default function(props) {
-  const isFocused = useIsFocused();
+  useIsFocused();
   return <AppDetailsFeatures {...props} />;
 }
 
@@ -32,75 +32,87 @@ class AppDetailsFeatures extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: this.props.user,
+      appName: this.props.appName,
+      appId: this.props.appId,
       searchPhrase: "",
       clicked: false,
       features: [],
     }
   }
 
-  // Query features data on component mount
+  /* Class function: sortFeatures(features)
+   * Sorts the passed in features first by pinned, then by alphabetical.
+   * Calls setState on features to rerender.
+   */
+  sortFeatures(features) {
+    let pinned = this.state.user.pinned;
+    let appId = this.state.appId;
+    let pinnedInApp = pinned[appId]? pinned[appId] : [];
+    features.sort(function(featureA, featureB) {
+      // Pinned features go first
+      if (pinnedInApp.includes(featureA.id) && !pinnedInApp.includes(featureB.id)) return -1;
+      if (!pinnedInApp.includes(featureA.id) && pinnedInApp.includes(featureB.id)) return 1;
+      // Alphabetical
+      if (featureA.name.substring(2) < featureB.name.substring(2)) return -1;
+      if (featureA.name.substring(2) > featureB.name.substring(2)) return 1;
+      return 0;
+    });
+    this.setState({ features });
+  }
+
+  /* Class function: componentDidMount()
+   * Queries the guide's features on component mount.
+   * Called after the component renders for the first time.
+   */
   async componentDidMount() {
     // Query all features from the selected app
     const querySnapshot = await getDocs(
-      collection(db, "guides", this.props.app.id, "features")
+      collection(db, "guides", this.state.appId, "features")
     );
     const features = querySnapshot.docs.map((featureSnap) => {
       let feature = featureSnap.data();
-      feature.id = featureSnap.id; // Set the id prop on the review object
+      feature.id = featureSnap.id; // Set the id prop on the feature object
       return feature;
     });
-
-    // Sort by pinned, then alphabetical
-    let app = this.props.app;
-    let pinnedInApp = this.props.user.pinned[app.id];
-    features.sort(function(featureA, featureB) {
-      if (pinnedInApp.includes(featureA.id) && !pinnedInApp.includes(featureB.id)) return -1;
-      if (!pinnedInApp.includes(featureA.id) && pinnedInApp.includes(featureB.id)) return 1;
-      if (featureA.name.substring(2) < featureB.name.substring(2)) return -1;
-      if (featureA.name.substring(2) > featureB.name.substring(2)) return 1;
-      return 0;
-    });
-    this.setState({ features });
+    this.sortFeatures(features);
   }
 
+  /* Class function: componentDidUpdate()
+   * Resorts the features list of the guide.
+   * Called after the component rerenders.
+   */
   async componentDidUpdate() {
-    // Sort by pinned, then alphabetical
-    let features = this.state.features;
-    let app = this.props.app;
-    let pinnedInApp = this.props.user.pinned[app.id];
-    features.sort(function(featureA, featureB) {
-      if (pinnedInApp.includes(featureA.id) && !pinnedInApp.includes(featureB.id)) return -1;
-      if (!pinnedInApp.includes(featureA.id) && pinnedInApp.includes(featureB.id)) return 1;
-      if (featureA.name.substring(2) < featureB.name.substring(2)) return -1;
-      if (featureA.name.substring(2) > featureB.name.substring(2)) return 1;
-      return 0;
-    });
-    this.setState({ features });
+    this.sortFeatures(this.state.features);
   }
 
+  /* Class function: render()
+   * Renders the component.
+   */
   render() {
+    console.log("featuresSadfasdf", this.state.features);
     return <SafeAreaView style={styles.container}>
     <SearchBar
       searchPhrase={this.state.searchPhrase}
       setSearchPhrase={(s) => this.setState({ searchPhrase: s })}
       clicked={this.state.clicked}
       setClicked={(b) => this.setState({ clicked: b })}
-      placeHolderText={"Search features of " + this.props.app.name + "..."}
+      placeHolderText={"Search features of " + this.state.appName + "..."}
     />
     {
       <FeatureList
         searchPhrase={this.state.searchPhrase}
         data={this.state.features}
         setClicked={(b) => this.setState({ clicked: b })}
-        user={this.props.user}
-        app={this.props.app}
+        user={this.state.user}
+        appId={this.state.appId}
       />
     }
-  </SafeAreaView>
+    </SafeAreaView>
   }
 }
 
-
+// Style sheet
 const styles = StyleSheet.create({
   container: {
     display: "flex",
