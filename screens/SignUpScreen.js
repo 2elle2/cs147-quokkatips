@@ -31,16 +31,17 @@ export default function SignUpScreen(props) {
             await setDoc(doc(db, "users", uid), {
                 email: email,
                 name: name,
-                gradeLevels: [],
-                subjects: [],
-                guides: [],
+                gradeLevels: ["Middle School"],
+                subjects: ["Mathematics"],
+                guides: ["jUEWVUQE4UBImqprqsg9", "lpJsISwLw5WNnuBsRLzJ", "H7Ue6SxYJHWfW9LHveoG", "DzFkWDDaArCq5EUCtts3"],
                 picture: "https://picsum.photos/50/50",
                 pinned: {},
                 unread: {},
             });
 
             console.log('New user account created!');
-            navigation.navigate('Home', {screen: "Explore"});
+            // navigation.navigate('Home', {screen: "Explore"});
+            navigation.navigate('SignUpTwo');
 
         } catch (error) {
             if (email.length === 0 && password.length === 0) {

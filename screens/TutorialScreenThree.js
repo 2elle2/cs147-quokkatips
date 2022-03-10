@@ -6,19 +6,19 @@ import React from 'react';
 import Colors from '../Themes/colors';
 
 
-export default function TutorialScreenOne() {
+export default function TutorialScreenThree() {
     const navigation = useNavigation();
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerText}>Tutorial</Text>
                 <Pressable
                     onPress={() => navigation.goBack()}
-                    style={styles.skipButton}
-                >
-                    <Text style={styles.skipButtonText}>Skip</Text>
-                    <Ionicons name="chevron-forward" size={28} color="#E3A444" />
+                    style={styles.backButton}
+                    >
+                    <Ionicons name="chevron-back" size={28} color="#E3A444" />
+                    <Text style={styles.backButtonText}> Back</Text>
                 </Pressable>
+                <Text style={styles.headerText}>Tutorial</Text>
             </View>
 
             <View style={styles.imageContainer}>
@@ -28,19 +28,19 @@ export default function TutorialScreenOne() {
                 />
             </View>
  
-            <Text style={styles.modifyText}>Explore classroom software based on recommendations, trending, and more</Text>
+            <Text style={styles.modifyText}>Need help? Ask your questions, and Quokka will help annotate your camera screen</Text>
 
             <View style={styles.dots}>
+                <View style={styles.dotOff}/>
+                <View style={styles.dotOff}/>
                 <View style={styles.dotOn}/>
-                <View style={styles.dotOff}/>
-                <View style={styles.dotOff}/>
             </View>
 
             <TouchableOpacity 
                 style={styles.nextButton} 
-                onPress={() => navigation.navigate("TutorialTwo")}
+                onPress={() => navigation.navigate("Home", {screen: "Explore"})}
             >
-                <Text style={styles.nextText}>Next </Text>
+                <Text style={styles.nextText}>Got it! </Text>
                 <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
             </TouchableOpacity>
         </SafeAreaView>
@@ -147,6 +147,18 @@ const styles = StyleSheet.create({
         right: 0,
     },
     skipButtonText: {
+        color: "#E3A444",
+        fontSize: 22,
+        fontWeight: "500",
+    },
+    backButton: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        position: "absolute",
+        left: 0,
+    },
+    backButtonText: {
         color: "#E3A444",
         fontSize: 22,
         fontWeight: "500",

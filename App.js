@@ -15,6 +15,8 @@ import SignUpScreenTwo from "./screens/SignUpScreenTwo";
 import SignUpScreenThree from "./screens/SignUpScreenThree";
 import SignUpScreenFour from "./screens/SignUpScreenFour";
 import TutorialScreenOne from "./screens/TutorialScreenOne";
+import TutorialScreenTwo from "./screens/TutorialScreenTwo";
+import TutorialScreenThree from "./screens/TutorialScreenThree";
 
 import ExploreScreen from "./screens/ExploreScreen";
 import ExploreSearch from "./screens/ExploreSearch";
@@ -80,6 +82,16 @@ export default function App() {
         <Stack.Screen
           name="TutorialOne"
           component={TutorialScreenOne}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TutorialTwo"
+          component={TutorialScreenTwo}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TutorialThree"
+          component={TutorialScreenThree}
           options={{ headerShown: false }}
         />
 

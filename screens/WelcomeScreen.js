@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import Colors from '../Themes/colors';
 
-
 export default function WelcomeScreen() {
     const navigation = useNavigation();
 
@@ -45,8 +44,7 @@ export default function WelcomeScreen() {
 
             <TouchableOpacity 
                 style={styles.getStartedButton} 
-                // onPress={() => navigation.navigate('LogIn')}>
-                onPress={() => navigation.navigate('SignUpTwo')}>
+                onPress={() => navigation.navigate('LogIn')}>
                 <Text style={styles.getStartedText}>Get Started</Text>
             </TouchableOpacity>
         </SafeAreaView>
