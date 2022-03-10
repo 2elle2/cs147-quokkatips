@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import { useState } from "react";
 
 import HomeScreen from "./screens/HomeScreen";
@@ -18,8 +18,10 @@ import ExploreSearch from "./screens/ExploreSearch";
 import ViewAll from "./screens/ViewAll";
 import FeatureDetails from "./screens/FeatureDetails";
 import ReviewDetails from "./screens/ReviewDetails";
+import Chat from "./screens/Chat";
 
 import { LogBox } from "react-native";
+import { AntDesign } from '@expo/vector-icons';
 
 LogBox.ignoreAllLogs();
 
@@ -29,11 +31,41 @@ import { forVerticalIOS } from "@react-navigation/stack";
 import AboutScreen from "./screens/AboutScreen";
 
 const Stack = createStackNavigator();
+const quokkaAvatar = require('./assets/Quokkas/neutral-standing.png');
+const quokka = {
+  _id: 2,
+  name: 'Quokka',
+  avatar: quokkaAvatar,
+}
 
 export default function App() {
   const [user, setUser] = useState({}); // Use state to pass user object between components
   const [guides, setGuides] = useState([]);
-  console.log(user, "App.js");
+  const [view, setView] = useState(1);
+  const [messages, setMessages] = useState([
+    {
+      _id: 1,
+      text: 'Hi there! How can I help?',
+      createdAt: new Date(),
+      quickReplies: {
+        type: 'radio', // or 'radio',
+        keepIt: true,
+        values: [
+          {
+            title: 'I need help sharing my screen',
+            value: 'help_share',
+          },
+          {
+            title: 'I need help recording my screen',
+            value: 'help_recording',
+          },
+        ],
+      },
+      user: quokka,
+    },
+  ]);
+
+  // console.log(messages, "App.js");
 
   const forFade = ({ current }) => ({
     cardStyle: {
@@ -59,7 +91,7 @@ export default function App() {
     },
   };
 
-  console.log("USERSS IN APP JS", user);
+  // console.log("USERSS IN APP JS", user);
 
   return (
     <NavigationContainer>
@@ -98,7 +130,14 @@ export default function App() {
           }}
         >
           {(props) => (
-            <HomeScreen {...props} setUser={setUser} setGuides={setGuides} />
+            <HomeScreen {...props}
+              setUser={setUser}
+              setGuides={setGuides}
+              setView={setView}
+              view={view}
+              setMessages={setMessages}
+              messages={messages}
+            />
           )}
         </Stack.Screen>
 
@@ -133,6 +172,30 @@ export default function App() {
         <Stack.Screen name="ViewAll" component={ViewAll} />
         <Stack.Screen name="FeatureDetails" component={FeatureDetails} />
         <Stack.Screen
+          name="Chat"
+          options={{
+            title: "Chat",
+            headerShown: true,
+            headerMode: 'screen',
+            headerBackTitle: 'Back',
+            headerTintColor: Colors.yellow,
+            headerTitleStyle: {
+              fontSize: 22,
+              fontWeight: "700",
+              color: Colors.black,
+            },
+            // headerRight: () => (
+            //   <Pressable onPress={() => navigation.navigate('ARView')}
+            //   >
+            //     <AntDesign name="caretdown" size={24} color={Colors.yellow} />
+            //   </Pressable>
+            // ),
+            // ...TransitionPresets.ModalSlideFromBottomIOS
+          }}
+        >
+          {(props) => <Chat {...props} setView={setView} messages={messages} setMessages={setMessages} />}
+        </Stack.Screen>
+        <Stack.Screen
           name="AboutScreen"
           component={AboutScreen}
           options={{
@@ -152,7 +215,8 @@ export default function App() {
               };
             },
           }}
-        />
+        >
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
