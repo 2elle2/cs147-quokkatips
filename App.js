@@ -65,7 +65,7 @@ export default function App() {
     },
   ]);
 
-  console.log(messages, "App.js");
+  // console.log(messages, "App.js");
 
   const forFade = ({ current }) => ({
     cardStyle: {
@@ -91,7 +91,7 @@ export default function App() {
     },
   };
 
-  console.log("USERSS IN APP JS", user);
+  // console.log("USERSS IN APP JS", user);
 
   return (
     <NavigationContainer>
@@ -135,7 +135,9 @@ export default function App() {
               setGuides={setGuides}
               setView={setView}
               view={view}
-              setMessages={setMessages} />
+              setMessages={setMessages}
+              messages={messages}
+            />
           )}
         </Stack.Screen>
 

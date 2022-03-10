@@ -8,6 +8,7 @@ export default function AskQuokkaScreen(props) {
                 view={props.view}
                 setView={props.setView}
                 setMessages={props.setMessages}
+                messages={props.messages}
             />
         </View>
     )

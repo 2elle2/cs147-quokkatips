@@ -5,7 +5,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { render } from 'react-dom';
 import { TextPropTypes } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat } from 'react-native-gifted-chat';
 import { useNavigation } from "@react-navigation/native";
 
 const quokkaAvatar = require('../assets/Quokkas/neutral-standing.png');
@@ -28,8 +28,6 @@ class Chat extends React.Component {
     };
   }
 
-  // TODO: Quokka's next message: "Got it! Let's go back to the camera view for more instructions."
-
   onSend(messages = []) {
     this.setState((previousState) => {
       const sentMessages = [{ ...messages[0], sent: true, received: true }]
@@ -47,8 +45,7 @@ class Chat extends React.Component {
 
   onQuickReply(quickReplies) {
     const createdAt = new Date()
-    if (quickReplies.length === 1) {
-      
+    if (quickReplies.length >= 1) {
       this.onSend([
         {
           createdAt,
@@ -68,7 +65,15 @@ class Chat extends React.Component {
         },
       ]);
       this.props.setView(2);
-      setTimeout(() => { this.props.navigation.goBack() }, 2000);
+      setTimeout(() => {
+        this.onSend([{
+          _id: Math.round(Math.random() * 1000000),
+          text: "Once you have Zoom open, click the green \"Share Screen\" button.",
+          createdAt: new Date(),
+          user: quokka,
+        }]);
+        this.props.navigation.goBack();
+      }, 2000);
     } else {
       console.warn('replies param is not set correctly')
     }

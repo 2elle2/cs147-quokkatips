@@ -27,7 +27,7 @@ import SearchBar from "./Components/SearchBar";
 // export default function MyGuidesScreen() {
 const MyGuidesScreen = (props) => {
   const { user, guides, toggleDrawer } = props;
-  console.log(user.guides);
+  // console.log(user.guides);
 
   // const DATA = ['Desmos', 'Canvas', 'QuokkaTips', 'Google Docs', 'Slack'];
 

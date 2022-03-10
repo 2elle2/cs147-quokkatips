@@ -17,6 +17,7 @@ import { StyleSheet, Text, SafeAreaView, Pressable, View, TouchableOpacity, Imag
 import { Camera } from 'expo-camera';
 import Colors from '../Themes/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { GiftedChat } from 'react-native-gifted-chat'
 import { Chat } from './Chat';
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 
@@ -37,7 +38,6 @@ export default function ARView(props) {
      * Check to see if the user has given permission to use their camera.
      */
     useEffect(() => {
-        console.log(props);
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             setHasPermission(status === 'granted');
@@ -59,7 +59,6 @@ export default function ARView(props) {
      * der views after certain amount of time passes.
      */
     const renderSwitch = () => {
-        console.log(props.view);
         switch (props.view) {
             case 1:
                 // Need to check quokkaMsg so we don't set off an infinite loop
@@ -124,12 +123,28 @@ export default function ARView(props) {
                 //                 if (quokkaMsg !== "Great job! You set up screen recording successfully.") {
                 //                     setQuokkaMsg("Great job! You set up screen recording successfully.");
                 //                 }
-                if (quokkaMsg !== "Once you have Zoom open, \nclick the green \"share \nscreen\" button.") {
-                    setQuokkaMsg("Once you have Zoom open, \nclick the green \"share \nscreen\" button.");
+                if (quokkaMsg !== "Once you have Zoom open, \nclick the green \"Share \nScreen\" button.") {
+                    setQuokkaMsg("Once you have Zoom open, \nclick the green \"Share \nScreen\" button.");
                 }
                 return (
                     <>
-                        <TouchableOpacity onPress={() => props.setView(3)}>
+                        <TouchableOpacity onPress={() => {
+
+                            props.setMessages(
+                                GiftedChat.append(
+                                    props.messages,
+                                    [{
+                                        _id: Math.round(Math.random() * 1000000),
+                                        text: "Click on the screen or app you want to share. Finally, click the blue share button.",
+                                        createdAt: new Date(),
+                                        sent: true,
+                                        recieved: true,
+                                        user: quokka,
+                                    }],
+                                )
+                            )
+                            props.setView(3);
+                        }}>
                             <Image style={styles.arrowRight} source={require('../assets/Arrows/arrow-t.png')} />
                         </TouchableOpacity>
                         <View style={styles.quokkaText}>
@@ -148,7 +163,6 @@ export default function ARView(props) {
             case 3:
                 if (quokkaMsg !== "Click on the screen or app \nyou want to share. Finally, \nclick the blue \"share\" button.") {
                     setQuokkaMsg("Click on the screen or app \nyou want to share. Finally, \nclick the blue \"share\" button.");
-                    // props.setMessages()
                 }
                 return (
                     <>
