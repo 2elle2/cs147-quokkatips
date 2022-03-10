@@ -25,52 +25,9 @@ import List from "./Components/List";
 import SearchBar from "./Components/SearchBar";
 
 // export default function MyGuidesScreen() {
-const MyGuidesScreen = ({ user, guides, toggleDrawer }) => {
-  const DATA = [
-    { id: "1", title: "Desmos", image: "https://syracuseuniversity.zoom.us/" },
-    { id: "2", title: "Canvas", image: "https://syracuseuniversity.zoom.us/" },
-    {
-      id: "3",
-      title: "QuokkaTips",
-      image: "https://syracuseuniversity.zoom.us/",
-    },
-    {
-      id: "4",
-      title: "Google Docs",
-      image: "https://syracuseuniversity.zoom.us/",
-    },
-    { id: "5", title: "Slack", image: "https://syracuseuniversity.zoom.us/" },
-    {
-      id: "6",
-      title: "Google Sheets",
-      image: "https://syracuseuniversity.zoom.us/",
-    },
-    {
-      id: "7",
-      title: "Google Slides",
-      image: "https://syracuseuniversity.zoom.us/",
-    },
-    {
-      id: "8",
-      title: "Microsoft PowerPoint",
-      image: "https://syracuseuniversity.zoom.us/",
-    },
-    {
-      id: "9",
-      title: "Microsoft Word",
-      image: "https://syracuseuniversity.zoom.us/",
-    },
-    {
-      id: "10",
-      title: "Microsoft Excel",
-      image: "https://syracuseuniversity.zoom.us/",
-    },
-    {
-      id: "11",
-      title: "Microsoft Teams",
-      image: "https://syracuseuniversity.zoom.us/",
-    },
-  ];
+const MyGuidesScreen = (props) => {
+  const { user, guides, toggleDrawer } = props;
+  // console.log(user.guides);
 
   // const DATA = ['Desmos', 'Canvas', 'QuokkaTips', 'Google Docs', 'Slack'];
 
@@ -79,7 +36,7 @@ const MyGuidesScreen = ({ user, guides, toggleDrawer }) => {
 
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
-  console.log(guides);
+  // console.log(guides);
 
   return (
     <SafeAreaView style={styles.container}>
