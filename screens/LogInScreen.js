@@ -172,8 +172,8 @@ const styles = StyleSheet.create({
     // marginTop: 40,
     shadowColor: Colors.black,
     shadowOffset: { width: -1, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
   },
 
   logInText: {

@@ -8,6 +8,8 @@ import {
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+
 import { Checkbox } from "react-native-paper";
 import React from "react";
 import Colors from "../Themes/colors";
@@ -37,6 +39,16 @@ export default function SignUpScreenTwo() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableOpacity
+        style={styles.backIcon}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons
+          name="chevron-back-circle-outline"
+          size={48}
+          color={Colors.black}
+        />
+      </TouchableOpacity>
       <Text style={styles.headerText}>What do you teach?</Text>
 
       <View style={styles.checkboxList}>
@@ -57,17 +69,19 @@ export default function SignUpScreenTwo() {
         })}
       </View>
 
-      <TouchableOpacity
-        style={styles.nextButton}
-        onPress={() => navigation.navigate("SignUpThree")}
-      >
-        <Text style={styles.nextText}>Next </Text>
-        <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
-      </TouchableOpacity>
+      <View style={styles.bottomContainer}>
+        <TouchableOpacity
+          style={styles.nextButton}
+          onPress={() => navigation.navigate("SignUpThree")}
+        >
+          <Text style={styles.nextText}>Next </Text>
+          <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
+        </TouchableOpacity>
 
-      <Text style={styles.modifyText}>
-        You can modify these selections later
-      </Text>
+        <Text style={styles.modifyText}>
+          You can modify these selections later
+        </Text>
+      </View>
     </SafeAreaView>
   );
 }
@@ -78,7 +92,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: Colors.lightgray,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   backIcon: {
     alignSelf: "flex-start",
@@ -88,9 +102,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: "500",
     marginBottom: 10,
-    marginTop: 40,
+    marginTop: 70,
   },
   nextButton: {
     flexDirection: "row",
@@ -100,15 +114,15 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 50,
     margin: 10,
-    borderRadius: 14,
-    shadowColor: Colors.gray,
-    shadowOffset: { width: -1, height: 5 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
+    borderRadius: 6,
+    shadowColor: Colors.black,
+    shadowOffset: { width: -1, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
   },
   nextText: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "500",
     color: Colors.white,
   },
   modifyText: {
@@ -127,6 +141,8 @@ const styles = StyleSheet.create({
     color: "black",
   },
   checkboxList: {
+    position: "absolute",
+    top: 160,
     backgroundColor: "white",
     paddingVertical: 10,
     borderRadius: 10,
@@ -137,5 +153,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 2,
+  },
+  bottomContainer: {
+    width: "100%",
+    alignItems: "center",
   },
 });

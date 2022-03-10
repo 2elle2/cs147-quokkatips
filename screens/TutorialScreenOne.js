@@ -1,153 +1,162 @@
-import { StyleSheet, Text, SafeAreaView, View, TouchableOpacity, Image, Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import React from 'react';
-import Colors from '../Themes/colors';
-
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  View,
+  TouchableOpacity,
+  Image,
+  Pressable,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import React from "react";
+import Colors from "../Themes/colors";
 
 export default function TutorialScreenOne() {
-    const navigation = useNavigation();
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Tutorial</Text>
-                <Pressable
-                    onPress={() => navigation.navigate("Home", {screen: "Explore"})}
-                    style={styles.skipButton}
-                >
-                    <Text style={styles.skipButtonText}>Skip</Text>
-                    <Ionicons name="chevron-forward" size={28} color="#E3A444" />
-                </Pressable>
-            </View>
+  const navigation = useNavigation();
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Tutorial</Text>
+        <Pressable
+          onPress={() => navigation.navigate("Home", { screen: "Explore" })}
+          style={styles.skipButton}
+        >
+          <Text style={styles.skipButtonText}>Skip</Text>
+          <Ionicons name="chevron-forward" size={28} color="#E3A444" />
+        </Pressable>
+      </View>
 
-            <View style={styles.imageContainer}>
-                <Image
-                    style={styles.tutorialImage}
-                    source={require('../assets/explore.png')}
-                />
-            </View>
- 
-            <Text style={styles.modifyText}>Explore classroom software based on recommendations, trending, and more</Text>
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.tutorialImage}
+          source={require("../assets/explore.png")}
+        />
+      </View>
 
-            <View style={styles.dots}>
-                <View style={styles.dotOn}/>
-                <View style={styles.dotOff}/>
-                <View style={styles.dotOff}/>
-            </View>
+      <Text style={styles.modifyText}>
+        Explore classroom software based on recommendations, trending, and more
+      </Text>
 
-            <TouchableOpacity 
-                style={styles.nextButton} 
-                onPress={() => navigation.navigate("TutorialTwo")}
-            >
-                <Text style={styles.nextText}>Next </Text>
-                <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
-            </TouchableOpacity>
-        </SafeAreaView>
-    )
+      <View style={styles.dots}>
+        <View style={styles.dotOn} />
+        <View style={styles.dotOff} />
+        <View style={styles.dotOff} />
+      </View>
+
+      <TouchableOpacity
+        style={styles.nextButton}
+        onPress={() => navigation.navigate("TutorialTwo")}
+      >
+        <Text style={styles.nextText}>Next </Text>
+        <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        flex: 1,
-        minHeight: 300,
-        backgroundColor: Colors.lightgray,
-        alignItems: "center",
-      },
-    header: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: 30,
-        marginBottom: 6,
-        alignSelf: "center",
-    },
-    backIcon: {
-        alignSelf: 'flex-start',
-        position: 'absolute',
-        left: 24,
-        top: 60,
-    },
-    headerText: {
-        fontSize: 22,
-        fontWeight: "700",
-      },
-    nextButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: Colors.black,
-        width: '80%',
-        height: 50,
-        margin: 10,
-        borderRadius: 14,
-        shadowColor: Colors.gray,
-        shadowOffset: { width: -1, height: 5 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-    },
-    nextText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: Colors.white,
-    },
-    modifyText: {
-        fontSize: 14,
-        color: Colors.black,
-        marginTop: 10,
-        width: '75%',
-        textAlign: 'center',
-    },
-    tutorialImage: {
-        width: '100%',
-        height: 500,
-        resizeMode: 'contain',
-        overflow: "hidden",
-    },
-    imageContainer: {
-        marginTop: 20,
-        width: '75%',
-        height: 500,
-        borderRadius: 20,
-        backgroundColor: 'white',
-        shadowColor: Colors.gray,
-        shadowOffset: { width: -1, height: 5 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-    },
-    dots: {
-        marginTop: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    dotOn: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        margin: 5,
-        backgroundColor: "#E3A444",
-    },
-    dotOff: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        margin: 5,
-        backgroundColor: "#888888",
-    },
-    skipButton: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        position: "absolute",
-        right: 0,
-    },
-    skipButtonText: {
-        color: "#E3A444",
-        fontSize: 22,
-        fontWeight: "500",
-    },
-})
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1,
+    minHeight: 300,
+    backgroundColor: Colors.lightgray,
+    alignItems: "center",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "95%",
+    height: 30,
+    marginBottom: 6,
+    alignSelf: "center",
+  },
+  backIcon: {
+    alignSelf: "flex-start",
+    position: "absolute",
+    left: 24,
+    top: 60,
+  },
+  headerText: {
+    fontSize: 22,
+    fontWeight: "500",
+  },
+  nextButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.black,
+    width: "80%",
+    height: 50,
+    margin: 10,
+    borderRadius: 6,
+    shadowColor: Colors.black,
+    shadowOffset: { width: -1, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+  },
+  nextText: {
+    fontSize: 20,
+    fontWeight: "500",
+    color: Colors.white,
+  },
+  modifyText: {
+    fontSize: 14,
+    color: Colors.black,
+    marginTop: 10,
+    width: "75%",
+    textAlign: "center",
+  },
+  tutorialImage: {
+    width: "100%",
+    height: 500,
+    resizeMode: "contain",
+    overflow: "hidden",
+  },
+  imageContainer: {
+    marginTop: 20,
+    width: "75%",
+    height: 500,
+    borderRadius: 20,
+    backgroundColor: "white",
+    shadowColor: Colors.gray,
+    shadowOffset: { width: -1, height: 5 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+  },
+  dots: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  dotOn: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    margin: 5,
+    backgroundColor: "#E3A444",
+  },
+  dotOff: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    margin: 5,
+    backgroundColor: "#888888",
+  },
+  skipButton: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    position: "absolute",
+    right: 0,
+  },
+  skipButtonText: {
+    color: "#E3A444",
+    fontSize: 22,
+    fontWeight: "500",
+  },
+});

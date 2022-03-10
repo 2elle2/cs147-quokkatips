@@ -115,10 +115,10 @@ const styles = StyleSheet.create({
     marginTop: 32,
     borderRadius: 6,
     // marginTop: 40,
-    shadowColor: "black",
+    shadowColor: Colors.black,
     shadowOffset: { width: -1, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
   },
   getStartedText: {
     fontSize: 20,

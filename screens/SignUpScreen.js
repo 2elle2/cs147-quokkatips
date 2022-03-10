@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
 
   logInHeaderText: {
     fontSize: 32,
-    fontWeight: "bold",
+    fontWeight: "500",
     marginBottom: 10,
   },
   inputView: {
@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "80%",
     height: 50,
-    borderRadius: 14,
-    borderWidth: 1.5,
+    borderRadius: 10,
+    borderWidth: 1.2,
     margin: 10,
     paddingLeft: 12,
     alignItems: "center",
@@ -195,15 +195,15 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 50,
     margin: 10,
-    borderRadius: 14,
-    shadowColor: Colors.gray,
-    shadowOffset: { width: -1, height: 5 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
+    borderRadius: 6,
+    shadowColor: Colors.black,
+    shadowOffset: { width: -1, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
   },
   nextText: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "500",
     color: Colors.white,
   },
   signUpRow: {
@@ -217,6 +217,6 @@ const styles = StyleSheet.create({
   loginText: {
     fontSize: 16,
     color: Colors.orange,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
 });
