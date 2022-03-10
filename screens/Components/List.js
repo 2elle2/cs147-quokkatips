@@ -19,6 +19,7 @@ import { Chip } from "react-native-paper";
 // defining the item that will be rendered in the Flat List
 const Item = (props) => {
   const navigation = useNavigation();
+  // console.log("item props", props);
   let numUnread = props.user.unread[props.app.id]?.length;
   return (
     <Pressable
@@ -26,6 +27,7 @@ const Item = (props) => {
         navigation.navigate("AppDetails", {
           app: props.app,
           reRenderMyGuides: props.reRenderMyGuides,
+          screen: "FEATURES",
         });
       }}
     >
@@ -51,7 +53,7 @@ const List = ({ searchPhrase, setClicked, data, user }) => {
   let newData = data;
   if (searchPhrase) {
     newData = data.filter((item) => {
-      console.log(item);
+      // console.log(item);
       return item.name.toUpperCase().includes(searchPhrase.toUpperCase());
     });
   }

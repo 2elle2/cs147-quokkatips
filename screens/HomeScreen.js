@@ -154,7 +154,7 @@ class HomeScreen extends React.Component {
       guide.id = doc.id; // Set the id prop on the guide object
       return guide;
     });
-    // console.log(guides, "HomeScreen.js");
+    // console.log("GUIDES SUCCESSFULLY PULLED");
     this.setState({ guides: guides });
     this.setGuides(guides);
   };
@@ -165,11 +165,11 @@ class HomeScreen extends React.Component {
     if (docSnap.exists) {
       let user = docSnap.data();
       user.id = docSnap.id; // Add the id prop to the user object
-      console.log(user, "HomeScreen.js"); // Can get user data and set in state
+      // console.log(user, "HomeScreen.js"); // Can get user data and set in state
       this.setUser(user); // Saves user object in parent state
 
       this.setState({ user: user });
-      console.log("STATEE", this.state);
+      // console.log("STATEE", this.state);
       // console.log(user, "HomeScreen.js"); // Can get user data and set in state
     }
   };
@@ -182,7 +182,7 @@ class HomeScreen extends React.Component {
       // User is signed in, see docs for list of available properties
       // https://firebase.google.com/docs/refernce/js/firebase.User
 
-      console.log("priinting user", user);
+      // console.log("priinting user", user);
       this.getUserInfo(user);
       this.getGuides();
     } else {
@@ -194,7 +194,7 @@ class HomeScreen extends React.Component {
   slide = true;
 
   showSlidingDrawer = () => {
-    console.log("drawer clicked");
+    // console.log("drawer clicked");
     if (this.slide) {
       Animated.timing(this.animation, {
         toValue: 1,
@@ -220,7 +220,7 @@ class HomeScreen extends React.Component {
   });
 
   render() {
-    const { navigation } = this.props;
+    const { view, setView, setMessages, navigation, messages } = this.props;
 
     // Count the total number of feature updates
     let unreadCount = 0;
@@ -292,7 +292,22 @@ class HomeScreen extends React.Component {
             )}
           </Tab.Screen>
 
-          <Tab.Screen name="Ask Quokka" component={AskQuokkaScreen} />
+          <Tab.Screen
+            name="Ask Quokka"
+            options={{
+              headerShown: false,
+            }}
+          >
+            {(props) => (
+              <AskQuokkaScreen
+                {...props}
+                messages={messages}
+                setMessages={setMessages}
+                setView={setView}
+                view={view}
+              />
+            )}
+          </Tab.Screen>
         </Tab.Navigator>
         <RemoveModal parent={this} navigation={navigation} />
 

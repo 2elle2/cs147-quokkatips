@@ -46,7 +46,7 @@ const Item = ({ title }) => (
 
 export default function ExploreStack({ user, guides }) {
   const renderItem = ({ item }) => <Item title={item.title} />;
-  console.log("PROPS", guides);
+  // console.log("PROPS", guides);
 
   return (
     <Stack.Navigator

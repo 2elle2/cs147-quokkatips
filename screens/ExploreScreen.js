@@ -104,8 +104,8 @@ export default function ExploreScreen(props) {
   // console.log(props, "ExploreScreen");
   const navigation = useNavigation();
 
-  console.log("props", props);
-  console.log("USER", props.user);
+  // console.log("props", props);
+  // console.log("USER", props.user);
 
   return (
     // "Sort by..." picker
