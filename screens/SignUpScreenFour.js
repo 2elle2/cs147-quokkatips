@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   softwareText: {
-    fontSize: 20,
+    fontSize: 18,
     color: "black",
   },
   checkboxList: {

@@ -123,8 +123,8 @@ export default function ARView(props) {
                 //                 if (quokkaMsg !== "Great job! You set up screen recording successfully.") {
                 //                     setQuokkaMsg("Great job! You set up screen recording successfully.");
                 //                 }
-                if (quokkaMsg !== "Once you have Zoom open, \nclick the green \"Share \nScreen\" button.") {
-                    setQuokkaMsg("Once you have Zoom open, \nclick the green \"Share \nScreen\" button.");
+                if (quokkaMsg !== "Open the Zoom app and \nclick the green \"Share \nScreen\" button.") {
+                    setQuokkaMsg("Open the Zoom app and \nclick the green \"Share \nScreen\" button.");
                 }
                 return (
                     <>
@@ -135,7 +135,7 @@ export default function ARView(props) {
                                     props.messages,
                                     [{
                                         _id: Math.round(Math.random() * 1000000),
-                                        text: "Click on the screen or app you want to share. Finally, click the blue share button.",
+                                        text: "Click on the screen you want to share. Finally, click the blue share button.",
                                         createdAt: new Date(),
                                         sent: true,
                                         recieved: true,
@@ -161,8 +161,8 @@ export default function ARView(props) {
                     </>
                 );
             case 3:
-                if (quokkaMsg !== "Click on the screen or app \nyou want to share. Finally, \nclick the blue \"share\" button.") {
-                    setQuokkaMsg("Click on the screen or app \nyou want to share. Finally, \nclick the blue \"share\" button.");
+                if (quokkaMsg !== "Select the screen you \nwant to share, and click\nthe blue \"share\" button.") {
+                    setQuokkaMsg("Select the screen you \nwant to share, and click\nthe blue \"share\" button.");
                 }
                 return (
                     <>
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 22,
-        fontWeight: "700",
+        fontWeight: "500",
     },
     hamburgerIcon: {
         display: "flex",
