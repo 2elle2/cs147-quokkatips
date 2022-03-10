@@ -1,28 +1,59 @@
-import { StyleSheet, Text, SafeAreaView, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { db } from '../firebase';
 import { useNavigation } from '@react-navigation/native';
-
-import { doc, setDoc } from 'firebase/firestore';
-import Colors from '../Themes/colors';
-import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Checkbox } from 'react-native-paper';
+import React from 'react';
+import Colors from '../Themes/colors';
+
+const SUBJECTS = [
+    { id: 1, name: 'Art', checked: false }, 
+    { id: 2, name: 'Chemistry', checked: false },
+    { id: 3, name: 'Computer Science', checked: false },
+    { id: 4, name: 'English Literature', checked: false },
+    { id: 5, name: 'Geography', checked: false },
+    { id: 6, name: 'History', checked: false },
+    { id: 7, name: 'Mathematics', checked: false },
+    { id: 8, name: 'Music', checked: false },
+    { id: 9, name: 'Physics', checked: false },
+    { id: 10, name: 'Spanish', checked: false },
+];
+
+// Create your forceUpdate hook to rerender checkboxes
+function useForceUpdate(){
+    const [value, setValue] = useState(0); // integer state
+    return () => setValue(value => value + 1); // update the state to force render
+}
 
 export default function SignUpScreenTwo() {
     const navigation = useNavigation();
+    const forceUpdate = useForceUpdate();
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity style={styles.backIcon} onPress={() => navigation.goBack()}>
-                <Ionicons name="chevron-back-circle-outline" size={48} color={Colors.black} />
-            </TouchableOpacity>
-
             <Text style={styles.headerText}>What do you teach?</Text>
 
+            <View style={styles.checkboxList}>
+            {SUBJECTS.map(subject => {
+                return (
+                    <View style={styles.checkboxListItem}>
+                        <Checkbox.Android
+                            status={subject.checked ? 'checked' : 'unchecked'}
+                            color={'#E3A444'}
+                            onPress={() => {
+                                subject.checked = !subject.checked;
+                                forceUpdate();
+                            }}
+                        />
+                        <Text style={styles.subjectText}>{subject.name}</Text>
+                    </View>
+                );
+            })}
+            </View>
+ 
             <TouchableOpacity 
                 style={styles.nextButton} 
-                // onPress=
+                onPress={() => navigation.navigate("SignUpThree")}
             >
                 <Text style={styles.nextText}>Next </Text>
                 <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
@@ -42,38 +73,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-
     backIcon: {
         alignSelf: 'flex-start',
         position: 'absolute',
         left: 24,
         top: 60,
     },
-
-      
     headerText: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 10,
+        marginTop: 40,
     },
-
-    inputView: {
-        backgroundColor: Colors.white,
-        flexDirection: 'row',
-        width: '80%',
-        height: 50,
-        borderRadius: 14,
-        borderWidth: 1.5,
-        margin: 10,
-        paddingLeft: 12,
-        alignItems: 'center',
-    },
-    inputText: {
-        flex: 1,
-        fontSize: 18,
-        paddingLeft: 4,
-    },
-
     nextButton: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -83,7 +94,6 @@ const styles = StyleSheet.create({
         height: 50,
         margin: 10,
         borderRadius: 14,
-        // marginTop: 40,
         shadowColor: Colors.gray,
         shadowOffset: { width: -1, height: 5 },
         shadowOpacity: 0.8,
@@ -94,10 +104,31 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: Colors.white,
     },
-
     modifyText: {
         fontSize: 14,
         color: Colors.black,
     },
-
+    checkboxListItem: {
+        flexDirection: "row",
+        alignItems: "center",
+        alignSelf: 'flex-start',
+        marginHorizontal: 10,
+        marginVertical: 5,
+    },
+    subjectText: {
+        fontSize: 20,
+        color: 'black',
+    },
+    checkboxList: {
+        backgroundColor: 'white',
+        paddingVertical: 10,
+        borderRadius: 10,
+        width: '80%',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+    }
 })

@@ -27,6 +27,7 @@ const Item = (props) => {
         navigation.navigate("AppDetails", {
           app: props.app,
           reRenderMyGuides: props.reRenderMyGuides,
+          screen: "FEATURES",
         });
       }}
     >

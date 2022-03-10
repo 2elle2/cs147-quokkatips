@@ -12,6 +12,12 @@ import WelcomeScreen from "./screens/WelcomeScreen";
 import LogInScreen from "./screens/LogInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import SignUpScreenTwo from "./screens/SignUpScreenTwo";
+import SignUpScreenThree from "./screens/SignUpScreenThree";
+import SignUpScreenFour from "./screens/SignUpScreenFour";
+import TutorialScreenOne from "./screens/TutorialScreenOne";
+import TutorialScreenTwo from "./screens/TutorialScreenTwo";
+import TutorialScreenThree from "./screens/TutorialScreenThree";
+import AboutScreen from "./screens/AboutScreen";
 
 import ExploreScreen from "./screens/ExploreScreen";
 import ExploreSearch from "./screens/ExploreSearch";
@@ -23,12 +29,11 @@ import Chat from "./screens/Chat";
 import { LogBox } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 
-LogBox.ignoreAllLogs();
+LogBox.ignoreAllLogs()
 
 import Colors from "./Themes/colors";
 import { CardStyleInterpolators } from "@react-navigation/stack";
 import { forVerticalIOS } from "@react-navigation/stack";
-import AboutScreen from "./screens/AboutScreen";
 
 const Stack = createStackNavigator();
 const quokkaAvatar = require('./assets/Quokkas/neutral-standing.png');
@@ -95,11 +100,9 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
+      <Stack.Navigator 
+        screenOptions={{ 
+          headerShown: false }}>
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -120,14 +123,38 @@ export default function App() {
           component={SignUpScreenTwo}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="SignUpThree"
+          component={SignUpScreenThree}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignUpFour"
+          component={SignUpScreenFour}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TutorialOne"
+          component={TutorialScreenOne}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TutorialTwo"
+          component={TutorialScreenTwo}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TutorialThree"
+          component={TutorialScreenThree}
+          options={{ headerShown: false }}
+        />
 
         <Stack.Screen
           name="Home"
-          options={{
-            headerShown: false,
+          options={{ 
+            headerShown: false, 
             gestureEnabled: false,
-            cardStyleInterpolator: forFade,
-          }}
+            cardStyleInterpolator: forFade }}
         >
           {(props) => (
             <HomeScreen {...props}
@@ -159,12 +186,11 @@ export default function App() {
           {(props) => <ExploreStack {...props} user={user} guides={guides} />}
         </Stack.Screen> */}
 
-        <Stack.Screen
+        <Stack.Screen 
           name="ExploreSearch"
-          options={{
-            headerShown: false,
-            cardStyleInterpolator: forFade,
-          }}
+          options={{ 
+            headerShown: false, 
+            cardStyleInterpolator: forFade }}
         >
           {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
         </Stack.Screen>
