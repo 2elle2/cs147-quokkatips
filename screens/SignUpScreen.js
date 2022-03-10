@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 50,
     borderRadius: 10,
-    borderWidth: 1.5,
+    borderWidth: 1.2,
     margin: 10,
     paddingLeft: 12,
     alignItems: "center",
