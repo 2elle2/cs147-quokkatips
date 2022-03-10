@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.16.1",
+    "@react-native-community/checkbox": "^0.5.12",
     "@react-native-masked-view/masked-view": "0.2.6",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/drawer": "^6.3.1",
@@ -24,6 +25,7 @@
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-awesome-alerts": "^1.5.2",
+    "react-native-checkbox": "^2.0.0",
     "react-native-dropdown-picker": "^5.3.0",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "~2.1.0",
@@ -40,7 +42,8 @@
     "react-native-web": "0.17.1",
     "react-native-webview": "^11.17.2",
     "react-native-youtube": "^2.0.2",
-    "react-native-youtube-iframe": "^2.2.2"
+    "react-native-youtube-iframe": "^2.2.2",
+    "rn-checkbox-list": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

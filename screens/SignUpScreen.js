@@ -14,7 +14,7 @@ import { Feather } from '@expo/vector-icons';
 export default function SignUpScreen(props) {
     const [email, onChangeEmail] = useState("");
     const [password, onChangePassword] = useState("");
-    // const [name, onChangeName] = useState("");
+    const [name, onChangeName] = useState("");
     const navigation = useNavigation();
 
     const signUpUser = async () => {
@@ -30,10 +30,17 @@ export default function SignUpScreen(props) {
 
             await setDoc(doc(db, "users", uid), {
                 email: email,
-                // name: name,
+                name: name,
+                gradeLevels: [],
+                subjects: [],
+                guides: [],
+                picture: "https://picsum.photos/50/50",
+                pinned: {},
+                unread: {},
             });
 
             console.log('New user account created!');
+            navigation.navigate('Home', {screen: "Explore"});
 
         } catch (error) {
             if (email.length === 0 && password.length === 0) {
@@ -75,13 +82,13 @@ export default function SignUpScreen(props) {
                 <Feather name="user" size={24} color="black" />
                 <TextInput
                     style={styles.inputText}
-                    // onChangeText={onChangeName}
-                    // value={name}
+                    onChangeText={onChangeName}
+                    value={name}
                     placeholder="Full Name"
                 />
             </View>
             <View style={styles.inputView}>
-                <Feather name="user" size={24} color="black" />
+                <Feather name="mail" size={24} color="black" />
                 <TextInput
                     style={styles.inputText}
                     onChangeText={onChangeEmail}
@@ -107,7 +114,13 @@ export default function SignUpScreen(props) {
                 <Text style={styles.nextText}>Next </Text>
                 <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
             </TouchableOpacity>
-            
+
+            <View style={styles.signUpRow}>
+                <Text style={styles.alreadyHaveAccountText}>Already have an account?</Text>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Text style={styles.loginText}> Login</Text>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     )
 }
@@ -116,7 +129,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: Colors.lightgray,
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -184,11 +197,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
 
-    newUserText: {
+    alreadyHaveAccountText: {
         fontSize: 16,
         color: Colors.black,
     },
-    createAnAccount: {
+    loginText: {
         fontSize: 16,
         color: Colors.orange,
         fontWeight: 'bold',

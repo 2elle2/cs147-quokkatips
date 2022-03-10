@@ -7,17 +7,13 @@ import { Checkbox } from 'react-native-paper';
 import React from 'react';
 import Colors from '../Themes/colors';
 
-const SUBJECTS = [
-    { id: 1, name: 'Art', checked: false }, 
-    { id: 2, name: 'Chemistry', checked: false },
-    { id: 3, name: 'Computer Science', checked: false },
-    { id: 4, name: 'English Literature', checked: false },
-    { id: 5, name: 'Geography', checked: false },
-    { id: 6, name: 'History', checked: false },
-    { id: 7, name: 'Mathematics', checked: false },
-    { id: 8, name: 'Music', checked: false },
-    { id: 9, name: 'Physics', checked: false },
-    { id: 10, name: 'Spanish', checked: false },
+const GRADE_LEVELS = [
+    { id: 1, name: 'Kindergarten', checked: false }, 
+    { id: 2, name: 'Elementary School', checked: false },
+    { id: 3, name: 'Middle School', checked: false },
+    { id: 4, name: 'High School', checked: false },
+    { id: 5, name: 'College - Undergraduate', checked: false },
+    { id: 6, name: 'College - Graduate', checked: false },
 ];
 
 // Create your forceUpdate hook to rerender checkboxes
@@ -26,7 +22,7 @@ function useForceUpdate(){
     return () => setValue(value => value + 1); // update the state to force render
 }
 
-export default function SignUpScreenTwo() {
+export default function SignUpScreenThree() {
     const navigation = useNavigation();
     const forceUpdate = useForceUpdate();
 
@@ -36,21 +32,21 @@ export default function SignUpScreenTwo() {
                 <Ionicons name="chevron-back-circle-outline" size={48} color={Colors.black} />
             </TouchableOpacity>
 
-            <Text style={styles.headerText}>What do you teach?</Text>
+            <Text style={styles.headerText}>What grades do you teach?</Text>
 
             <View style={styles.checkboxList}>
-            {SUBJECTS.map(subject => {
+            {GRADE_LEVELS.map(gradeLevel => {
                 return (
                     <View style={styles.checkboxListItem}>
                         <Checkbox.Android
-                            status={subject.checked ? 'checked' : 'unchecked'}
+                            status={gradeLevel.checked ? 'checked' : 'unchecked'}
                             color={'#E3A444'}
                             onPress={() => {
-                                subject.checked = !subject.checked;
+                                gradeLevel.checked = !gradeLevel.checked;
                                 forceUpdate();
                             }}
                         />
-                        <Text style={styles.subjectText}>{subject.name}</Text>
+                        <Text style={styles.gradeLevelText}>{gradeLevel.name}</Text>
                     </View>
                 );
             })}
@@ -58,7 +54,7 @@ export default function SignUpScreenTwo() {
  
             <TouchableOpacity 
                 style={styles.nextButton} 
-                onPress={() => navigation.navigate("SignUpThree")}
+                onPress={() => navigation.navigate("SignUpFour")}
             >
                 <Text style={styles.nextText}>Next </Text>
                 <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
@@ -120,7 +116,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         marginVertical: 5,
     },
-    subjectText: {
+    gradeLevelText: {
         fontSize: 20,
         color: 'black',
     },
