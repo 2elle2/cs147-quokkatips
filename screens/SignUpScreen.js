@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { db } from '../firebase';
 import { useNavigation } from '@react-navigation/native';
-
 import { doc, setDoc } from 'firebase/firestore';
 import Colors from '../Themes/colors';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,12 +22,10 @@ export default function SignUpScreen(props) {
         //changed the promising chaining to async/await
         try {
             let userCredential = await createUserWithEmailAndPassword(auth, email, password)
-            console.log(userCredential);
-
             let uid = userCredential.user.uid;
-            console.log(uid);
 
             await setDoc(doc(db, "users", uid), {
+                // Default properties of a new user
                 email: email,
                 name: name,
                 gradeLevels: ["Middle School"],
@@ -39,10 +36,7 @@ export default function SignUpScreen(props) {
                 unread: {},
             });
 
-            console.log('New user account created!');
-            // navigation.navigate('Home', {screen: "Explore"});
             navigation.navigate('SignUpTwo');
-
         } catch (error) {
             if (email.length === 0 && password.length === 0) {
                 alert('Please enter your email address and password');
@@ -134,14 +128,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-
     backIcon: {
         alignSelf: 'flex-start',
         position: 'absolute',
         left: 24,
         top: 60,
     },
-
     quokkaImage: {
         width: 240,
         height: 240,
@@ -153,7 +145,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 10,
     },
-
     inputView: {
         backgroundColor: Colors.white,
         flexDirection: 'row',
@@ -170,7 +161,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         paddingLeft: 4,
     },
-
     nextButton: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -180,24 +170,20 @@ const styles = StyleSheet.create({
         height: 50,
         margin: 10,
         borderRadius: 14,
-        // marginTop: 40,
         shadowColor: Colors.gray,
         shadowOffset: { width: -1, height: 5 },
         shadowOpacity: 0.8,
         shadowRadius: 2,
     },
-
     nextText: {
         fontSize: 20,
         fontWeight: 'bold',
         color: Colors.white,
     },
-
     signUpRow: {
         marginTop: 40,
         flexDirection: 'row',
     },
-
     alreadyHaveAccountText: {
         fontSize: 16,
         color: Colors.black,
@@ -207,5 +193,4 @@ const styles = StyleSheet.create({
         color: Colors.orange,
         fontWeight: 'bold',
     }
-
 })

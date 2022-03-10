@@ -1,7 +1,6 @@
 import { StyleSheet, Text, SafeAreaView, View, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Checkbox } from 'react-native-paper';
 import React from 'react';
@@ -32,10 +31,6 @@ export default function SignUpScreenTwo() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity style={styles.backIcon} onPress={() => navigation.goBack()}>
-                <Ionicons name="chevron-back-circle-outline" size={48} color={Colors.black} />
-            </TouchableOpacity>
-
             <Text style={styles.headerText}>What do you teach?</Text>
 
             <View style={styles.checkboxList}>

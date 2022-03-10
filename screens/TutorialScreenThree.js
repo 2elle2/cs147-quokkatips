@@ -24,7 +24,7 @@ export default function TutorialScreenThree() {
             <View style={styles.imageContainer}>
                 <Image
                     style={styles.tutorialImage}
-                    source={require('../assets/explore.png')}
+                    source={require('../assets/learn.png')}
                 />
             </View>
  
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 500,
         resizeMode: 'contain',
-        borderRadius: 50,
         overflow: "hidden",
     },
     imageContainer: {

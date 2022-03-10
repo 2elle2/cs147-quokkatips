@@ -13,7 +13,7 @@ export default function TutorialScreenOne() {
             <View style={styles.header}>
                 <Text style={styles.headerText}>Tutorial</Text>
                 <Pressable
-                    onPress={() => navigation.goBack()}
+                    onPress={() => navigation.navigate("Home", {screen: "Explore"})}
                     style={styles.skipButton}
                 >
                     <Text style={styles.skipButtonText}>Skip</Text>
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 500,
         resizeMode: 'contain',
-        borderRadius: 50,
         overflow: "hidden",
     },
     imageContainer: {

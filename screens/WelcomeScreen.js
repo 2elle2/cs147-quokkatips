@@ -1,6 +1,5 @@
 import { StyleSheet, Text, SafeAreaView, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
 import Colors from '../Themes/colors';
 
 export default function WelcomeScreen() {
