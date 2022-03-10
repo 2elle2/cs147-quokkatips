@@ -17,6 +17,7 @@ import SignUpScreenFour from "./screens/SignUpScreenFour";
 import TutorialScreenOne from "./screens/TutorialScreenOne";
 import TutorialScreenTwo from "./screens/TutorialScreenTwo";
 import TutorialScreenThree from "./screens/TutorialScreenThree";
+import AboutScreen from "./screens/AboutScreen";
 
 import ExploreScreen from "./screens/ExploreScreen";
 import ExploreSearch from "./screens/ExploreSearch";
