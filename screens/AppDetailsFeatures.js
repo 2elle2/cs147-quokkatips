@@ -1,29 +1,62 @@
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from "react-native";
 import FeatureList from "./Components/FeatureList";
 import SearchBar from "./Components/SearchBar";
 import React from "react";
-import {
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { useIsFocused } from "@react-navigation/native";
 
 /* -------- Begin dummy data for testing purposes. Won't use in actual app. -------- */
 const FEATURES = [
-  { id: "1", name: "🖥 Share screen", description: "Share your screen to meeting participants." },
-  { id: "2", name: "🖥 Share screen", description: "Share your screen to meeting participants." },
-  { id: "3", name: "🖥 Share screen", description: "Share your screen to meeting participants." },
-  { id: "4", name: "🖥 Share screen", description: "Share your screen to meeting participants." },
-  { id: "5", name: "🖥 Share screen", description: "Share your screen to meeting participants." },
-  { id: "6", name: "🖥 Share screen", description: "Share your screen to meeting participants." },
-  { id: "7", name: "🖥 Share screen", description: "Share your screen to meeting participants." },
-  { id: "8", name: "🖥 Share screen", description: "Share your screen to meeting participants." },
-  { id: "9", name: "🖥 Share screen", description: "Share your screen to meeting participants." },
+  {
+    id: "1",
+    name: "🖥 Share screen",
+    description: "Share your screen to meeting participants.",
+  },
+  {
+    id: "2",
+    name: "🖥 Share screen",
+    description: "Share your screen to meeting participants.",
+  },
+  {
+    id: "3",
+    name: "🖥 Share screen",
+    description: "Share your screen to meeting participants.",
+  },
+  {
+    id: "4",
+    name: "🖥 Share screen",
+    description: "Share your screen to meeting participants.",
+  },
+  {
+    id: "5",
+    name: "🖥 Share screen",
+    description: "Share your screen to meeting participants.",
+  },
+  {
+    id: "6",
+    name: "🖥 Share screen",
+    description: "Share your screen to meeting participants.",
+  },
+  {
+    id: "7",
+    name: "🖥 Share screen",
+    description: "Share your screen to meeting participants.",
+  },
+  {
+    id: "8",
+    name: "🖥 Share screen",
+    description: "Share your screen to meeting participants.",
+  },
+  {
+    id: "9",
+    name: "🖥 Share screen",
+    description: "Share your screen to meeting participants.",
+  },
 ];
 /* -------- End dummy data for testing purposes. Won't use in actual app. -------- */
 
-export default function(props) {
+export default function (props) {
   useIsFocused();
   return <AppDetailsFeatures {...props} />;
 }
@@ -38,7 +71,7 @@ class AppDetailsFeatures extends React.Component {
       searchPhrase: "",
       clicked: false,
       features: [],
-    }
+    };
   }
 
   /* Class function: sortFeatures(features)
@@ -48,11 +81,19 @@ class AppDetailsFeatures extends React.Component {
   sortFeatures(features) {
     let pinned = this.state.user.pinned;
     let appId = this.state.appId;
-    let pinnedInApp = pinned[appId]? pinned[appId] : [];
-    features.sort(function(featureA, featureB) {
+    let pinnedInApp = pinned[appId] ? pinned[appId] : [];
+    features.sort(function (featureA, featureB) {
       // Pinned features go first
-      if (pinnedInApp.includes(featureA.id) && !pinnedInApp.includes(featureB.id)) return -1;
-      if (!pinnedInApp.includes(featureA.id) && pinnedInApp.includes(featureB.id)) return 1;
+      if (
+        pinnedInApp.includes(featureA.id) &&
+        !pinnedInApp.includes(featureB.id)
+      )
+        return -1;
+      if (
+        !pinnedInApp.includes(featureA.id) &&
+        pinnedInApp.includes(featureB.id)
+      )
+        return 1;
       // Alphabetical
       if (featureA.name.substring(2) < featureB.name.substring(2)) return -1;
       if (featureA.name.substring(2) > featureB.name.substring(2)) return 1;
@@ -91,24 +132,26 @@ class AppDetailsFeatures extends React.Component {
    */
   render() {
     console.log("featuresSadfasdf", this.state.features);
-    return <SafeAreaView style={styles.container}>
-    <SearchBar
-      searchPhrase={this.state.searchPhrase}
-      setSearchPhrase={(s) => this.setState({ searchPhrase: s })}
-      clicked={this.state.clicked}
-      setClicked={(b) => this.setState({ clicked: b })}
-      placeHolderText={"Search features of " + this.state.appName + "..."}
-    />
-    {
-      <FeatureList
-        searchPhrase={this.state.searchPhrase}
-        data={this.state.features}
-        setClicked={(b) => this.setState({ clicked: b })}
-        user={this.state.user}
-        appId={this.state.appId}
-      />
-    }
-    </SafeAreaView>
+    return (
+      <SafeAreaView style={styles.container}>
+        <SearchBar
+          searchPhrase={this.state.searchPhrase}
+          setSearchPhrase={(s) => this.setState({ searchPhrase: s })}
+          clicked={this.state.clicked}
+          setClicked={(b) => this.setState({ clicked: b })}
+          placeHolderText={"Search features of " + this.state.appName + "..."}
+        />
+        {
+          <FeatureList
+            searchPhrase={this.state.searchPhrase}
+            data={this.state.features}
+            setClicked={(b) => this.setState({ clicked: b })}
+            user={this.state.user}
+            appId={this.state.appId}
+          />
+        }
+      </SafeAreaView>
+    );
   }
 }
 
@@ -118,7 +161,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   header: {
     display: "flex",
@@ -132,7 +175,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "500",
   },
   hamburgerIcon: {
     display: "flex",
@@ -147,13 +190,13 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 16,
     borderWidth: 1.5,
-    borderColor: '#888888',
+    borderColor: "#888888",
     marginHorizontal: 10,
     marginTop: 10,
     marginBottom: 5,
     paddingLeft: 12,
     alignItems: "center",
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   inputText: {
     fontSize: 16,
@@ -162,4 +205,3 @@ const styles = StyleSheet.create({
   },
   sortText: {},
 });
-

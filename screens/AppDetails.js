@@ -23,7 +23,7 @@ export default function AppDetails(props) {
 
   // Count the total number of feature updates
   let unreadCount = 0;
-  for (const [, features] of Object.entries(user.unread? user.unread: {})) {
+  for (const [, features] of Object.entries(user.unread ? user.unread : {})) {
     unreadCount += features.length;
   }
 
@@ -86,18 +86,16 @@ export default function AppDetails(props) {
               parentCallback={rerenderParentCallback}
             />
           )}
-          options={
-            {
-              tabBarLabel: "FEATURES",
-              tabBarIcon: ({ focused, color }) => (
-                <Ionicons
-                  name={focused ? "list" : "list-outline"}
-                  size={25}
-                  color={color}
-                />
-              ),
-            }
-          }
+          options={{
+            tabBarLabel: "FEATURES",
+            tabBarIcon: ({ focused, color }) => (
+              <Ionicons
+                name={focused ? "list" : "list-outline"}
+                size={25}
+                color={color}
+              />
+            ),
+          }}
         />
       </Tab.Navigator>
     </SafeAreaView>
@@ -118,7 +116,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "500",
   },
   backButton: {
     display: "flex",

@@ -218,13 +218,15 @@ class HomeScreen extends React.Component {
     inputRange: [0, 1],
     outputRange: [-500, 0],
   });
-        
+
   render() {
     const { navigation } = this.props;
 
     // Count the total number of feature updates
     let unreadCount = 0;
-    for (const [, features] of Object.entries(this.state.user.unread? this.state.user.unread: {})) {
+    for (const [, features] of Object.entries(
+      this.state.user.unread ? this.state.user.unread : {}
+    )) {
       unreadCount += features.length;
     }
 
@@ -273,11 +275,12 @@ class HomeScreen extends React.Component {
           </Tab.Screen>
           <Tab.Screen
             name="My Guides"
-            options={{ headerShown: false, 
-              cardStyleInterpolator: forFade, 
-              tabBarBadge: unreadCount? unreadCount: null, 
-              tabBarBadgeStyle: {backgroundColor: '#201947'}}
-            }
+            options={{
+              headerShown: false,
+              cardStyleInterpolator: forFade,
+              tabBarBadge: unreadCount ? unreadCount : null,
+              tabBarBadgeStyle: { backgroundColor: "#201947" },
+            }}
           >
             {(props) => (
               <MyGuidesScreen
@@ -386,7 +389,7 @@ const styles = StyleSheet.create({
   },
   drawerLink: {
     fontSize: 20,
-    fontWeight: "500",
+    fontWeight: "400",
     margin: 20,
   },
   outSideDrawer: {
@@ -418,7 +421,7 @@ const styles = StyleSheet.create({
   removeText: {
     color: "#E3A444",
     fontSize: 22,
-    fontWeight: "500",
+    fontWeight: "400",
   },
   itemImage: {
     marginRight: 10,
@@ -486,7 +489,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     marginBottom: 10,
     fontSize: 24,
-    fontWeight: "600",
+    fontWeight: "500",
     textAlign: "center",
   },
   modalMessage: {

@@ -117,7 +117,7 @@ const RatingCategory = (props) => {
     <View style={styles.ratingCategory}>
       <Text style={{ fontSize: 16 }}>{props.category}</Text>
       <View style={styles.ratingValue}>
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>{props.value}</Text>
+        <Text style={{ fontSize: 16, fontWeight: "600" }}>{props.value}</Text>
         <Text
           style={{
             fontSize: 12,
@@ -150,7 +150,7 @@ const ReviewItem = (props) => {
         <Text
           ellipsizeMode="tail"
           numberOfLines={1}
-          style={{ flex: 1, fontSize: 16, fontWeight: "bold" }}
+          style={{ flex: 1, fontSize: 16, fontWeight: "600" }}
         >
           {props.title}
         </Text>
@@ -180,7 +180,7 @@ const ReviewItem = (props) => {
           source={{ uri: props.user.picture }}
         />
         <View style={styles.userNameBio}>
-          <Text style={{ fontSize: 16, fontWeight: "bold", marginLeft: 10 }}>
+          <Text style={{ fontSize: 16, fontWeight: "700", marginLeft: 10 }}>
             {props.user.name}
           </Text>
           <Text style={{ fontSize: 16, color: "#888888", marginLeft: 10 }}>
@@ -188,7 +188,11 @@ const ReviewItem = (props) => {
           </Text>
         </View>
       </View>
-      <Text ellipsizeMode="tail" numberOfLines={3} style={{ fontSize: 16 }}>
+      <Text
+        ellipsizeMode="tail"
+        numberOfLines={3}
+        style={{ fontSize: 16, fontWeight: "300" }}
+      >
         {props.myTake}
       </Text>
       <Pressable
@@ -202,6 +206,7 @@ const ReviewItem = (props) => {
             color: "#E3A444",
             textAlign: "right",
             marginBottom: 10,
+            fontWeight: "500",
           }}
         >
           View More
@@ -610,7 +615,7 @@ const styles = StyleSheet.create({
   appName: {
     marginLeft: 15,
     fontSize: 25,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   appSlogan: {
     marginLeft: 15,
@@ -680,7 +685,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginBottom: 10,
     fontSize: 17,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   preview: {
     flex: 1,
@@ -827,7 +832,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     marginBottom: 10,
     fontSize: 24,
-    fontWeight: "600",
+    fontWeight: "500",
     textAlign: "center",
   },
   modalMessage: {
