@@ -135,7 +135,7 @@ export default function ExploreScreen(props) {
             style={{ marginLeft: 1 }}
           />
           {/* Input field */}
-          <Text style={styles.searchText}>Search apps...</Text>
+          <Text style={styles.searchText}>Search guides...</Text>
         </View>
       </Pressable>
       <ScrollView
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "500",
   },
   hamburgerIcon: {
     display: "flex",
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   categoryContainer: {
     alignSelf: "center",

@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   itemImageContainer: {
     width: "100%",

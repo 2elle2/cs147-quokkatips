@@ -18,16 +18,20 @@ const Item = (props) => {
   let appId = props.appId;
   let feature = props.feature;
   let user = props.user;
-  let unread = user.unread[appId]? user.unread[appId].includes(feature.id): false;
-  let pinned = user.pinned[appId]? user.pinned[appId].includes(feature.id): false;
+  let unread = user.unread[appId]
+    ? user.unread[appId].includes(feature.id)
+    : false;
+  let pinned = user.pinned[appId]
+    ? user.pinned[appId].includes(feature.id)
+    : false;
 
   return (
     <Pressable
-      style={unread? {backgroundColor: '#ECECEC'}: {}}
+      style={unread ? { backgroundColor: "#ECECEC" } : {}}
       onPress={() => {
         navigation.navigate("FeatureDetails", {
           appId: appId,
-          feature: feature, 
+          feature: feature,
           user: user,
           unread: unread,
           pinned: pinned,
@@ -35,20 +39,36 @@ const Item = (props) => {
       }}
     >
       <View style={styles.itemStyle}>
-          {unread? 
-            <View style={styles.unreadCircle}/> :
-            <View style={styles.readCircle}/>
-          }
-          {unread? 
-            <Text style={[{fontWeight: 'bold'}, styles.featureName]}>{feature.name}</Text> :
-            <Text style={styles.featureName}>{feature.name}</Text> 
-          }
-          {pinned? 
-            <Ionicons style={styles.bookmarkIcon} name="bookmark" color="#E3A444" size={15}/> : 
-            <View/>
-          }
+        {unread ? (
+          <View style={styles.unreadCircle} />
+        ) : (
+          <View style={styles.readCircle} />
+        )}
+        {unread ? (
+          <Text style={[{ fontWeight: "600" }, styles.featureName]}>
+            {feature.name}
+          </Text>
+        ) : (
+          <Text style={styles.featureName}>{feature.name}</Text>
+        )}
+        {pinned ? (
+          <Ionicons
+            style={styles.bookmarkIcon}
+            name="bookmark"
+            color="#E3A444"
+            size={15}
+          />
+        ) : (
+          <View />
+        )}
       </View>
-      <Text numberOfLines={2} ellipsizeMode='tail' style={styles.featureDescription}>{feature.description}</Text>
+      <Text
+        numberOfLines={2}
+        ellipsizeMode="tail"
+        style={styles.featureDescription}
+      >
+        {feature.description}
+      </Text>
     </Pressable>
   );
 };
@@ -73,7 +93,7 @@ const List = (props) => {
   const renderItem = ({ item }) => {
     // When no input, show all
     if (searchPhrase === "") {
-      return <Item feature={item} user={user} appId={appId}/>;
+      return <Item feature={item} user={user} appId={appId} />;
     }
     // Filter of the name
     if (
@@ -81,10 +101,9 @@ const List = (props) => {
         .toUpperCase()
         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))
     ) {
-      return <Item feature={item} user={user} appId={appId}/>;
+      return <Item feature={item} user={user} appId={appId} />;
     }
   };
-
 
   // Renders the FlatList item divider line
   const ItemSeparatorView = () => {
@@ -92,9 +111,9 @@ const List = (props) => {
       <View
         style={{
           padding: 1,
-          backgroundColor: '#C4C4C4',
+          backgroundColor: "#C4C4C4",
           height: 0.5,
-          marginLeft: 20
+          marginLeft: 20,
         }}
       />
     );
@@ -140,13 +159,13 @@ const styles = StyleSheet.create({
   },
   featureName: {
     fontSize: 16,
-    color: 'black',
+    color: "black",
   },
   featureDescription: {
     marginTop: 3,
     fontSize: 16,
     marginHorizontal: 20,
-    color: '#888888',
+    color: "#888888",
     marginBottom: 8,
   },
   unreadCircle: {
@@ -164,8 +183,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   bookmarkIcon: {
-    position: 'absolute',
+    position: "absolute",
     right: 10,
     top: 5,
-  }
+  },
 });

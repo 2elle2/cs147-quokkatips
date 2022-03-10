@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "500",
   },
   backButton: {
     display: "flex",
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   itemImageContainer: {
     width: "100%",

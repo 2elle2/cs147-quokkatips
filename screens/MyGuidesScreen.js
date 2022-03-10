@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "500",
   },
   hamburgerIcon: {
     display: "flex",

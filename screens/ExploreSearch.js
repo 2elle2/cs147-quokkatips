@@ -134,7 +134,7 @@ export default function ExploreSearch({ route, user, guides }) {
             setSearchPhrase={setSearchPhrase}
             clicked={clicked}
             setClicked={setClicked}
-            placeHolderText="Search apps..."
+            placeHolderText="Search guides..."
           />
         </View>
         <Pressable onPress={() => navigation.goBack()}>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "500",
   },
   backButton: {
     display: "flex",
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   categoryContainer: {
     alignSelf: "center",

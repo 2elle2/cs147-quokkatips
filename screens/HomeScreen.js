@@ -220,12 +220,13 @@ class HomeScreen extends React.Component {
   });
 
   render() {
-
     const { view, setView, setMessages, navigation, messages } = this.props;
 
     // Count the total number of feature updates
     let unreadCount = 0;
-    for (const [, features] of Object.entries(this.state.user.unread ? this.state.user.unread : {})) {
+    for (const [, features] of Object.entries(
+      this.state.user.unread ? this.state.user.unread : {}
+    )) {
       unreadCount += features.length;
     }
 
@@ -278,9 +279,8 @@ class HomeScreen extends React.Component {
               headerShown: false,
               cardStyleInterpolator: forFade,
               tabBarBadge: unreadCount ? unreadCount : null,
-              tabBarBadgeStyle: { backgroundColor: '#201947' }
-            }
-            }
+              tabBarBadgeStyle: { backgroundColor: "#201947" },
+            }}
           >
             {(props) => (
               <MyGuidesScreen
@@ -296,7 +296,8 @@ class HomeScreen extends React.Component {
             name="Ask Quokka"
             options={{
               headerShown: false,
-            }} >
+            }}
+          >
             {(props) => (
               <AskQuokkaScreen
                 {...props}
@@ -403,7 +404,7 @@ const styles = StyleSheet.create({
   },
   drawerLink: {
     fontSize: 20,
-    fontWeight: "500",
+    fontWeight: "400",
     margin: 20,
   },
   outSideDrawer: {
@@ -435,7 +436,7 @@ const styles = StyleSheet.create({
   removeText: {
     color: "#E3A444",
     fontSize: 22,
-    fontWeight: "500",
+    fontWeight: "400",
   },
   itemImage: {
     marginRight: 10,
@@ -503,7 +504,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     marginBottom: 10,
     fontSize: 24,
-    fontWeight: "600",
+    fontWeight: "500",
     textAlign: "center",
   },
   modalMessage: {

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: "700",
+    fontWeight: "500",
   },
   closeIcon: {
     display: "flex",
