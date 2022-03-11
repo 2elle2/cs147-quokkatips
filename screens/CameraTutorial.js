@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        width: "90%",
+        width: "95%",
         height: 30,
         marginBottom: 6,
         alignSelf: "center",
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
 
     backButtonText: {
         color: "#E3A444",
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: "500",
     },
 

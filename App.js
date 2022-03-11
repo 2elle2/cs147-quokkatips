@@ -32,6 +32,7 @@ import CameraTutorial from "./screens/CameraTutorial";
 
 import { LogBox } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 LogBox.ignoreAllLogs()
 
@@ -242,9 +243,18 @@ export default function App() {
             headerTintColor: Colors.yellow,
             headerTitleStyle: {
               fontSize: 22,
-              fontWeight: "700",
+              fontWeight: "500",
               color: Colors.black,
             },
+
+            headerLeft: () => (<Pressable
+              onPress={() => navigation.goBack()}
+              style={styles.backButton}
+            >
+              <Ionicons name="chevron-back" size={28} color="#E3A444" />
+              <Text style={styles.backButtonText}> Back</Text>
+            </Pressable>)
+            
             // headerRight: () => (
             //   <Pressable onPress={() => navigation.navigate('ARView')}
             //   >
@@ -289,5 +299,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  backButton: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    position: "absolute",
+    left: 0,
+    marginLeft: 6
+  },
+  backButtonText: {
+    color: "#E3A444",
+    fontSize: 20,
+    fontWeight: "500",
   },
 });
