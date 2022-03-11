@@ -73,7 +73,7 @@ class Chat extends React.Component {
           user: quokka,
         }]);
         this.props.navigation.goBack();
-      }, 2000);
+      }, 3000);
     } else {
       console.warn('replies param is not set correctly')
     }
