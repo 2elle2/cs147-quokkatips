@@ -306,6 +306,7 @@ class HomeScreen extends React.Component {
                 setMessages={setMessages}
                 setView={setView}
                 view={view}
+                toggleDrawer={this.showSlidingDrawer}
               />
             )}
           </Tab.Screen>
@@ -339,13 +340,15 @@ class HomeScreen extends React.Component {
             {/* <Text>Stuff</Text>
             <Button title="Close menu" onPress={this.showSlidingDrawer} /> */}
             <View style={styles.drawerLinksContainer}>
-              <Pressable onPress={() => 
-                Alert.alert(
-                  "Not yet implemented",
-                  "\"Edit Profile\" has not yet been implemented. Check back later!",
-                  [{ text: "OK", onPress: () => {} }]
-                )
-              }>
+              <Pressable
+                onPress={() =>
+                  Alert.alert(
+                    "Not yet implemented",
+                    '"Edit Profile" has not yet been implemented. Check back later!',
+                    [{ text: "OK", onPress: () => {} }]
+                  )
+                }
+              >
                 <Text style={styles.drawerLink}>Edit Profile</Text>
               </Pressable>
               <Pressable onPress={() => navigation.navigate("AboutScreen")}>
