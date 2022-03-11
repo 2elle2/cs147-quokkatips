@@ -133,7 +133,7 @@ class FeatureDetails extends React.Component {
             >
               <YoutubePlayer
                 height={250}
-                play={true}
+                play={false}
                 videoId={feature.videoId}
               />
             </View>
