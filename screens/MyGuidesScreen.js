@@ -14,6 +14,7 @@ import {
   StatusBar,
   TextInput,
   Pressable,
+  TouchableOpacity
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -33,7 +34,6 @@ const MyGuidesScreen = (props) => {
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
   // console.log(guides);
@@ -54,6 +54,7 @@ const MyGuidesScreen = (props) => {
         placeHolderText={"Search my saved guides..."}
       />
       {
+        user.guides.length > 0?
         <List
           searchPhrase={searchPhrase}
           data={guides.filter(function (app) {
@@ -61,7 +62,13 @@ const MyGuidesScreen = (props) => {
           })}
           setClicked={setClicked}
           user={user}
-        />
+        /> : 
+        <View>
+          <Text style={styles.alertText}>You haven't added any guides. </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Home", {screen: "Explore"})}>
+            <Text style={styles.exploreAClassroomSoftware}> Explore a classroom software.</Text>
+        </TouchableOpacity>
+        </View>
       }
     </SafeAreaView>
   );
@@ -177,6 +184,17 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     paddingLeft: 4,
   },
-
   sortText: {},
+  alertText: {
+    marginTop: 10,
+    fontSize: 16,
+    marginLeft: 28,
+  },
+  exploreAClassroomSoftware: {
+    marginTop: 5,
+    fontSize: 16,
+    marginLeft: 25,
+    fontWeight: 'bold',
+    color: Colors.orange,
+  }
 });

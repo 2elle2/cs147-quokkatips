@@ -278,17 +278,8 @@ const AddModal = (props) => {
             />
             <Text style={styles.modalTitle}>Success!</Text>
             <Text style={styles.modalMessage}>
-              {app.name + " has been added to your guides."}
+              {app.name + " has been successfully added to your guides."}
             </Text>
-            {/* <TouchableOpacity
-              style={[{ backgroundColor: "#E3A444" }, styles.modalButton]}
-              onPress={() => {
-                // When "Keep viewing App Info" is clicked
-                parent.setState({ showAddAlert: false }); // Hide the modal window
-              }}
-            >
-              <Text style={styles.modalButtonText}>Keep viewing App Info</Text>
-            </TouchableOpacity> */}
             <TouchableOpacity
               style={[{ backgroundColor: "#E3A444" }, styles.modalButton]}
               onPress={() => {
