@@ -3,7 +3,12 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
+
 import { useState } from "react";
 
 import HomeScreen from "./screens/HomeScreen";
@@ -31,22 +36,22 @@ import Chat from "./screens/Chat";
 import CameraTutorial from "./screens/CameraTutorial";
 
 import { LogBox } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs();
 
 import Colors from "./Themes/colors";
 import { CardStyleInterpolators } from "@react-navigation/stack";
 import { forVerticalIOS } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
-const quokkaAvatar = require('./assets/Quokkas/neutral-standing.png');
+const quokkaAvatar = require("./assets/Quokkas/neutral-standing.png");
 const quokka = {
   _id: 2,
-  name: 'Quokka',
+  name: "Quokka",
   avatar: quokkaAvatar,
-}
+};
 
 export default function App() {
   const [user, setUser] = useState({}); // Use state to pass user object between components
@@ -55,15 +60,15 @@ export default function App() {
   const [messages, setMessages] = useState([
     {
       _id: 1,
-      text: 'Hi there! How can I help?',
+      text: "Hi there! How can I help?",
       createdAt: new Date(),
       quickReplies: {
-        type: 'radio', // or 'radio',
+        type: "radio", // or 'radio',
         keepIt: true,
         values: [
           {
-            title: 'I need help sharing my screen',
-            value: 'help_share',
+            title: "I need help sharing my screen",
+            value: "help_share",
           },
         ],
       },
@@ -103,8 +108,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerShown: false
-        }}>
+          headerShown: false,
+        }}
+      >
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -156,11 +162,12 @@ export default function App() {
           options={{
             headerShown: false,
             gestureEnabled: false,
-            cardStyleInterpolator: forFade
+            cardStyleInterpolator: forFade,
           }}
         >
           {(props) => (
-            <HomeScreen {...props}
+            <HomeScreen
+              {...props}
               setUser={setUser}
               setGuides={setGuides}
               setView={setView}
@@ -192,7 +199,7 @@ export default function App() {
           component={ReviewDetails}
           option={{ headerShown: false }}
         />
-        <Stack.Screen name="AppDetails" options={{ headerShown: false } }>
+        <Stack.Screen name="AppDetails" options={{ headerShown: false }}>
           {(props) => <AppDetails {...props} user={user} />}
         </Stack.Screen>
 
@@ -209,7 +216,7 @@ export default function App() {
           name="ExploreSearch"
           options={{
             headerShown: false,
-            cardStyleInterpolator: forFade
+            cardStyleInterpolator: forFade,
           }}
         >
           {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
@@ -238,8 +245,8 @@ export default function App() {
           options={{
             title: "Chat",
             headerShown: true,
-            headerMode: 'screen',
-            headerBackTitle: 'Back',
+            headerMode: "screen",
+            headerBackTitle: "Back",
             headerTintColor: Colors.yellow,
             headerTitleStyle: {
               fontSize: 22,
@@ -247,14 +254,19 @@ export default function App() {
               color: Colors.black,
             },
 
-            headerLeft: () => (<Pressable
-              onPress={() => navigation.goBack()}
-              style={styles.backButton}
-            >
-              <Ionicons name="chevron-back" size={28} color="#E3A444" />
-              <Text style={styles.backButtonText}> Back</Text>
-            </Pressable>)
-            
+            headerLeft: () => {
+              const navigation = useNavigation();
+              return (
+                <Pressable
+                  onPress={() => navigation.goBack()}
+                  style={styles.backButton}
+                >
+                  <Ionicons name="chevron-back" size={28} color="#E3A444" />
+                  <Text style={styles.backButtonText}> Back</Text>
+                </Pressable>
+              );
+            },
+
             // headerRight: () => (
             //   <Pressable onPress={() => navigation.navigate('ARView')}
             //   >
@@ -264,7 +276,14 @@ export default function App() {
             // ...TransitionPresets.ModalSlideFromBottomIOS
           }}
         >
-          {(props) => <Chat {...props} setView={setView} messages={messages} setMessages={setMessages} />}
+          {(props) => (
+            <Chat
+              {...props}
+              setView={setView}
+              messages={messages}
+              setMessages={setMessages}
+            />
+          )}
         </Stack.Screen>
         <Stack.Screen
           name="AboutScreen"
@@ -286,8 +305,7 @@ export default function App() {
               };
             },
           }}
-        >
-        </Stack.Screen>
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -306,7 +324,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     left: 0,
-    marginLeft: 6
+    marginLeft: 6,
   },
   backButtonText: {
     color: "#E3A444",
