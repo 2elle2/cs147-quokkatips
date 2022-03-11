@@ -131,7 +131,6 @@ class AppDetailsFeatures extends React.Component {
    * Renders the component.
    */
   render() {
-    console.log("featuresSadfasdf", this.state.features);
     return (
       <SafeAreaView style={styles.container}>
         <SearchBar
