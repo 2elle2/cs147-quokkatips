@@ -385,16 +385,16 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: 100,
         height: 100,
-        left: 30,
-        bottom: 100,
+        left: 40,
+        bottom: 130,
     },
 
     arrowUp: {
         position: "absolute",
         width: 100,
         height: 100,
-        left: 250,
-        bottom: 100,
+        left: 270,
+        bottom: 110,
         transform: [{ rotate: '250deg' }]
     }
 })
