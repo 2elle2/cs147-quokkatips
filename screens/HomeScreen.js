@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Image,
+  Alert,
 } from "react-native";
 import { useEffect } from "react";
 import { getAuth } from "firebase/auth";
@@ -338,8 +339,20 @@ class HomeScreen extends React.Component {
             {/* <Text>Stuff</Text>
             <Button title="Close menu" onPress={this.showSlidingDrawer} /> */}
             <View style={styles.drawerLinksContainer}>
+              <Pressable onPress={() => 
+                Alert.alert(
+                  "Not yet implemented",
+                  "\"Edit Profile\" has not yet been implemented. Check back later!",
+                  [{ text: "OK", onPress: () => {} }]
+                )
+              }>
+                <Text style={styles.drawerLink}>Edit Profile</Text>
+              </Pressable>
               <Pressable onPress={() => navigation.navigate("AboutScreen")}>
                 <Text style={styles.drawerLink}>About QuokkaTips</Text>
+              </Pressable>
+              <Pressable onPress={() => navigation.navigate("TutorialOneHome")}>
+                <Text style={styles.drawerLink}>QuokkaTips Tutorial</Text>
               </Pressable>
               <Pressable
                 style={styles.drawerLink}

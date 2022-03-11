@@ -17,6 +17,9 @@ import SignUpScreenFour from "./screens/SignUpScreenFour";
 import TutorialScreenOne from "./screens/TutorialScreenOne";
 import TutorialScreenTwo from "./screens/TutorialScreenTwo";
 import TutorialScreenThree from "./screens/TutorialScreenThree";
+import TutorialScreenOneHome from "./screens/TutorialScreenOneHome";
+import TutorialScreenTwoHome from "./screens/TutorialScreenTwoHome";
+import TutorialScreenThreeHome from "./screens/TutorialScreenThreeHome";
 import AboutScreen from "./screens/AboutScreen";
 
 import ExploreScreen from "./screens/ExploreScreen";
@@ -166,6 +169,22 @@ export default function App() {
             />
           )}
         </Stack.Screen>
+
+        <Stack.Screen
+          name="TutorialOneHome"
+          component={TutorialScreenOneHome}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TutorialTwoHome"
+          component={TutorialScreenTwoHome}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TutorialThreeHome"
+          component={TutorialScreenThreeHome}
+          options={{ headerShown: false }}
+        />
 
         <Stack.Screen
           name="ReviewDetails"
