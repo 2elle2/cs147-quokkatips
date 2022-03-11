@@ -1,11 +1,24 @@
 // Based off of https://blog.logrocket.com/create-react-native-search-bar-from-scratch/
 // SearchBar.js
 import React from "react";
-import { StyleSheet, TextInput, View, Keyboard, Button, Pressable } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  Keyboard,
+  Button,
+  Pressable,
+} from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 import Colors from "../../Themes/colors";
 
-const SearchBar = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
+const SearchBar = ({
+  clicked,
+  searchPhrase,
+  setSearchPhrase,
+  setClicked,
+  placeHolderText,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.searchBar__clicked}>
@@ -19,7 +32,7 @@ const SearchBar = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
         {/* Input field */}
         <TextInput
           style={styles.input}
-          placeholder="Search my saved guides..."
+          placeholder={placeHolderText}
           value={searchPhrase}
           onChangeText={setSearchPhrase}
           onFocus={() => {
@@ -40,8 +53,8 @@ const SearchBar = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
         </View>
         )}
       </View> */}
-      {/* cancel button, depending on whether the search bar is clicked or not */}
-      {/* {clicked && (
+        {/* cancel button, depending on whether the search bar is clicked or not */}
+        {/* {clicked && (
         <View>
           <Button
             title="Cancel"
@@ -52,16 +65,16 @@ const SearchBar = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
           ></Button>
         </View>
       )} */}
-    
+      </View>
     </View>
-  </View>
-  )};
+  );
+};
 export default SearchBar;
 
 // styles
 const styles = StyleSheet.create({
   container: {
-    marginTop: 15,
+    marginTop: 10,
     marginLeft: 24,
     marginRight: 24,
     justifyContent: "flex-start",

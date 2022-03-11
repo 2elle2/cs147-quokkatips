@@ -83,7 +83,7 @@ export default function ViewAll({ route }) {
   // in local state
 
   const navigation = useNavigation();
-  const { category, apps } = route.params;
+  const { header, apps } = route.params;
   console.log(apps);
   return (
     <SafeAreaView style={styles.body}>
@@ -95,7 +95,7 @@ export default function ViewAll({ route }) {
           <Ionicons name="chevron-back" size={28} color="#E3A444" />
           <Text style={styles.backButtonText}> Back</Text>
         </Pressable>
-        <Text style={styles.categoryText}>{category}</Text>
+        <Text style={styles.categoryText}>{header}</Text>
       </View>
 
       <View style={styles.gridContainer}>
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     backgroundColor: "white",
+    marginBottom: 6,
   },
   backgroundImage: {
     width: "100%",
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "500",
   },
   backButton: {
     display: "flex",
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   itemImageContainer: {
     width: "100%",

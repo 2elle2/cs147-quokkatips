@@ -9,9 +9,12 @@ import { Octicons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { Feather, Entypo } from "@expo/vector-icons";
+
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../Themes/colors";
-
+import List from "./Components/List";
+import SearchBar from "./Components/SearchBar";
 import {
   FlatList,
   Pressable,
@@ -30,10 +33,10 @@ const Item = (props) => {
   const navigation = useNavigation();
   let speedometer;
   let difficulty;
-  if (props.app.rating > 4) {
+  if (props.app.ratingEase > 3.5) {
     speedometer = "speedometer-slow";
     difficulty = "Easy";
-  } else if (props.app.rating > 2) {
+  } else if (props.app.ratingEase > 2) {
     speedometer = "speedometer-medium";
     difficulty = "Medium";
   } else {
@@ -72,16 +75,15 @@ const Item = (props) => {
     </Pressable>
   );
 };
-
 const renderItem = ({ item }) => <Item app={item} />;
 
-const CategoryCarrousel = ({ category, navigation, data }) => (
+const CategoryCarrousel = ({ category, navigation, data, header }) => (
   <View style={styles.categoryContainer}>
     <View style={styles.categoryHeaders}>
       <Text style={styles.categoryName}>{category}</Text>
       <Pressable
         onPress={() => {
-          navigation.navigate("ViewAll", { category: category, apps: data });
+          navigation.navigate("ViewAll", { header: header, apps: data });
         }}
       >
         <Text style={styles.viewAllButton}>View All</Text>
@@ -90,7 +92,7 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
 
     <FlatList
       horizontal
-      data={data}
+      data={data.slice(0, 5)}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       showsHorizontalScrollIndicator={false}
@@ -101,58 +103,72 @@ const CategoryCarrousel = ({ category, navigation, data }) => (
 export default function ExploreScreen(props) {
   // console.log(props, "ExploreScreen");
   const navigation = useNavigation();
-  const [firestore_data, setData] = useState([]); // Save list of guides from firestore
-  // in local state
 
-  useEffect(() => getGuides(), []); // Pass in empty array so it will only run once on component mount
-
-  /**
-   * Helper Function: getGuides
-   *
-   * Callback function for useEffect. Retrieves all documents in the "guides" collection.
-   * The array of guides is saved to the state variable "firestore_data";
-   */
-  const getGuides = async () => {
-    const querySnapshot = await getDocs(collection(db, "guides"));
-    const guides = querySnapshot.docs.map((doc) => {
-      let guide = doc.data();
-      guide.id = doc.id; // Set the id prop on the guide object
-      return guide;
-    });
-    // console.log(guides);
-    setData(guides);
-  };
+  // console.log("props", props);
+  // console.log("USER", props.user);
 
   return (
     // "Sort by..." picker
     // List of the user's guides
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Pressable style={styles.backButton}>
+        <Pressable
+          style={styles.hamburgerIcon}
+          onPress={() => props.toggleDrawer()}
+        >
           <Ionicons name="ios-menu-outline" size={40} color="#E3A444" />
         </Pressable>
         <Text style={styles.categoryText}>Explore</Text>
       </View>
-      <View style={styles.searchBar}>
-        <AntDesign name="search1" size={22} color={Colors.gray} />
-        <Text style={styles.searchText}>Search apps...</Text>
-      </View>
-      <ScrollView>
+      <Pressable
+        onPress={() => {
+          navigation.navigate("ExploreSearch", { apps: props.guides });
+        }}
+        style={styles.searchBarContainer}
+      >
+        <View style={styles.searchBar}>
+          {/* search Icon */}
+          <Feather
+            name="search"
+            size={20}
+            color={Colors.darkgray}
+            style={{ marginLeft: 1 }}
+          />
+          {/* Input field */}
+          <Text style={styles.searchText}>Search guides...</Text>
+        </View>
+      </Pressable>
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
         <CategoryCarrousel
-          category="Recommended"
+          category="Recommended for You"
+          header="Recommended"
           navigation={navigation}
-          data={firestore_data}
+          data={props.guides}
         />
+
         <CategoryCarrousel
-          category="Mathematics"
+          category="Popular in Communication"
+          header={"Communication"}
           navigation={navigation}
-          data={firestore_data}
+          data={props.guides.filter(function (app) {
+            return app.tags.includes("Communication");
+          })}
         />
-        <CategoryCarrousel
-          category="Trending"
-          navigation={navigation}
-          data={firestore_data}
-        />
+
+        {props.user.subjects?.map((tag, index) => (
+          <CategoryCarrousel
+            category={"Popular in " + tag}
+            header={tag}
+            navigation={navigation}
+            key={index}
+            data={props.guides.filter(function (app) {
+              return app.tags.includes(tag);
+            })}
+          />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -179,33 +195,42 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "500",
   },
-  backButton: {
+  hamburgerIcon: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     position: "absolute",
     left: 0,
   },
-  searchBar: {
-    display: "flex",
-    flexDirection: "row",
+  scrollContainer: {
+    marginTop: 10,
+  },
+  searchBarContainer: {
+    marginTop: 10,
+    marginLeft: 24,
+    marginRight: 24,
+    justifyContent: "flex-start",
     alignItems: "center",
-    borderRadius: 24,
-    borderStyle: "solid",
-    borderWidth: 2,
+    flexDirection: "row",
+  },
+  searchBar: {
+    padding: 10,
+    flexDirection: "row",
+    width: "100%",
+    backgroundColor: Colors.white,
+    borderRadius: 15,
+    borderWidth: 1.5,
     borderColor: Colors.gray,
-    width: "90%",
-    height: 39,
-    alignSelf: "center",
-    paddingHorizontal: 10,
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
   searchText: {
     fontSize: 16,
-    fontWeight: "500",
-    marginLeft: 8,
-    color: "gray",
+    marginLeft: 10,
+    width: "90%",
+    color: Colors.gray,
   },
   item: {
     height: "85%",
@@ -232,7 +257,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
   categoryContainer: {
     alignSelf: "center",

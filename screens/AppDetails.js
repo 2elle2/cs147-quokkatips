@@ -1,31 +1,31 @@
 import React from "react";
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  Text,
-  Pressable,
-} from "react-native";
-
+import { SafeAreaView, View, StyleSheet, Text, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import AppDetailsInfo from "./AppDetailsInfo";
 import AppDetailsFeatures from "./AppDetailsFeatures";
+import { useIsFocused } from "@react-navigation/native";
 
 // Forces the component to rerender
-function useForceUpdate(){
+function useForceUpdate() {
   const [value, setValue] = React.useState(0); // Integer state
-  return () => setValue(value => value + 1); // Update the state to force render
+  return () => setValue((value) => value + 1); // Update the state to force render
 }
 
 export default function AppDetails(props) {
   const { app } = props.route.params;
   const navigation = useNavigation();
   const Tab = createMaterialTopTabNavigator();
-
   const user = props.user; // The currently logged in user
   const rerenderParentCallback = useForceUpdate(); // Called when the child updates
+  useIsFocused();
+
+  // Count the total number of feature updates
+  let unreadCount = 0;
+  for (const [, features] of Object.entries(user.unread ? user.unread : {})) {
+    unreadCount += features.length;
+  }
 
   return (
     // Screen header
@@ -44,49 +44,68 @@ export default function AppDetails(props) {
       <Tab.Navigator
         initialRouteName="Feed"
         screenOptions={{
-          tabBarActiveTintColor: '#E3A444',
-          tabBarInactiveTintColor: '#E3A444',
+          tabBarActiveTintColor: "#E3A444",
+          tabBarInactiveTintColor: "gray",
           tabBarLabelStyle: { fontSize: 14 },
-          tabBarStyle: { backgroundColor: '#F2F2F2' },
-          tabBarIndicatorStyle: { backgroundColor: '#E3A444'},
-          swipeEnabled: user.guides.includes(app.id)? true: false // Disable swiping when features are locked
+
+          tabBarStyle: { backgroundColor: "white" },
+          tabBarIndicatorStyle: { backgroundColor: "#E3A444" },
+          // swipeEnabled: user.guides.includes(app.id) ? true : false, // Disable swiping when features are locked
         }}
       >
         <Tab.Screen
           name="INFO"
-          children={()=><AppDetailsInfo app={app} user={user} parentCallback={rerenderParentCallback}/>}
+          children={() => (
+            <AppDetailsInfo
+              app={app}
+              user={user}
+              parentCallback={rerenderParentCallback}
+            />
+          )}
           options={{
-            tabBarLabel: 'INFO',
-            tabBarIcon: ({ focused, color }) =>
-              <Ionicons name={focused? "information-circle" : "information-circle-outline"} size={25} color={color} />
+            tabBarLabel: "INFO",
+            tabBarIcon: ({ focused, color }) => (
+              <Ionicons
+                name={
+                  focused ? "information-circle" : "information-circle-outline"
+                }
+                size={25}
+                color={color}
+              />
+            ),
           }}
         />
 
         <Tab.Screen
           name="FEATURES"
-          children={()=><AppDetailsFeatures app={app} user={user} parentCallback={rerenderParentCallback}/>}
-          options={user.guides.includes(app.id)? 
-          { // Features are unlocked
-            tabBarLabel: 'FEATURES',
-            tabBarIcon: ({ focused, color }) =>
-              <Ionicons name={focused? "list" : "list-outline"} size={25} color={color} />
-          } :
-          { // Features are locked
-            tabBarLabel: 'Add to Guides to see specific features!',
+          children={() => (
+            <AppDetailsFeatures
+              appName={app.name}
+              appId={app.id}
+              user={user}
+              parentCallback={rerenderParentCallback}
+            />
+          )}
+          options={{
+            tabBarLabel: "FEATURES",
+            tabBarIcon: ({ focused, color }) => (
+              <Ionicons
+                name={focused ? "list" : "list-outline"}
+                size={25}
+                color={color}
+              />
+            ),
           }}
-
-          // Disable pressing the tab when features are locked
-          listeners={!user.guides.includes(app.id)? {
-            tabPress: e => e.preventDefault(),
-          } : {}}
         />
       </Tab.Navigator>
     </SafeAreaView>
   );
 }
 
+// Style sheet
 const styles = StyleSheet.create({
   header: {
+    alignSelf: "center",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -97,7 +116,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: "500",
   },
   backButton: {
     display: "flex",
@@ -109,6 +128,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
+    backgroundColor: "white",
   },
   backButtonText: {
     color: "#E3A444",
