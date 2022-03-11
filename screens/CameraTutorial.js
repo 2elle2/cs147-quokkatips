@@ -1,8 +1,8 @@
 /**
- * Template and guidance from:
+ * Template and guidance from: 
  * https://docs.expo.dev/versions/latest/sdk/camera/
  * https://www.freecodecamp.org/news/how-to-create-a-camera-app-with-expo-and-react-native/
- *
+ * 
  */
 
 /**
@@ -12,29 +12,20 @@
  * have to re-clone the entire repository
  */
 
-import React, { useState, useEffect } from "react";
-import {
-    StyleSheet,
-    Text,
-    SafeAreaView,
-    Pressable,
-    View,
-    TouchableOpacity,
-    Image,
-} from "react-native";
-import { Camera } from "expo-camera";
-import Colors from "../Themes/colors";
-import { Ionicons } from "@expo/vector-icons";
-import { GiftedChat } from "react-native-gifted-chat";
-import { Chat } from "./Chat";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, SafeAreaView, Pressable, View, TouchableOpacity, Image } from 'react-native';
+import { Camera } from 'expo-camera';
+import Colors from '../Themes/colors';
+import { Ionicons } from '@expo/vector-icons';
+import { GiftedChat } from 'react-native-gifted-chat'
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 
-const quokkaAvatar = require("../assets/Quokkas/neutral-standing.png");
+const quokkaAvatar = require('../assets/Quokkas/neutral-standing.png');
 const quokka = {
     _id: 2,
-    name: "Quokka",
+    name: 'Quokka',
     avatar: quokkaAvatar,
-};
+}
 export default function ARView(props) {
     useIsFocused();
     const navigation = useNavigation();
@@ -46,7 +37,13 @@ export default function ARView(props) {
      * Check to see if the user has given permission to use their camera.
      */
     useEffect(() => {
-        props.setView(1);
+        props.setMessages([{
+            _id: Math.round(Math.random() * 1000000),
+            text: "Once you have Zoom open, click the green \"Share Screen\" button.",
+            createdAt: new Date(),
+            user: quokka,
+        }]);
+        props.setView(2);
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             setHasPermission(status === 'granted');
@@ -61,9 +58,9 @@ export default function ARView(props) {
     }
 
     /**
-     * After each view change, renders the next view. For example,
+     * After each view change, renders the next view. For example, 
      * renders view 1 (Quokka saying "How can I help you?") on view
-     * 1, followed by user response, then press of next view button
+     * 1, followed by user response, then press of next view button 
      * will change view to view 2. Can also use setTimeout() to ren-
      * der views after certain amount of time passes.
      */
@@ -79,10 +76,12 @@ export default function ARView(props) {
                         <View style={styles.quokkaText}>
                             <Image
                                 style={styles.quokkaImage}
-                                source={require("../assets/Quokkas/neutral-standing.png")}
+                                source={require('../assets/Quokkas/neutral-standing.png')}
                             />
                             <View style={styles.textBubble1}>
-                                <Text style={styles.text}>{quokkaMsg}</Text>
+                                <Text style={styles.text}>
+                                    {quokkaMsg}
+                                </Text>
                             </View>
                         </View>
                     </>
@@ -130,112 +129,99 @@ export default function ARView(props) {
                 //                 if (quokkaMsg !== "Great job! You set up screen recording successfully.") {
                 //                     setQuokkaMsg("Great job! You set up screen recording successfully.");
                 //                 }
-                if (quokkaMsg !== 'Open the Zoom app and \nclick the green "Share \nScreen" button.') {
-                    setQuokkaMsg(
-                        'Open the Zoom app and \nclick the green "Share \nScreen" button.'
-                    );
+                if (quokkaMsg !== "Open the Zoom app and \nclick the green \"Share \nScreen\" button.") {
+                    setQuokkaMsg("Open the Zoom app and \nclick the green \"Share \nScreen\" button.");
                 }
                 return (
                     <>
-                        <TouchableOpacity
-                            onPress={() => {
-                                props.setMessages(
-                                    GiftedChat.append(props.messages, [
-                                        {
-                                            _id: Math.round(Math.random() * 1000000),
-                                            text: "Click on the screen you want to share. Finally, click the blue share button.",
-                                            createdAt: new Date(),
-                                            sent: true,
-                                            recieved: true,
-                                            user: quokka,
-                                        },
-                                    ])
-                                );
-                                props.setView(3);
-                            }}
-                        >
-                            <Image
-                                style={styles.arrowRight}
-                                source={require("../assets/Arrows/arrow-t.png")}
-                            />
-                        </TouchableOpacity >
+                        <TouchableOpacity onPress={() => {
+
+                            props.setMessages(
+                                GiftedChat.append(
+                                    props.messages,
+                                    [{
+                                        _id: Math.round(Math.random() * 1000000),
+                                        text: "Click on the screen you want to share. Finally, click the blue share button.",
+                                        createdAt: new Date(),
+                                        sent: true,
+                                        recieved: true,
+                                        user: quokka,
+                                    }],
+                                )
+                            )
+                            props.setView(3);
+                        }}>
+                            <Image style={styles.arrowRight} source={require('../assets/Arrows/arrow-t.png')} />
+                        </TouchableOpacity>
                         <View style={styles.quokkaText}>
                             <Image
                                 style={styles.quokkaImage}
-                                source={require("../assets/Quokkas/neutral-standing.png")}
+                                source={require('../assets/Quokkas/neutral-standing.png')}
                             />
                             <View style={styles.textBubble2}>
-                                <Text style={styles.text}>{quokkaMsg}</Text>
+                                <Text style={styles.text}>
+                                    {quokkaMsg}
+                                </Text>
                             </View>
                         </View>
                     </>
                 );
             case 3:
-                if (quokkaMsg !== 'Select the screen you \nwant to share, and click\nthe blue "share" button.') {
-                    setQuokkaMsg(
-                        'Select the screen you \nwant to share, and click\nthe blue "share" button.'
-                    );
+                if (quokkaMsg !== "Select the screen you \nwant to share, and click\nthe blue \"share\" button.") {
+                    setQuokkaMsg("Select the screen you \nwant to share, and click\nthe blue \"share\" button.");
                 }
                 return (
                     <>
                         <TouchableOpacity onPress={() => props.setView(4)}>
-                            <Image
-                                style={styles.arrowUp}
-                                source={require("../assets/Arrows/arrow-t.png")}
-                            />
+                            <Image style={styles.arrowUp} source={require('../assets/Arrows/arrow-t.png')} />
                         </TouchableOpacity>
                         <View style={styles.quokkaText}>
                             <Image
                                 style={styles.quokkaImage}
-                                source={require("../assets/Quokkas/neutral-standing.png")}
+                                source={require('../assets/Quokkas/neutral-standing.png')}
                             />
                             <View style={styles.textBubble2}>
-                                <Text style={styles.text}>{quokkaMsg}</Text>
+                                <Text style={styles.text}>
+                                    {quokkaMsg}
+                                </Text>
                             </View>
                         </View>
                     </>
                 );
             case 4:
-                if (
-                    quokkaMsg !==
-                    "Great job! You set up \nscreen sharing \nsuccessfully! 👍"
-                ) {
-                    setQuokkaMsg(
-                        "Great job! You set up \nscreen sharing \nsuccessfully! 👍"
-                    );
+                if (quokkaMsg !== "Great job! You set up \nscreen sharing \nsuccessfully! 👍") {
+                    setQuokkaMsg("Great job! You set up \nscreen sharing \nsuccessfully! 👍");
                     props.setMessages([
                         {
                             _id: 1,
-                            text: "Hi there! How can I help?",
+                            text: 'Hi there! How can I help?',
                             createdAt: new Date(),
                             quickReplies: {
-                                type: "radio", // or 'radio',
+                                type: 'radio', // or 'radio',
                                 keepIt: true,
                                 values: [
                                     {
-                                        title: "I need help sharing my screen",
-                                        value: "help_share",
-                                    },
-                                    {
-                                        title: "I need help recording my screen",
-                                        value: "help_recording",
+                                        title: 'I need help sharing my screen',
+                                        value: 'help_share',
                                     },
                                 ],
                             },
                             user: quokka,
                         },
                     ]);
-                    setTimeout(() => props.setView(1), 3000);
+                    setTimeout(() => props.setView(1), 3000)
                 }
                 return (
                     <>
                         <View style={styles.quokkaText}>
                             <Image
                                 style={styles.quokkaImage}
-                                source={require("../assets/Quokkas/dance2.png")}
+                                source={require('../assets/Quokkas/dance2.png')}
                             />
                             <View style={styles.textBubble2}>
-                                <Text style={styles.text}>{quokkaMsg}</Text>
+                                <Text style={styles.text}>
+                                    {quokkaMsg}
+                                </Text>
                             </View>
                         </View>
                     </>
@@ -246,13 +232,40 @@ export default function ARView(props) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <Pressable style={styles.hamburgerIcon}>
-                    <Ionicons name="ios-menu-outline" size={40} color="#E3A444" />
+                <Pressable
+                    onPress={() => {
+                        props.setMessages([
+                            {
+                                _id: 1,
+                                text: 'Hi there! How can I help?',
+                                createdAt: new Date(),
+                                quickReplies: {
+                                    type: 'radio', // or 'radio',
+                                    keepIt: true,
+                                    values: [
+                                        {
+                                            title: 'I need help sharing my screen',
+                                            value: 'help_share',
+                                        },
+                                    ],
+                                },
+                                user: quokka,
+                            },
+                        ]);
+                        navigation.goBack();
+                    }}
+                    style={styles.backButton}
+                >
+                    <Ionicons name="chevron-back" size={28} color="#E3A444" />
+                    <Text style={styles.backButtonText}> Back</Text>
                 </Pressable>
-                <Text style={styles.headerText}>Ask Quokka</Text>
+                <Text style={styles.headerText}>Share Screen</Text>
             </View>
 
-            <Camera type={Camera.Constants.Type.back} style={{ height: 700 }}>
+            <Camera
+                type={Camera.Constants.Type.back}
+                style={{ height: 700 }}
+            >
                 <View style={styles.cameraViewArea}></View>
 
                 {renderSwitch()}
@@ -298,34 +311,13 @@ const styles = StyleSheet.create({
     },
 
     cameraViewArea: {
-        flex: 5,
+        flex: 6,
+        // backgroundColor: "red",  //for testing purposes
     },
 
     quokkaText: {
         flexDirection: "row",
         flex: 1.5,
-    },
-
-    cameraViewArea: {
-        flex: 6,
-        // backgroundColor: "red",  //for testing purposes
-    },
-
-    chat: {
-        position: "absolute",
-        bottom: 60,
-        right: 16,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: Colors.yellow,
-        width: 64,
-        height: 64,
-        borderRadius: 64 / 2,
-    },
-    chatText: {
-        color: Colors.white,
-        fontSize: 16,
-        paddingBottom: 2,
     },
 
     textBubble1: {
@@ -343,6 +335,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 8,
         height: 76,
+
     },
     text: {
         color: Colors.black,
@@ -354,6 +347,37 @@ const styles = StyleSheet.create({
         // position: "absolute",
         // top: 44,
         // left: 16,
+    },
+
+    chat: {
+        position: "absolute",
+        bottom: 44,
+        right: 16,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: Colors.yellow,
+        width: 64,
+        height: 64,
+        borderRadius: 64 / 2,
+    },
+    chatText: {
+        color: Colors.white,
+        fontSize: 16,
+        paddingBottom: 2,
+    },
+
+    backButton: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        position: "absolute",
+        left: 0,
+    },
+
+    backButtonText: {
+        color: "#E3A444",
+        fontSize: 22,
+        fontWeight: "500",
     },
 
     // TODO: Calibrate arrows
@@ -373,4 +397,4 @@ const styles = StyleSheet.create({
         bottom: 100,
         transform: [{ rotate: '250deg' }]
     }
-});
+})
