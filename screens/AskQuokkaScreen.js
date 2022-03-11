@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import React from "react";
+import { SafeAreaView, View, StyleSheet, Text, Pressable } from "react-native";
 import ARView from './ARView';
 
 export default function AskQuokkaScreen(props) {

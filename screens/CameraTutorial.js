@@ -18,7 +18,6 @@ import { Camera } from 'expo-camera';
 import Colors from '../Themes/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { GiftedChat } from 'react-native-gifted-chat'
-import { Chat } from './Chat';
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 const quokkaAvatar = require('../assets/Quokkas/neutral-standing.png');
@@ -38,7 +37,13 @@ export default function ARView(props) {
      * Check to see if the user has given permission to use their camera.
      */
     useEffect(() => {
-        props.setView(1);
+        props.setMessages([{
+            _id: Math.round(Math.random() * 1000000),
+            text: "Once you have Zoom open, click the green \"Share Screen\" button.",
+            createdAt: new Date(),
+            user: quokka,
+        }]);
+        props.setView(2);
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             setHasPermission(status === 'granted');
@@ -227,10 +232,34 @@ export default function ARView(props) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <Pressable style={styles.hamburgerIcon}>
-                    <Ionicons name="ios-menu-outline" size={40} color="#E3A444" />
+                <Pressable
+                    onPress={() => {
+                        props.setMessages([
+                            {
+                                _id: 1,
+                                text: 'Hi there! How can I help?',
+                                createdAt: new Date(),
+                                quickReplies: {
+                                    type: 'radio', // or 'radio',
+                                    keepIt: true,
+                                    values: [
+                                        {
+                                            title: 'I need help sharing my screen',
+                                            value: 'help_share',
+                                        },
+                                    ],
+                                },
+                                user: quokka,
+                            },
+                        ]);
+                        navigation.goBack();
+                    }}
+                    style={styles.backButton}
+                >
+                    <Ionicons name="chevron-back" size={28} color="#E3A444" />
+                    <Text style={styles.backButtonText}> Back</Text>
                 </Pressable>
-                <Text style={styles.headerText}>Ask Quokka</Text>
+                <Text style={styles.headerText}>Share Screen</Text>
             </View>
 
             <Camera
@@ -282,7 +311,8 @@ const styles = StyleSheet.create({
     },
 
     cameraViewArea: {
-        flex: 5,
+        flex: 6,
+        // backgroundColor: "red",  //for testing purposes
     },
 
     quokkaText: {
@@ -321,7 +351,7 @@ const styles = StyleSheet.create({
 
     chat: {
         position: "absolute",
-        bottom: 60,
+        bottom: 44,
         right: 16,
         alignItems: "center",
         justifyContent: "center",
@@ -336,6 +366,19 @@ const styles = StyleSheet.create({
         paddingBottom: 2,
     },
 
+    backButton: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        position: "absolute",
+        left: 0,
+    },
+
+    backButtonText: {
+        color: "#E3A444",
+        fontSize: 22,
+        fontWeight: "500",
+    },
 
     // TODO: Calibrate arrows
     arrowRight: {
@@ -354,6 +397,4 @@ const styles = StyleSheet.create({
         bottom: 100,
         transform: [{ rotate: '250deg' }]
     }
-
-
 })

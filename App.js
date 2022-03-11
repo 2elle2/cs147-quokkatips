@@ -25,6 +25,7 @@ import ViewAll from "./screens/ViewAll";
 import FeatureDetails from "./screens/FeatureDetails";
 import ReviewDetails from "./screens/ReviewDetails";
 import Chat from "./screens/Chat";
+import CameraTutorial from "./screens/CameraTutorial";
 
 import { LogBox } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
@@ -59,10 +60,6 @@ export default function App() {
           {
             title: 'I need help sharing my screen',
             value: 'help_share',
-          },
-          {
-            title: 'I need help recording my screen',
-            value: 'help_recording',
           },
         ],
       },
@@ -100,9 +97,10 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{ 
-          headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false
+        }}>
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -151,10 +149,11 @@ export default function App() {
 
         <Stack.Screen
           name="Home"
-          options={{ 
-            headerShown: false, 
+          options={{
+            headerShown: false,
             gestureEnabled: false,
-            cardStyleInterpolator: forFade }}
+            cardStyleInterpolator: forFade
+          }}
         >
           {(props) => (
             <HomeScreen {...props}
@@ -186,17 +185,34 @@ export default function App() {
           {(props) => <ExploreStack {...props} user={user} guides={guides} />}
         </Stack.Screen> */}
 
-        <Stack.Screen 
+        <Stack.Screen
           name="ExploreSearch"
-          options={{ 
-            headerShown: false, 
-            cardStyleInterpolator: forFade }}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: forFade
+          }}
         >
           {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
         </Stack.Screen>
 
         <Stack.Screen name="ViewAll" component={ViewAll} />
         <Stack.Screen name="FeatureDetails" component={FeatureDetails} />
+        <Stack.Screen
+          name="Camera Tutorial"
+          options={{
+            headerShown: false,
+          }}
+        >
+          {(props) => (
+            <CameraTutorial
+              {...props}
+              messages={messages}
+              setMessages={setMessages}
+              setView={setView}
+              view={view}
+            />
+          )}
+        </Stack.Screen>
         <Stack.Screen
           name="Chat"
           options={{

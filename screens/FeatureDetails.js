@@ -105,6 +105,7 @@ class FeatureDetails extends React.Component {
               style={styles.cameraTutorialButton}
               onPress={() => {
                 // TODO: navigate to camera tutorial view
+                navigation.navigate("Camera Tutorial", {});
               }}
             >
               <Ionicons name="camera" size={40} color="white" />
