@@ -104,8 +104,11 @@ class FeatureDetails extends React.Component {
             <TouchableOpacity
               style={styles.cameraTutorialButton}
               onPress={() => {
-                // TODO: navigate to camera tutorial view
-                navigation.navigate("Camera Tutorial", {});
+                if (feature.id === 'ptkTCpMbhKCDSsfVq3CK') {
+                  navigation.navigate("Camera Tutorial", {});
+                  return;
+                }
+                alert("This feature does not have a camera tutorial yet!");
               }}
             >
               <Ionicons name="camera" size={40} color="white" />

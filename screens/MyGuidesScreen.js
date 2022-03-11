@@ -54,7 +54,7 @@ const MyGuidesScreen = (props) => {
         placeHolderText={"Search my saved guides..."}
       />
       {
-        user.guides.length > 0?
+        user.guides ?
         <List
           searchPhrase={searchPhrase}
           data={guides.filter(function (app) {

@@ -175,7 +175,7 @@ class HomeScreen extends React.Component {
     }
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -184,8 +184,8 @@ class HomeScreen extends React.Component {
       // https://firebase.google.com/docs/refernce/js/firebase.User
 
       // console.log("priinting user", user);
-      this.getUserInfo(user);
-      this.getGuides();
+      await this.getUserInfo(user);
+      await this.getGuides();
     } else {
       // No user is signed in - add redirect here?
     }
