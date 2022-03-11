@@ -97,7 +97,7 @@ class FeatureDetails extends React.Component {
           <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
             style={styles.scrollView}
-            showsVerticalScrollIndicator={true}
+            showsVerticalScrollIndicator={false}
           >
             <Text style={styles.sectionTitleText}>{feature.name}</Text>
             <Text style={styles.sectionBodyText}>{feature.description}</Text>
@@ -133,7 +133,7 @@ class FeatureDetails extends React.Component {
             >
               <YoutubePlayer
                 height={250}
-                play={true}
+                play={false}
                 videoId={feature.videoId}
               />
             </View>

@@ -191,7 +191,7 @@ export default function App() {
           component={ReviewDetails}
           option={{ headerShown: false }}
         />
-        <Stack.Screen name="AppDetails" options={{ headerShown: false }}>
+        <Stack.Screen name="AppDetails" options={{ headerShown: false } }>
           {(props) => <AppDetails {...props} user={user} />}
         </Stack.Screen>
 
