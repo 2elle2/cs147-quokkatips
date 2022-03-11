@@ -130,10 +130,10 @@ export default function ARView(props) {
         //                 }
         if (
           quokkaMsg !==
-          'Once you have Zoom open, \nclick the green "Share \nScreen" button.'
+          'Open the Zoom app and \nclick the green "Share \nScreen" button.'
         ) {
           setQuokkaMsg(
-            'Once you have Zoom open, \nclick the green "Share \nScreen" button.'
+            'Open the Zoom app and \nclick the green "Share \nScreen" button.'
           );
         }
         return (
@@ -144,7 +144,7 @@ export default function ARView(props) {
                   GiftedChat.append(props.messages, [
                     {
                       _id: Math.round(Math.random() * 1000000),
-                      text: "Click on the screen or app you want to share. Finally, click the blue share button.",
+                      text: "Click on the screen you want to share. Finally, click the blue share button.",
                       createdAt: new Date(),
                       sent: true,
                       recieved: true,
@@ -174,10 +174,10 @@ export default function ARView(props) {
       case 3:
         if (
           quokkaMsg !==
-          'Click on the screen or app \nyou want to share. Finally, \nclick the blue "share" button.'
+          'Select the screen you \nwant to share, and click\nthe blue "share" button.'
         ) {
           setQuokkaMsg(
-            'Click on the screen or app \nyou want to share. Finally, \nclick the blue "share" button.'
+            'Select the screen you \nwant to share, and click\nthe blue "share" button.'
           );
         }
         return (
@@ -299,6 +299,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     left: 0,
+  },
+
+  cameraViewArea: {
+    flex: 6,
+    // backgroundColor: "red",  //for testing purposes
+  },
+
+  quokkaText: {
+    flexDirection: "row",
+    flex: 1.5,
   },
 
   cameraViewArea: {

@@ -47,14 +47,18 @@ export default function SignUpScreen(props) {
         gradeLevels: ["Middle School"],
         subjects: ["Mathematics"],
         guides: [
-          "jUEWVUQE4UBImqprqsg9",
+          // "jUEWVUQE4UBImqprqsg9", //this is Canvas
           "lpJsISwLw5WNnuBsRLzJ",
           "H7Ue6SxYJHWfW9LHveoG",
-          "DzFkWDDaArCq5EUCtts3",
+          "DzFkWDDaArCq5EUCtts3",  //this is Zoom
         ],
         picture: "https://picsum.photos/50/50",
-        pinned: {},
-        unread: {},
+        pinned: {
+          "DzFkWDDaArCq5EUCtts3": ["rgkG3MzRCLJRpLsPJnuQ", "nqTPsnQ4ZfyUXdyWZyoj"]
+        },
+        unread: {
+          "DzFkWDDaArCq5EUCtts3": ["rgkG3MzRCLJRpLsPJnuQ", "nqTPsnQ4ZfyUXdyWZyoj"]
+        },
       });
 
       navigation.navigate("SignUpTwo");
@@ -139,7 +143,7 @@ export default function SignUpScreen(props) {
           Already have an account?
         </Text>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.loginText}> Login</Text>
+          <Text style={styles.loginText}> Log In</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

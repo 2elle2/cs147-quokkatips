@@ -51,7 +51,7 @@ export default function TutorialScreenThree() {
         onPress={() => navigation.navigate("Home", { screen: "Explore" })}
       >
         <Text style={styles.nextText}>Got it! </Text>
-        <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
+        {/* <FontAwesome5 name="chevron-right" size={16} color={Colors.white} /> */}
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -148,18 +148,18 @@ const styles = StyleSheet.create({
     margin: 5,
     backgroundColor: "#888888",
   },
-  skipButton: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    position: "absolute",
-    right: 0,
-  },
-  skipButtonText: {
-    color: "#E3A444",
-    fontSize: 22,
-    fontWeight: "500",
-  },
+  // skipButton: {
+  //   display: "flex",
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   position: "absolute",
+  //   right: 0,
+  // },
+  // skipButtonText: {
+  //   color: "#E3A444",
+  //   fontSize: 22,
+  //   fontWeight: "500",
+  // },
   backButton: {
     display: "flex",
     flexDirection: "row",
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     color: "#E3A444",
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: "500",
   },
 });

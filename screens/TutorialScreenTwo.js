@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   skipButtonText: {
     color: "#E3A444",
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: "500",
   },
   backButton: {
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     color: "#E3A444",
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: "500",
   },
 });
