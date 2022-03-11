@@ -53,7 +53,7 @@ export default function WelcomeScreen() {
       <Text style={styles.welcomeText}>Welcome to QuokkaTips!</Text>
       <View style={styles.taglineView}>
         <Text style={styles.taglineText}>
-          Your empathetic classroom software advisor
+          Your empathetic classroom software advisor!
         </Text>
       </View>
 
