@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, Text } from "react-native";
 import FeatureList from "./Components/FeatureList";
 import SearchBar from "./Components/SearchBar";
 import React from "react";
@@ -131,7 +131,6 @@ class AppDetailsFeatures extends React.Component {
    * Renders the component.
    */
   render() {
-    console.log("featuresSadfasdf", this.state.features);
     return (
       <SafeAreaView style={styles.container}>
         <SearchBar
@@ -141,14 +140,15 @@ class AppDetailsFeatures extends React.Component {
           setClicked={(b) => this.setState({ clicked: b })}
           placeHolderText={"Search features of " + this.state.appName + "..."}
         />
-        {
+        {this.state.features.length > 0?
           <FeatureList
             searchPhrase={this.state.searchPhrase}
             data={this.state.features}
             setClicked={(b) => this.setState({ clicked: b })}
             user={this.state.user}
             appId={this.state.appId}
-          />
+          /> :
+          <Text style={styles.alertText}>This app has no features yet. Check back later!</Text>
         }
       </SafeAreaView>
     );
@@ -204,4 +204,9 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
   },
   sortText: {},
+  alertText: {
+    marginTop: 10,
+    fontSize: 16,
+    marginLeft: 25,
+  }
 });

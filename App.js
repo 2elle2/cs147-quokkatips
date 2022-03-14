@@ -3,7 +3,12 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
+
 import { useState } from "react";
 
 import HomeScreen from "./screens/HomeScreen";
@@ -17,6 +22,9 @@ import SignUpScreenFour from "./screens/SignUpScreenFour";
 import TutorialScreenOne from "./screens/TutorialScreenOne";
 import TutorialScreenTwo from "./screens/TutorialScreenTwo";
 import TutorialScreenThree from "./screens/TutorialScreenThree";
+import TutorialScreenOneHome from "./screens/TutorialScreenOneHome";
+import TutorialScreenTwoHome from "./screens/TutorialScreenTwoHome";
+import TutorialScreenThreeHome from "./screens/TutorialScreenThreeHome";
 import AboutScreen from "./screens/AboutScreen";
 
 import ExploreScreen from "./screens/ExploreScreen";
@@ -25,23 +33,25 @@ import ViewAll from "./screens/ViewAll";
 import FeatureDetails from "./screens/FeatureDetails";
 import ReviewDetails from "./screens/ReviewDetails";
 import Chat from "./screens/Chat";
+import CameraTutorial from "./screens/CameraTutorial";
 
 import { LogBox } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs();
 
 import Colors from "./Themes/colors";
 import { CardStyleInterpolators } from "@react-navigation/stack";
 import { forVerticalIOS } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
-const quokkaAvatar = require('./assets/Quokkas/neutral-standing.png');
+const quokkaAvatar = require("./assets/Quokkas/neutral-standing.png");
 const quokka = {
   _id: 2,
-  name: 'Quokka',
+  name: "Quokka",
   avatar: quokkaAvatar,
-}
+};
 
 export default function App() {
   const [user, setUser] = useState({}); // Use state to pass user object between components
@@ -50,19 +60,15 @@ export default function App() {
   const [messages, setMessages] = useState([
     {
       _id: 1,
-      text: 'Hi there! How can I help?',
+      text: "Hi there! How can I help?",
       createdAt: new Date(),
       quickReplies: {
-        type: 'radio', // or 'radio',
+        type: "radio", // or 'radio',
         keepIt: true,
         values: [
           {
-            title: 'I need help sharing my screen',
-            value: 'help_share',
-          },
-          {
-            title: 'I need help recording my screen',
-            value: 'help_recording',
+            title: "I need help sharing my screen",
+            value: "help_share",
           },
         ],
       },
@@ -100,9 +106,11 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{ 
-          headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -151,13 +159,15 @@ export default function App() {
 
         <Stack.Screen
           name="Home"
-          options={{ 
-            headerShown: false, 
+          options={{
+            headerShown: false,
             gestureEnabled: false,
-            cardStyleInterpolator: forFade }}
+            cardStyleInterpolator: forFade,
+          }}
         >
           {(props) => (
-            <HomeScreen {...props}
+            <HomeScreen
+              {...props}
               setUser={setUser}
               setGuides={setGuides}
               setView={setView}
@@ -167,6 +177,22 @@ export default function App() {
             />
           )}
         </Stack.Screen>
+
+        <Stack.Screen
+          name="TutorialOneHome"
+          component={TutorialScreenOneHome}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TutorialTwoHome"
+          component={TutorialScreenTwoHome}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TutorialThreeHome"
+          component={TutorialScreenThreeHome}
+          options={{ headerShown: false }}
+        />
 
         <Stack.Screen
           name="ReviewDetails"
@@ -186,11 +212,12 @@ export default function App() {
           {(props) => <ExploreStack {...props} user={user} guides={guides} />}
         </Stack.Screen> */}
 
-        <Stack.Screen 
+        <Stack.Screen
           name="ExploreSearch"
-          options={{ 
-            headerShown: false, 
-            cardStyleInterpolator: forFade }}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: forFade,
+          }}
         >
           {(props) => <ExploreSearch {...props} user={user} guides={guides} />}
         </Stack.Screen>
@@ -198,18 +225,48 @@ export default function App() {
         <Stack.Screen name="ViewAll" component={ViewAll} />
         <Stack.Screen name="FeatureDetails" component={FeatureDetails} />
         <Stack.Screen
+          name="Camera Tutorial"
+          options={{
+            headerShown: false,
+          }}
+        >
+          {(props) => (
+            <CameraTutorial
+              {...props}
+              messages={messages}
+              setMessages={setMessages}
+              setView={setView}
+              view={view}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen
           name="Chat"
           options={{
             title: "Chat",
             headerShown: true,
-            headerMode: 'screen',
-            headerBackTitle: 'Back',
+            headerMode: "screen",
+            headerBackTitle: "Back",
             headerTintColor: Colors.yellow,
             headerTitleStyle: {
               fontSize: 22,
-              fontWeight: "700",
+              fontWeight: "500",
               color: Colors.black,
             },
+
+            headerLeft: () => {
+              const navigation = useNavigation();
+              return (
+                <Pressable
+                  onPress={() => navigation.goBack()}
+                  style={styles.backButton}
+                >
+                  <Ionicons name="chevron-back" size={28} color="#E3A444" />
+                  <Text style={styles.backButtonText}> Back</Text>
+                </Pressable>
+              );
+            },
+
             // headerRight: () => (
             //   <Pressable onPress={() => navigation.navigate('ARView')}
             //   >
@@ -219,7 +276,14 @@ export default function App() {
             // ...TransitionPresets.ModalSlideFromBottomIOS
           }}
         >
-          {(props) => <Chat {...props} setView={setView} messages={messages} setMessages={setMessages} />}
+          {(props) => (
+            <Chat
+              {...props}
+              setView={setView}
+              messages={messages}
+              setMessages={setMessages}
+            />
+          )}
         </Stack.Screen>
         <Stack.Screen
           name="AboutScreen"
@@ -241,8 +305,7 @@ export default function App() {
               };
             },
           }}
-        >
-        </Stack.Screen>
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -254,5 +317,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  backButton: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    position: "absolute",
+    left: 0,
+    marginLeft: 6,
+  },
+  backButtonText: {
+    color: "#E3A444",
+    fontSize: 20,
+    fontWeight: "500",
   },
 });

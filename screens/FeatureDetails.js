@@ -97,14 +97,18 @@ class FeatureDetails extends React.Component {
           <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
             style={styles.scrollView}
-            showsVerticalScrollIndicator={true}
+            showsVerticalScrollIndicator={false}
           >
             <Text style={styles.sectionTitleText}>{feature.name}</Text>
             <Text style={styles.sectionBodyText}>{feature.description}</Text>
             <TouchableOpacity
               style={styles.cameraTutorialButton}
               onPress={() => {
-                // TODO: navigate to camera tutorial view
+                if (feature.id === 'ptkTCpMbhKCDSsfVq3CK') {
+                  navigation.navigate("Camera Tutorial", {});
+                  return;
+                }
+                alert("This feature does not have a camera tutorial yet!");
               }}
             >
               <Ionicons name="camera" size={40} color="white" />
@@ -129,7 +133,7 @@ class FeatureDetails extends React.Component {
             >
               <YoutubePlayer
                 height={250}
-                play={true}
+                play={false}
                 videoId={feature.videoId}
               />
             </View>
@@ -185,7 +189,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     color: "#E3A444",
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "500",
   },
   cameraTutorialButton: {

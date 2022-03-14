@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Image,
+  Alert,
 } from "react-native";
 import { useEffect } from "react";
 import { getAuth } from "firebase/auth";
@@ -174,7 +175,7 @@ class HomeScreen extends React.Component {
     }
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -183,8 +184,8 @@ class HomeScreen extends React.Component {
       // https://firebase.google.com/docs/refernce/js/firebase.User
 
       // console.log("priinting user", user);
-      this.getUserInfo(user);
-      this.getGuides();
+      await this.getUserInfo(user);
+      await this.getGuides();
     } else {
       // No user is signed in - add redirect here?
     }
@@ -305,6 +306,7 @@ class HomeScreen extends React.Component {
                 setMessages={setMessages}
                 setView={setView}
                 view={view}
+                toggleDrawer={this.showSlidingDrawer}
               />
             )}
           </Tab.Screen>
@@ -338,8 +340,22 @@ class HomeScreen extends React.Component {
             {/* <Text>Stuff</Text>
             <Button title="Close menu" onPress={this.showSlidingDrawer} /> */}
             <View style={styles.drawerLinksContainer}>
+              <Pressable
+                onPress={() =>
+                  Alert.alert(
+                    "Not yet implemented",
+                    '"Edit Profile" has not yet been implemented. Check back later!',
+                    [{ text: "OK", onPress: () => {} }]
+                  )
+                }
+              >
+                <Text style={styles.drawerLink}>Edit Profile</Text>
+              </Pressable>
               <Pressable onPress={() => navigation.navigate("AboutScreen")}>
                 <Text style={styles.drawerLink}>About QuokkaTips</Text>
+              </Pressable>
+              <Pressable onPress={() => navigation.navigate("TutorialOneHome")}>
+                <Text style={styles.drawerLink}>QuokkaTips Tutorial</Text>
               </Pressable>
               <Pressable
                 style={styles.drawerLink}

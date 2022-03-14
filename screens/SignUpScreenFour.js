@@ -110,7 +110,7 @@ export default function SignUpScreenFour() {
       <View style={styles.bottomContainer}>
         <TouchableOpacity
           style={styles.signupButton}
-          onPress={() => navigation.navigate("TutorialOne")}
+          onPress={() => navigation.navigate("TutorialOne", {from: "SignUp"})}
         >
           <Text style={styles.signupText}>Sign Up </Text>
           <FontAwesome5 name="chevron-right" size={16} color={Colors.white} />
